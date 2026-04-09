@@ -12,23 +12,30 @@
 import type { ProductCategory } from '@/types/guardscan';
 
 export const SUBCATEGORY_HINTS: { key: string; keywords: string[] }[] = [
-  // Grooming
+  // Grooming — men's grooming & personal care focus
   { key: 'sunscreen', keywords: ['sunscreen', 'spf', 'sun stick', 'sun protection', 'sun block'] },
   { key: 'shave', keywords: ['shave', 'shaving', 'razor', 'aftershave', 'pre-shave', 'shaving cream'] },
   { key: 'shampoo', keywords: ['shampoo'] },
   { key: 'conditioner', keywords: ['conditioner'] },
-  { key: 'cleanser', keywords: ['cleanser', 'face wash', 'facial wash'] },
+  { key: 'cleanser', keywords: ['cleanser', 'face wash', 'facial wash', 'facial cleanser', 'face scrub'] },
   { key: 'deodorant', keywords: ['deodorant', 'antiperspirant'] },
   { key: 'body_wash', keywords: ['body wash', 'shower gel', 'body cleanser'] },
-  { key: 'moisturizer', keywords: ['moisturizer', 'face cream', 'lotion', 'body lotion'] },
+  { key: 'moisturizer', keywords: ['moisturizer', 'moisturizing cream', 'face cream', 'lotion', 'body lotion', 'body cream', 'hand cream'] },
   { key: 'beard', keywords: ['beard oil', 'beard balm', 'beard wash'] },
   { key: 'hair_styling', keywords: ['pomade', 'hair gel', 'hair wax', 'styling'] },
-  // Food
+  { key: 'soap', keywords: ['soap', 'bar soap', 'hand soap'] },
+  { key: 'toothpaste', keywords: ['toothpaste', 'oral care'] },
+  { key: 'lip_care', keywords: ['lip balm', 'chapstick'] },
+  { key: 'cologne', keywords: ['cologne', 'eau de toilette', 'body spray'] },
+  // Food — fitness-focused
   { key: 'drink', keywords: ['energy', 'electrolyte', 'drink', 'beverage'] },
   { key: 'snack_bar', keywords: ['bar', 'protein bar', 'energy bar', 'granola bar'] },
   { key: 'cereal', keywords: ['cereal', 'muesli', 'granola'] },
   { key: 'spread', keywords: ['spread', 'butter', 'jam', 'nutella', 'peanut butter'] },
   { key: 'sauce', keywords: ['sauce', 'ketchup', 'mustard', 'dressing', 'mayo'] },
+  { key: 'meat', keywords: ['chicken', 'beef', 'pork', 'turkey', 'sausage', 'bacon', 'jerky'] },
+  { key: 'dairy', keywords: ['milk', 'cheese', 'yogurt', 'yoghurt', 'cottage cheese'] },
+  { key: 'nuts_seeds', keywords: ['almonds', 'peanuts', 'cashews', 'mixed nuts', 'trail mix'] },
   // Supplement
   { key: 'multivitamin', keywords: ['multivitamin', 'multi-vitamin'] },
   { key: 'protein', keywords: ['protein powder', 'whey', 'casein', 'protein shake'] },

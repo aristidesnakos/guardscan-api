@@ -79,6 +79,17 @@ function determineCompleteness(
 
 // ── Ingredient parsing (OFF/OBF shared format) ─────────────────────────────
 
+/** Section headers that OFF/OBF misparse from ingredient-list images. */
+const HEADER_NOISE = new Set([
+  'ingredients', 'ingrédients', 'ingredientes', 'ingredienti',
+  'composition', 'zusammensetzung', 'ingrediënten', 'składniki',
+  'inci',
+]);
+
+function isHeaderNoise(name: string): boolean {
+  return HEADER_NOISE.has(name.toLowerCase().trim());
+}
+
 /**
  * Parse ingredients from the OFF/OBF structured array or fall back to text.
  * Both APIs use the same representation.
@@ -92,7 +103,7 @@ function parseOpenIngredients(
         name: (ing.text ?? ing.id ?? '').trim(),
         position: ing.rank && ing.rank > 0 ? ing.rank : idx + 1,
       }))
-      .filter((ing) => ing.name.length > 0);
+      .filter((ing) => ing.name.length > 0 && !isHeaderNoise(ing.name));
   }
 
   const text = product.ingredients_text_en ?? product.ingredients_text ?? '';
@@ -102,14 +113,54 @@ function parseOpenIngredients(
     .replace(/\([^)]*\)/g, '')
     .split(/[,;]+/)
     .map((s) => s.trim())
-    .filter((s) => s.length > 0)
+    .filter((s) => s.length > 0 && !isHeaderNoise(s))
     .map((name, idx) => ({ name, position: idx + 1 }));
 }
 
+// ── Category detection ───────────────────────────────────────────────────────
+
+/** OFF/OBF category tags that indicate a grooming/personal-care product. */
+const GROOMING_TAG_PREFIXES = [
+  'en:body-creams', 'en:face-creams', 'en:facial-creams',
+  'en:shampoos', 'en:hair-conditioners', 'en:hair-masks',
+  'en:shower-gels', 'en:deodorants', 'en:soaps',
+  'en:suncare', 'en:body-care', 'en:face-care',
+  'en:hair-care', 'en:skin-care', 'en:moisturizers',
+  'en:hand-creams', 'en:lip-balms', 'en:toothpastes',
+  'en:mouthwashes', 'en:makeups', 'en:perfumes',
+  'en:aftershaves', 'en:hygiene', 'en:body-milks',
+  'en:body-oils', 'en:intimate-hygiene',
+];
+
+/** Multi-word keywords that strongly indicate grooming (conservative). */
+const GROOMING_TEXT_KEYWORDS = [
+  'moisturizing cream', 'moisturising cream', 'moisturizing lotion',
+  'moisturiser', 'body lotion', 'body cream', 'face cream', 'hand cream',
+  'shampoo', 'conditioner', 'shower gel', 'body wash',
+  'deodorant', 'antiperspirant', 'sunscreen', 'sunblock',
+  'toothpaste', 'mouthwash', 'lip balm', 'face wash', 'cleanser',
+  'aftershave', 'shaving cream', 'body oil', 'body scrub',
+  'hair gel', 'hair wax', 'pomade', 'beard oil', 'nail polish',
+  'skin care', 'skincare', 'bar soap',
+];
+
 // ── OFF normalizer ──────────────────────────────────────────────────────────
 
-export function inferOffCategory(_off: OffProduct): ProductCategory {
-  return 'food';
+export function inferOffCategory(off: OffProduct): ProductCategory {
+  // Signal 1: categories_tags (highest confidence)
+  if (off.categories_tags?.some(tag =>
+    GROOMING_TAG_PREFIXES.some(p => tag.toLowerCase().startsWith(p))
+  )) return 'grooming';
+
+  // Signal 2: categories free-text
+  const catsLower = (off.categories ?? '').toLowerCase();
+  if (GROOMING_TEXT_KEYWORDS.some(kw => catsLower.includes(kw))) return 'grooming';
+
+  // Signal 3: product name (lowest confidence)
+  const nameLower = (off.product_name_en ?? off.product_name ?? '').toLowerCase();
+  if (GROOMING_TEXT_KEYWORDS.some(kw => nameLower.includes(kw))) return 'grooming';
+
+  return 'food'; // conservative default
 }
 
 export function normalizeOffProduct(off: OffProduct, barcode: string): Product {

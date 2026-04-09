@@ -235,14 +235,32 @@ export async function GET(
     fetchObfProduct(barcode),
   ]);
 
-  // Prefer OFF (food) if it found something
-  if (offResult.status === 'fulfilled' && offResult.value) {
-    product = normalizeOffProduct(offResult.value, barcode);
-    nutriscoreScore = offResult.value.nutriscore_score;
+  const offData = offResult.status === 'fulfilled' ? offResult.value : null;
+  const obfData = obfResult.status === 'fulfilled' ? obfResult.value : null;
+
+  if (offData) {
+    product = normalizeOffProduct(offData, barcode);
+    nutriscoreScore = offData.nutriscore_score;
     source = 'off';
-  } else if (obfResult.status === 'fulfilled' && obfResult.value) {
-    product = normalizeObfProduct(obfResult.value, barcode);
+
+    // If OFF detects a grooming product and OBF has authoritative data, prefer OBF
+    if (product.category === 'grooming' && obfData) {
+      product = normalizeObfProduct(obfData, barcode);
+      nutriscoreScore = undefined;
+      source = 'obf';
+      log.info('source_preference_override', {
+        barcode,
+        reason: 'off_detected_grooming_prefer_obf',
+      });
+    }
+  } else if (obfData) {
+    product = normalizeObfProduct(obfData, barcode);
     source = 'obf';
+  }
+
+  // Nutri-Score is meaningless for non-food products
+  if (product && product.category !== 'food') {
+    nutriscoreScore = undefined;
   }
 
   // Log upstream errors (non-404 failures)
@@ -283,8 +301,11 @@ export async function GET(
     logCacheMiss(barcode, 'no_ingredients');
   }
 
-  // Infer subcategory before scoring
-  product.subcategory = inferSubcategory(product.name, product.category);
+  // Infer subcategory before scoring — pass raw category tags for better matching
+  const rawCategoryTags = source === 'off' ? offData?.categories_tags
+    : source === 'obf' ? obfData?.categories_tags
+    : undefined;
+  product.subcategory = inferSubcategory(product.name, product.category, rawCategoryTags);
 
   const score = scoreProduct({
     product,
