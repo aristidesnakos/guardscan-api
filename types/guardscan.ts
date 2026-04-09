@@ -30,6 +30,7 @@ export type Product = {
   name: string;
   brand: string;
   category: ProductCategory;
+  subcategory: string | null;
   image_url: string | null;
   data_completeness: DataCompleteness;
   ingredient_source: IngredientSource;
@@ -104,3 +105,44 @@ export type LifeStage =
   | 'testosterone_optimization'
   | 'athletic_performance'
   | 'longevity_focus';
+
+export type DietaryApproach =
+  | 'standard'
+  | 'keto'
+  | 'carnivore'
+  | 'mediterranean'
+  | 'paleo'
+  | 'vegetarian'
+  | 'vegan';
+
+export type UserProfile = {
+  id: string;
+  user_id: string;
+  age: number | null;
+  life_stage: LifeStage;
+  trying_to_conceive: boolean;
+  allergens: string[];
+  dietary_approach: DietaryApproach;
+};
+
+export type ScanHistoryItem = {
+  id: string;
+  product: Product;
+  score: number | null;
+  rating: RatingLabel | null;
+  scanned_at: string;
+  is_favorite: boolean;
+};
+
+export type SearchFilters = {
+  query: string;
+  category?: ProductCategory;
+  min_score?: number;
+};
+
+export type PaginatedResponse<T> = {
+  data: T[];
+  total: number;
+  limit: number;
+  offset: number;
+};
