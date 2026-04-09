@@ -41,6 +41,8 @@ export const log = {
  */
 export type MissReason =
   | 'not_in_off'
+  | 'not_in_obf'
+  | 'not_in_dsld'
   | 'no_ingredients'
   | 'ocr_failed'
   | 'provider_disabled';

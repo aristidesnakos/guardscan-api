@@ -3,6 +3,19 @@
   "functions": {
     "app/api/**": {
       "maxDuration": 30
+    },
+    "app/api/cron/**": {
+      "maxDuration": 300
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/obf-delta",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/dsld-sync",
+      "schedule": "0 5 * * 0"
+    }
+  ]
 }

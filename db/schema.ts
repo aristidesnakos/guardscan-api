@@ -4,6 +4,7 @@ import {
   text,
   integer,
   smallint,
+  boolean,
   jsonb,
   timestamp,
   primaryKey,
@@ -47,6 +48,10 @@ export const products = pgTable(
       table.category,
       table.score,
     ),
+    subcategoryScoreIdx: index('products_subcategory_score_idx').on(
+      table.subcategory,
+      table.score,
+    ),
   }),
 );
 
@@ -82,8 +87,8 @@ export const ingredientDictionary = pgTable('ingredient_dictionary', {
   category: text('category'),
   evidenceUrl: text('evidence_url'),
   notes: text('notes'),
-  fertilityRelevant: text('fertility_relevant').default('false'),
-  testosteroneRelevant: text('testosterone_relevant').default('false'),
+  fertilityRelevant: boolean('fertility_relevant').notNull().default(false),
+  testosteroneRelevant: boolean('testosterone_relevant').notNull().default(false),
 });
 
 // ── user_submissions ────────────────────────────────────────────────────────
@@ -103,6 +108,46 @@ export const userSubmissions = pgTable('user_submissions', {
     .notNull()
     .defaultNow(),
 });
+
+// ── cron_state ──────────────────────────────────────────────────────────────
+
+export const cronState = pgTable('cron_state', {
+  jobName: text('job_name').primaryKey(),
+  lastProcessedKey: text('last_processed_key'),
+  lastRunAt: timestamp('last_run_at', { withTimezone: true }),
+  lastRunStatus: text('last_run_status', {
+    enum: ['success', 'partial', 'failed'],
+  }),
+  metadata: jsonb('metadata'),
+});
+
+// ── scan_events ─────────────────────────────────────────────────────────────
+
+export const scanEvents = pgTable(
+  'scan_events',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: text('user_id').notNull(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    scannedAt: timestamp('scanned_at', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => ({
+    userProductIdx: index('scan_events_user_product_idx').on(
+      table.userId,
+      table.productId,
+    ),
+    userScannedAtIdx: index('scan_events_user_scanned_at_idx').on(
+      table.userId,
+      table.scannedAt,
+    ),
+  }),
+);
+
+// ── Type helpers ────────────────────────────────────────────────────────────
 
 export type ProductRow = typeof products.$inferSelect;
 export type NewProductRow = typeof products.$inferInsert;

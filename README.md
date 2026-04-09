@@ -4,11 +4,13 @@ Backend for the GuardScan mobile app. Next.js 16 on Vercel Fluid Compute, Postgr
 
 **Design contract:** [../cucumberdude/docs/PRODUCT-DATABASE-CHARTER.md](../cucumberdude/docs/PRODUCT-DATABASE-CHARTER.md). Do not change behavior that contradicts the charter without updating it first.
 
+See [CLAUDE.md](CLAUDE.md) for architecture notes and development guidance.
+
 ## Status
 
 | Milestone | Status |
 |---|---|
-| M1 — Schema + `GET /api/products/scan/:barcode` via OFF | in progress |
+| M1 — Schema + `GET /api/products/scan/:barcode` via OFF | **shipped** |
 | M2 — OBF + DSLD | pending |
 | M2.5 — Recommendations backing API | pending |
 | M3 — Search + ingredient dictionary | pending |
@@ -102,7 +104,8 @@ Expo app ──GET /api/products/scan/:barcode──▶  Vercel Function (Node.j
 
 - **Runtime:** Node.js on Fluid Compute. Not Edge (postgres.js + full Node API).
 - **Scoring:** Pure function in `lib/scoring/`. Constants mirror the Expo app's `constants/Scoring.ts`. Any change must land in both in the same PR (see charter §13.4).
-- **DB-optional in M1:** routes tolerate `DATABASE_URL` being unset. Once M3 ships the dictionary, the DB becomes mandatory.
+- **DB caching in M1:** `after()` writes product rows (name, brand, score) to the DB after every OFF response. The read path intentionally falls through to OFF on every request — M3 adds the full read cache once `product_ingredients` is populated.
+- **DB-optional:** routes tolerate `DATABASE_URL` being unset. Cache writes are silently skipped. Once M3 ships, the DB becomes mandatory.
 - **CORS:** `proxy.ts` sets `Access-Control-Allow-Origin: *` on all `/api/*` responses, enabling Expo Web and browser clients.
 
 ## Layout
