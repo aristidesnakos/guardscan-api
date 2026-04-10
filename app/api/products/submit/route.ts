@@ -1,4 +1,6 @@
-import { after, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+
+export const maxDuration = 60; // OCR runs inline — needs headroom for the Claude Vision call
 import { randomUUID } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 
@@ -86,25 +88,25 @@ export async function POST(request: Request) {
     user_id: auth.userId,
   });
 
-  // OCR runs after response — never block the upload
-  after(async () => {
-    try {
-      const extracted = await extractSubmissionWithClaude({ frontPath, backPath });
-      await db
-        .update(userSubmissions)
-        .set({ ocrText: JSON.stringify(extracted) })
-        .where(eq(userSubmissions.id, submissionId));
-      log.info('submission_ocr_complete', {
-        submission_id: submissionId,
-        confidence: extracted.confidence,
-      });
-    } catch (err) {
-      log.warn('submission_ocr_failed', {
-        submission_id: submissionId,
-        error: String(err),
-      });
-    }
-  });
+  // OCR runs inline — after() silently no-ops on this Vercel deployment
+  // (waitUntil not provided). maxDuration=60 gives headroom for the Claude Vision call.
+  try {
+    const extracted = await extractSubmissionWithClaude({ frontPath, backPath });
+    await db
+      .update(userSubmissions)
+      .set({ ocrText: JSON.stringify(extracted) })
+      .where(eq(userSubmissions.id, submissionId));
+    log.info('submission_ocr_complete', {
+      submission_id: submissionId,
+      confidence: extracted.confidence,
+    });
+  } catch (err) {
+    // Non-fatal — submission is saved, admin can review photos manually
+    log.warn('submission_ocr_failed', {
+      submission_id: submissionId,
+      error: String(err),
+    });
+  }
 
   return NextResponse.json(
     {

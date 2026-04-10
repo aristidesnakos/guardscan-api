@@ -72,5 +72,7 @@ export async function extractSubmissionWithClaude(opts: {
 
   const content = response.choices[0].message.content;
   if (!content) throw new Error('unexpected_response_type');
-  return JSON.parse(content) as ExtractedSubmission;
+  // Strip optional markdown fences the model sometimes adds despite instructions
+  const json = content.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+  return JSON.parse(json) as ExtractedSubmission;
 }

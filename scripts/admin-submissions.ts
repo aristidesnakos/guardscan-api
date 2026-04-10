@@ -228,20 +228,22 @@ async function rejectOne(submissionId: string, reason: string) {
 
 // ── entry point ───────────────────────────────────────────────────────────────
 
-const [cmd, arg, ...rest] = process.argv.slice(2);
+(async () => {
+  const [cmd, arg, ...rest] = process.argv.slice(2);
 
-if (cmd === 'list' || !cmd) {
-  await listPending();
-} else if (cmd === 'review' && arg) {
-  await reviewOne(arg);
-} else if (cmd === 'reject' && arg && rest[0]) {
-  await rejectOne(arg, rest.join(' '));
-} else {
-  console.log(
-    'Usage:\n' +
-      '  admin-submissions list\n' +
-      '  admin-submissions review <id>\n' +
-      '  admin-submissions reject <id> <reason>',
-  );
-  process.exit(1);
-}
+  if (cmd === 'list' || !cmd) {
+    await listPending();
+  } else if (cmd === 'review' && arg) {
+    await reviewOne(arg);
+  } else if (cmd === 'reject' && arg && rest[0]) {
+    await rejectOne(arg, rest.join(' '));
+  } else {
+    console.log(
+      'Usage:\n' +
+        '  admin-submissions list\n' +
+        '  admin-submissions review <id>\n' +
+        '  admin-submissions reject <id> <reason>',
+    );
+    process.exit(1);
+  }
+})();

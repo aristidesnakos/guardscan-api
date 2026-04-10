@@ -12,6 +12,7 @@ import type { Product, ScoreBreakdown } from '@/types/guardscan';
 import type { Database } from '@/db/client';
 import { products, productIngredients, cronState } from '@/db/schema';
 import { log } from '@/lib/logger';
+import { inferSubcategoryHybrid } from '@/lib/llm/classifier';
 
 // ── Product upsert ──────────────────────────────────────────────────────────
 
@@ -24,6 +25,16 @@ export async function upsertProduct(
   sourceId?: string,
 ): Promise<string | null> {
   try {
+    // LLM fallback: if the caller couldn't determine a subcategory via
+    // keyword matching, try the hybrid classifier before we write. No-op
+    // when OPENROUTER_API_KEY is unset (returns the original null).
+    const resolvedSubcategory =
+      subcategory ??
+      (await inferSubcategoryHybrid(
+        product.name || '',
+        product.category,
+      ));
+
     const [row] = await db
       .insert(products)
       .values({
@@ -31,7 +42,7 @@ export async function upsertProduct(
         name: product.name || '(unknown)',
         brand: product.brand || null,
         category: product.category,
-        subcategory,
+        subcategory: resolvedSubcategory,
         imageFront: product.image_url,
         rawIngredients: product.ingredients.map((i) => i.name).join(', '),
         source,
@@ -45,7 +56,7 @@ export async function upsertProduct(
           name: product.name || '(unknown)',
           brand: product.brand || null,
           category: product.category,
-          subcategory,
+          subcategory: resolvedSubcategory,
           imageFront: product.image_url,
           rawIngredients: product.ingredients.map((i) => i.name).join(', '),
           source,
