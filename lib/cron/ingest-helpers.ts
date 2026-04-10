@@ -18,9 +18,10 @@ import { log } from '@/lib/logger';
 export async function upsertProduct(
   db: Database,
   product: Product,
-  source: 'off' | 'obf' | 'dsld',
+  source: 'off' | 'obf' | 'dsld' | 'user',
   score: ScoreBreakdown | null,
   subcategory: string | null,
+  sourceId?: string,
 ): Promise<string | null> {
   try {
     const [row] = await db
@@ -34,7 +35,7 @@ export async function upsertProduct(
         imageFront: product.image_url,
         rawIngredients: product.ingredients.map((i) => i.name).join(', '),
         source,
-        sourceId: product.id,
+        sourceId: sourceId ?? product.id,
         score: score?.overall_score ?? null,
         scoreBreakdown: score ?? null,
       })
@@ -89,9 +90,10 @@ export async function upsertProduct(
 
 export type IngestItem = {
   product: Product;
-  source: 'off' | 'obf' | 'dsld';
+  source: 'off' | 'obf' | 'dsld' | 'user';
   score: ScoreBreakdown | null;
   subcategory: string | null;
+  sourceId?: string;
 };
 
 export async function batchUpsert(
@@ -108,6 +110,7 @@ export async function batchUpsert(
       item.source,
       item.score,
       item.subcategory,
+      item.sourceId,
     );
     if (id) upserted++;
     else errors++;

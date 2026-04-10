@@ -78,11 +78,33 @@ Replace the Expo app's mock recommendations with real backend endpoints. Subcate
 
 ---
 
-## M3 — User Submissions + OCR
+## M3 — User Submissions + OCR Pipeline
 
-User-submitted photos for missing barcodes. OCR via Google Vision, review queue at `/admin/*`, publish to catalog. Critical for grooming catalog growth where OBF coverage is sparse.
+> **Implementation plan:** [M3-USER-SUBMISSIONS.md](./M3-USER-SUBMISSIONS.md)
 
-**Exit criteria:** Missing barcode captured, OCR'd, reviewed, and published as a scored product.
+User-submitted photos (front label + ingredient panel) for missing barcodes. Phased approach: M3.0 manual review, M3.1 auto-OCR with Claude Vision, M3.2 community quality control. **Primary growth mechanism** for grooming catalog where OBF coverage is sparse.
+
+**Three-phase approach:**
+
+| Phase | Timeline | Tech | Admin Role | User Latency | Cost |
+|---|---|---|---|---|---|
+| **M3.0** | Week 2–3 | Manual extraction | Reviews all | 24–48h | $0 |
+| **M3.1** | Week 4–5 | Claude Vision | Spot-checks 10% | <1h (auto-publish) | ~$0.20/sub |
+| **M3.2** | Month 2+ | Claude + voting | Quality audit | Real-time | ~$0.20/sub |
+
+**Why phased:**
+- M3.0 validates user submission UX before engineering OCR automation
+- By M3.1, you have 50–100 real submission examples to test OCR accuracy against
+- No product catalog gets published with bad data during MVP ramp-up
+- Admin bottleneck is minimal (light spot-checking, not full review)
+
+**Why Claude Vision over Google Vision:**
+- Contextual understanding of ingredient list structure (vs. raw text extraction)
+- Confidence scoring for semantic decisions (Claude returns "I'm 92% confident")
+- Better at handling messy formats (columns, small text, allergen callouts)
+- Cheaper at MVP scale (~$0.15–0.30/submission) + easier to iterate (prompt-based)
+
+**Exit criteria (M3.0):** User can submit front + back photos; admin reviews and publishes to catalog within 24 hours. Next scan of same barcode hits DB cache (no 404).
 
 ---
 

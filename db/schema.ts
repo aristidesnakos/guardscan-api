@@ -95,7 +95,7 @@ export const ingredientDictionary = pgTable('ingredient_dictionary', {
 
 export const userSubmissions = pgTable('user_submissions', {
   id: uuid('id').primaryKey().defaultRandom(),
-  userId: uuid('user_id').notNull(),
+  userId: text('user_id').notNull(),
   barcode: text('barcode').notNull(),
   photos: jsonb('photos').notNull(),
   ocrText: text('ocr_text'),
@@ -104,6 +104,7 @@ export const userSubmissions = pgTable('user_submissions', {
   })
     .notNull()
     .default('pending'),
+  reviewedBy: text('reviewed_by'),
   createdAt: timestamp('created_at', { withTimezone: true })
     .notNull()
     .defaultNow(),
