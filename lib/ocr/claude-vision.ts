@@ -56,7 +56,7 @@ export async function extractSubmissionWithClaude(opts: {
   ]);
 
   const response = await getClient().chat.completions.create({
-    model: 'anthropic/claude-opus-4-6',
+    model: process.env.OPENROUTER_MODEL ?? 'anthropic/claude-opus-4-6',
     max_tokens: 1500,
     messages: [
       {
