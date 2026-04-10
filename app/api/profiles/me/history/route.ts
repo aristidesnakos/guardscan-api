@@ -8,7 +8,7 @@ import { getRating } from '@/lib/scoring/constants';
 import type { ScanHistoryItem, Product } from '@/types/guardscan';
 
 export async function GET(request: Request) {
-  const auth = requireUser(request);
+  const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
   if (!auth.userId || !isDatabaseConfigured()) {

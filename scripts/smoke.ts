@@ -17,6 +17,15 @@ import type { ScanResult } from '../types/guardscan';
 const API_URL = process.env.API_URL ?? 'http://localhost:3001';
 const BARCODE = '3017620422003'; // Nutella 750g
 
+// Auth: pass X-Dev-User-Id when ALLOW_DEV_AUTH=true (local dev),
+// or a real Bearer token via SMOKE_AUTH_TOKEN (CI / staging).
+const authHeaders: Record<string, string> = {};
+if (process.env.SMOKE_DEV_USER_ID) {
+  authHeaders['X-Dev-User-Id'] = process.env.SMOKE_DEV_USER_ID;
+} else if (process.env.SMOKE_AUTH_TOKEN) {
+  authHeaders['Authorization'] = `Bearer ${process.env.SMOKE_AUTH_TOKEN}`;
+}
+
 type Assertion = { name: string; ok: boolean; detail?: string };
 
 function assert(name: string, condition: boolean, detail?: string): Assertion {
@@ -30,7 +39,7 @@ async function main() {
   let response: Response;
   try {
     response = await fetch(`${API_URL}/api/products/scan/${BARCODE}`, {
-      headers: { Accept: 'application/json' },
+      headers: { Accept: 'application/json', ...authHeaders },
     });
   } catch (err) {
     console.error(`[smoke] fetch failed: ${err}`);

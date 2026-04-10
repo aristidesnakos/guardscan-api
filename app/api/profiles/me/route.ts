@@ -14,7 +14,7 @@ const DEFAULT_PROFILE: UserProfile = {
 
 /** Stub — returns a default profile until profile endpoints are implemented. */
 export async function GET(request: Request) {
-  const auth = requireUser(request);
+  const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
   return NextResponse.json(DEFAULT_PROFILE);
@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
 /** Stub — accepts profile updates and echoes them back merged with defaults. */
 export async function PUT(request: Request) {
-  const auth = requireUser(request);
+  const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
   const body = await request.json().catch(() => ({}));

@@ -35,7 +35,7 @@ const POOR_MEDIOCRE_THRESHOLD = 60;
 const VALID_CATEGORIES: ProductCategory[] = ['food', 'grooming', 'supplement'];
 
 export async function GET(request: Request) {
-  const auth = requireUser(request);
+  const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
   if (!auth.userId) {

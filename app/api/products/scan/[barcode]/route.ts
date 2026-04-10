@@ -107,7 +107,7 @@ export async function GET(
 ) {
   const startedAt = Date.now();
 
-  const auth = requireUser(request);
+  const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
   const { barcode } = await params;

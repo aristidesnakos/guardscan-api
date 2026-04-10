@@ -1,18 +1,18 @@
 /**
  * Cron request verification.
  *
- * Vercel sets `x-vercel-cron` on scheduled invocations. For manual triggers
- * in development, check for a `CRON_SECRET` bearer token.
+ * CRON_SECRET must be set. Vercel automatically sends it as
+ * `Authorization: Bearer <CRON_SECRET>` on every scheduled invocation.
+ * For manual/local triggers, pass the same header.
+ *
+ * The `x-vercel-cron` header is NOT used for auth — it is a plain HTTP
+ * header that any client can spoof and provides no real security guarantee.
  */
 
 export function verifyCronRequest(request: Request): boolean {
-  if (request.headers.get('x-vercel-cron') === '1') return true;
-
   const secret = process.env.CRON_SECRET;
-  if (secret) {
-    const auth = request.headers.get('authorization');
-    if (auth === `Bearer ${secret}`) return true;
-  }
+  if (!secret) return false; // Reject all requests if secret is unset
 
-  return false;
+  const auth = request.headers.get('authorization');
+  return auth === `Bearer ${secret}`;
 }

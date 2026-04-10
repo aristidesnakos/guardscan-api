@@ -30,7 +30,7 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const auth = requireUser(request);
+  const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
   const { id } = await params;
