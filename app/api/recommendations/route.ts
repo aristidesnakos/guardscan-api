@@ -223,7 +223,7 @@ export async function GET(request: Request) {
       error: String(err),
     });
     return NextResponse.json(
-      { error: 'recommendations_failed', message: String(err) },
+      { error: 'recommendations_failed' },
       { status: 500 },
     );
   }

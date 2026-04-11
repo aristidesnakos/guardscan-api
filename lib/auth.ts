@@ -16,6 +16,13 @@ import { NextResponse } from 'next/server';
 // Explicit opt-out is the ONLY way to disable auth checks.
 // Anything other than 'false' (including unset) enforces auth.
 const AUTH_DISABLED = process.env.AUTH_ENABLED === 'false';
+
+// Hard fail at startup if someone deploys with auth disabled in production.
+if (AUTH_DISABLED && process.env.NODE_ENV === 'production') {
+  throw new Error(
+    'AUTH_ENABLED=false is not permitted in production. Remove the variable or set it to any value other than "false".',
+  );
+}
 const DEV_AUTH_ALLOWED = process.env.ALLOW_DEV_AUTH === 'true';
 
 export type AuthContext = {
@@ -33,6 +40,23 @@ async function verifyJwt(token: string): Promise<{ sub: string } | null> {
   const [headerB64, payloadB64, sigB64] = parts;
 
   try {
+    // Validate the algorithm claim before touching the signature.
+    // Rejecting anything other than HS256 closes the alg:none bypass and
+    // prevents confusion if the secret is ever rotated to an asymmetric key.
+    let header: unknown;
+    try {
+      header = JSON.parse(atob(headerB64.replace(/-/g, '+').replace(/_/g, '/')));
+    } catch {
+      return null;
+    }
+    if (
+      typeof header !== 'object' ||
+      header === null ||
+      (header as Record<string, unknown>)['alg'] !== 'HS256'
+    ) {
+      return null;
+    }
+
     const encoder = new TextEncoder();
     const key = await crypto.subtle.importKey(
       'raw',

@@ -166,7 +166,7 @@ export async function GET(request: Request) {
       duration_ms: Date.now() - startedAt,
     });
     return NextResponse.json(
-      { error: 'ingest_failed', message: String(err) },
+      { error: 'ingest_failed' },
       { status: 500 },
     );
   }

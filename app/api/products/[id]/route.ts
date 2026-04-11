@@ -116,7 +116,7 @@ export async function GET(
   } catch (err) {
     log.error('product_by_id_failed', { id, error: String(err) });
     return NextResponse.json(
-      { error: 'internal_error', message: String(err) },
+      { error: 'internal_error' },
       { status: 500 },
     );
   }
