@@ -1,36 +1,38 @@
 # guardscan-api
 
-Backend for the GuardScan mobile app. Next.js 16 on Vercel Fluid Compute, Postgres via Drizzle, Open Food Facts as the primary data source.
+Backend for the GuardScan mobile app. Next.js 16 on Vercel Fluid Compute, Supabase Postgres via Drizzle, Open Food Facts + Open Beauty Facts + NIH DSLD as data sources, and Claude Vision (via OpenRouter) for user-submission OCR.
 
-**Design contract:** [../cucumberdude/docs/PRODUCT-DATABASE-CHARTER.md](../cucumberdude/docs/PRODUCT-DATABASE-CHARTER.md). Do not change behavior that contradicts the charter without updating it first.
-
-See [CLAUDE.md](CLAUDE.md) for architecture notes and development guidance.
+See [CLAUDE.md](CLAUDE.md) for codebase conventions and [docs/README.md](docs/README.md) for the documentation index.
 
 ## Status
 
 | Milestone | Status |
 |---|---|
-| M1 — Schema + `GET /api/products/scan/:barcode` via OFF | **shipped** |
-| M2 — OBF + DSLD | pending |
-| M2.5 — Recommendations backing API | pending |
-| M3 — Search + ingredient dictionary | pending |
-| M4 — Cron ingest | pending |
-| M5 — Commercial fallback | pending |
-| M6 — User submissions + OCR | pending |
+| M1 — Scan via OFF + DB schema | **shipped** |
+| M1.5 — Multi-source scan (OBF + DSLD) | **shipped** |
+| M2 — Cron ingest (OBF delta + DSLD weekly) | **shipped** |
+| M2.5 — Recommendations + alternatives API | **shipped** |
+| M3.0 — User submissions + CLI admin review | **shipped** |
+| M3.1 — Auto-publish via Claude Vision OCR | **shipped** |
+| MVP sprint — Search + auth flip + supplement submission flow | **in progress** |
+| M3.2 — On-device auto-crop | deferred |
+| M5 — Commercial provider fallback | deferred |
+| Supplement scoring | deferred (post-MVP, see [docs/post-mvp/supplement-scoring.md](docs/post-mvp/supplement-scoring.md)) |
+
+Authoritative state: [docs/status.md](docs/status.md). Current sprint: [docs/mvp-sprint-plan.md](docs/mvp-sprint-plan.md).
 
 ## Quickstart
 
 ```bash
 npm install
-cp .env.example .env.local
-# Fill in OFF_USER_AGENT at minimum. DATABASE_URL is optional in M1.
+# Set OFF_USER_AGENT at minimum. See the Environment section below.
 npm run dev
 ```
 
-Then:
+Smoke-test the scan endpoint against a known barcode:
 
 ```bash
-# Nutella — known-good OFF barcode
+# Nutella — OFF test barcode
 curl http://localhost:3000/api/products/scan/3017620422003 | jq
 
 # Health check
@@ -46,98 +48,171 @@ npm run smoke
 API_URL=https://your-deployment.vercel.app npm run smoke
 ```
 
-Runs `scripts/smoke.ts` and asserts a normalized `ScanResult` comes back for the Nutella barcode with an image URL and a computed score.
+`scripts/smoke.ts` scans `3017620422003` and asserts a normalized `ScanResult` comes back with an image URL and a computed score. For authenticated runs use `SMOKE_DEV_USER_ID=<id>` (with `ALLOW_DEV_AUTH=true`) locally, or `SMOKE_AUTH_TOKEN=<jwt>` against a deployed environment.
 
-## Deployment
-
-Deployed on Vercel Fluid Compute, US East (`iad1`). Database is Supabase Postgres (US East — N. Virginia), accessed via the Transaction pooler (port 6543).
-
-### First deploy
+## Scripts
 
 ```bash
-npm i -g vercel
-vercel link
-vercel env add DATABASE_URL       # Supabase Transaction pooler URL (port 6543)
-vercel env add OFF_USER_AGENT
-vercel deploy --prod
+npm run dev                        # Next.js dev server (port 3000)
+npm run build                      # Production build
+npm run lint                       # ESLint
+npm run smoke                      # E2E smoke test
+
+# Database
+npm run db:generate                # Generate Drizzle migration files after schema change
+npm run db:migrate                 # Apply pending migrations (requires DATABASE_URL)
+npm run db:studio                  # Drizzle Studio UI
+npm run db:coverage                # Print catalog coverage (counts by category, source, score)
+
+# Backfills
+npm run db:rescore                 # Rescore rows missing a score using persisted ingredients
+npm run db:backfill:subcategory    # LLM/keyword subcategory backfill
+
+# Seeds
+npm run db:seed:dictionary         # Ingredient dictionary
+npm run db:seed:top                # Top OFF products
+npm run db:seed:grooming           # Top men's-grooming OBF products
+npm run db:seed:supplements        # DSLD supplements
+npm run db:seed:all                # All of the above in order
+
+# Admin
+npm run admin:submissions          # List pending user submissions
+npm run admin:review <id>          # Review + publish / reject a submission
 ```
-
-### DB migrations
-
-```bash
-# Apply schema to Supabase (run once, or after schema changes)
-npm run db:migrate
-```
-
-## Environment
-
-| Var | Required | Purpose |
-|---|---|---|
-| `OFF_USER_AGENT` | yes | Open Food Facts requires a User-Agent. Format: `GuardScan/1.0 (contact@example.com)` |
-| `DATABASE_URL` | no (M1) | Postgres connection string. When unset, the scan route skips the cache and hits OFF on every request. |
-| `AUTH_ENABLED` | no | `true` to require auth. M1 dev default is unset (open). |
-| `SUPABASE_JWT_SECRET` | M1.5 | For verifying Bearer tokens. Not used in M1. |
-| `PROVIDER_FALLBACK_ENABLED` | no | M5 flag for Nutritionix fallback. Keep `false` in v1. |
-| `LOG_LEVEL` | no | `debug` \| `info` \| `warn` \| `error`. Defaults to `info`. |
-
-Manage in Vercel with `vercel env add`, pull locally with `vercel env pull .env.local`.
 
 ## Architecture
 
 ```
-Expo app ──GET /api/products/scan/:barcode──▶  Vercel Function (Node.js runtime)
-                                                    │
-                                                    ▼
-                                        ┌───────────────────────┐
-                                        │ 1. DB cache (opt.)    │
-                                        │ 2. fetchOffProduct()  │
-                                        │ 3. normalizeOffProduct│
-                                        │ 4. scoreProduct()     │
-                                        │ 5. after() → cache    │
-                                        └───────────────────────┘
-                                                    │
-                                                    ▼
-                                       Supabase Postgres (US East)
-                                        products, product_ingredients,
-                                        ingredient_dictionary, user_submissions
+Expo app ──▶ Vercel Fluid Compute (Node.js) ──▶ Supabase Postgres (us-east)
+                         │
+                         ├── OFF / OBF / DSLD adapters (lib/sources/)
+                         ├── Normalization (lib/normalize.ts)
+                         ├── Scoring — pure function (lib/scoring/)
+                         ├── Dictionary lookup (lib/dictionary/)
+                         ├── Claude Vision OCR (lib/ocr/ via OpenRouter)
+                         └── Supabase Storage (submission photos)
 ```
 
-- **Runtime:** Node.js on Fluid Compute. Not Edge (postgres.js + full Node API).
-- **Scoring:** Pure function in `lib/scoring/`. Constants mirror the Expo app's `constants/Scoring.ts`. Any change must land in both in the same PR (see charter §13.4).
-- **DB caching in M1:** `after()` writes product rows (name, brand, score) to the DB after every OFF response. The read path intentionally falls through to OFF on every request — M3 adds the full read cache once `product_ingredients` is populated.
-- **DB-optional:** routes tolerate `DATABASE_URL` being unset. Cache writes are silently skipped. Once M3 ships, the DB becomes mandatory.
-- **CORS:** `proxy.ts` sets `Access-Control-Allow-Origin: *` on all `/api/*` responses, enabling Expo Web and browser clients.
+Request flow for `GET /api/products/scan/:barcode`:
+
+1. Check DB cache. Serve on hit whenever ingredients are present (score may be null for supplements).
+2. On miss, fetch OFF + OBF in parallel. Route supplements to the DB-cached DSLD pool.
+3. Normalize → canonical `Product`.
+4. Score (pure function; supplements currently return `score: null` — see [docs/post-mvp/supplement-scoring.md](docs/post-mvp/supplement-scoring.md)).
+5. Return `ScanResult`. Write-through cache via Next.js `after()` (non-blocking).
+
+Unknown barcodes return `404 { capture: true }`, which triggers the submission flow in the Expo client. Claude Vision pre-extracts fields and, when confidence is high enough, auto-publishes the product so the next scan returns a hit.
+
+Scoring is transparent, deterministic, and personalized by life stage. Full methodology: [docs/architecture/scoring.md](docs/architecture/scoring.md).
+
+Key architectural commitments:
+
+- **Scoring is a pure function.** `lib/scoring/index.ts` takes a product + optional life stage and returns a `ScoreBreakdown` with no I/O. Constants mirror the Expo client and changes must land in both places.
+- **Unknown ingredients resolve to Neutral.** Charter requirement — never penalize an ingredient we haven't evaluated.
+- **Types live in `types/guardscan.ts`** and must stay in sync with the Expo app. Breaking changes require coordination.
+- **Auth is default-deny.** `lib/auth.ts` rejects unauthenticated callers unless `AUTH_ENABLED=false` is explicitly set in a non-production environment. See [docs/architecture/security.md](docs/architecture/security.md).
+- **Rate limiting is applied in `proxy.ts`** before routes run. Scan endpoints get a tighter limit than the rest.
+
+## Environment
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `DATABASE_URL` | yes | Supabase Postgres Transaction pooler URL (port 6543) |
+| `OFF_USER_AGENT` | yes | Open Food Facts / Open Beauty Facts require a UA. Format: `GuardScan/1.0 (contact@example.com)` |
+| `SUPABASE_URL` | yes | Supabase project URL (submission photo storage) |
+| `SUPABASE_SERVICE_ROLE_KEY` | yes | Service-role key for Storage + admin ops |
+| `SUPABASE_JWT_SECRET` | yes | JWT Secret (Supabase → Settings → API → JWT Settings) — verifies Expo-client Bearer tokens |
+| `OPENROUTER_API_KEY` | yes | Claude Vision via OpenRouter (M3.1 OCR) |
+| `CRON_SECRET` | yes (prod) | Authenticates `/api/cron/*` routes — Vercel forwards `Authorization: Bearer <CRON_SECRET>` automatically |
+| `ADMIN_USER_IDS` | yes (prod) | Comma-separated Supabase user IDs that may call admin endpoints / CLI |
+| `AUTH_ENABLED` | no | Absent or any value ≠ `"false"` → auth on. `"false"` is rejected in production (startup throw). |
+| `ALLOW_DEV_AUTH` | no | `"true"` to accept the `X-Dev-User-Id` header. **Local dev only — never in production.** |
+| `AUTO_PUBLISH_ENABLED` | no | Kill switch. `"false"` disables auto-publish without a redeploy. |
+| `OPENROUTER_MODEL` | no | Override the default Claude model used by the OCR path. |
+| `PROVIDER_FALLBACK_ENABLED` | no | M5 flag for commercial fallback. Keep `false`. |
+| `PROVIDER_API_KEY` | no | M5 commercial provider API key. Unused today. |
+| `LOG_LEVEL` | no | `debug` \| `info` \| `warn` \| `error`. Defaults to `info`. |
+
+Manage with `vercel env add`, pull locally with `vercel env pull .env.local`.
+
+## Deployment
+
+Deployed on Vercel Fluid Compute, region `iad1`. Function timeout 30s (`app/api/**`), 300s for cron routes (`app/api/cron/**`). Database is Supabase Postgres (US East) accessed via the Transaction pooler (port 6543).
+
+First deploy:
+
+```bash
+npm i -g vercel
+vercel link
+# Add every required env var listed in the table above
+vercel env add DATABASE_URL
+vercel env add OFF_USER_AGENT
+# ...
+vercel deploy --prod
+```
+
+DB migrations:
+
+```bash
+npm run db:migrate
+```
+
+Scheduled jobs (configured in [vercel.json](vercel.json)):
+
+| Job | Schedule | Source |
+|---|---|---|
+| `/api/cron/obf-delta` | `0 3 * * *` | OBF daily delta JSONL |
+| `/api/cron/dsld-sync` | `0 5 * * 0` | DSLD weekly supplement sync |
 
 ## Layout
 
 ```
-proxy.ts                               ← CORS proxy (Next.js 16)
-vercel.json                            ← region (iad1) + function timeout
+proxy.ts                               ← CORS + IP rate limiting (Next.js 16 proxy)
+vercel.json                            ← region, cron, function timeouts
 app/
-  layout.tsx
-  page.tsx
   api/
-    health/route.ts
-    products/scan/[barcode]/route.ts   ← M1 scan route
+    health/route.ts                    ← liveness
+    products/
+      scan/[barcode]/route.ts          ← main scan endpoint
+      search/route.ts                  ← POST full-text search (MVP sprint)
+      search/suggestions/route.ts      ← autocomplete
+      submit/route.ts                  ← user submissions (M3.0/M3.1)
+      [id]/route.ts                    ← product detail
+      [id]/alternatives/route.ts       ← same-subcategory alternatives
+      [id]/score/route.ts              ← score detail
+    profiles/me/…                      ← profile, history, favorites
+    recommendations/route.ts           ← M2.5 recommendations
+    push/register/route.ts
+    cron/obf-delta/route.ts            ← M2 OBF ingest (300s)
+    cron/dsld-sync/route.ts            ← M2 DSLD ingest (300s)
 db/
   schema.ts                            ← Drizzle schema
   client.ts                            ← Lazy Drizzle client
 lib/
-  auth.ts
+  auth.ts                              ← JWT verify, admin gate, dev header
   logger.ts
-  normalize.ts                         ← OFF → canonical Product
-  scoring/
-    constants.ts                       ← ported from Expo app
-    food-grooming.ts                   ← pure scoring fn
-    index.ts                           ← scoreProduct() entry
-  sources/
-    openfoodfacts.ts                   ← OFF v2 adapter + zod
+  normalize.ts                         ← OFF / OBF / DSLD → canonical Product
+  subcategory.ts                       ← keyword subcategory hints
+  sources/                             ← OFF / OBF / DSLD adapters + Zod schemas
+  scoring/                             ← pure scoring (index, food-grooming, constants)
+  dictionary/                          ← in-memory curated ingredient map (~147 entries)
+  ocr/                                 ← Claude Vision via OpenRouter
+  submissions/                         ← auto-publish + CLI helpers
+  storage/                             ← Supabase Storage client
+  cron/                                ← shared ingest helpers (upsertProduct, fetchGzipJsonl)
+  llm/classifier.ts                    ← subcategory LLM fallback
 types/
-  guardscan.ts                         ← mirror of Expo types
-scripts/
-  smoke.ts                             ← smoke test
+  guardscan.ts                         ← shared types (must mirror Expo app)
+scripts/                               ← smoke, seeds, backfills, admin CLI
+docs/                                  ← see docs/README.md
 ```
 
 ## Attribution
 
-Product data from [Open Food Facts](https://world.openfoodfacts.org), licensed under the [Open Database License](https://opendatacommons.org/licenses/odbl/1-0/). The Expo app's About screen surfaces this attribution — do not remove.
+Product data from:
+
+- [Open Food Facts](https://world.openfoodfacts.org) — [Open Database License](https://opendatacommons.org/licenses/odbl/1-0/)
+- [Open Beauty Facts](https://world.openbeautyfacts.org) — Open Database License
+- [NIH Dietary Supplement Label Database](https://dsld.od.nih.gov) — public domain (US government work)
+
+The Expo app's About screen surfaces this attribution — do not remove.

@@ -3,7 +3,7 @@
 **Audience:** Product Manager + Product Designer (primary), Engineers (task cards)
 **Last updated:** 2026-04-11 (rev 3 — blind spots resolved, multi-brand locked)
 **Status of upstream docs:** [docs/status.md](./status.md) is stale — still lists M3.0/M3.1 as pending and references S3 env vars that were never used. This plan is the source of truth until status.md is refreshed (see Task 5).
-**Execution plan for Tasks 0–3:** [docs/sprint-tasks-0-3-plan.md](./sprint-tasks-0-3-plan.md) — pre-flight findings, coverage-target blocker (supplement scoring stub vs. 90% target), code-first execution order, and explicit approval gates before any prod write / deploy.
+**Note (2026-04-11):** The standalone `docs/sprint-tasks-0-3-plan.md` execution plan was removed as part of the docs cleanup — this file is now the only source of truth for sprint tasks.
 
 ---
 
@@ -637,7 +637,7 @@ Day 4 (Thu) — buffer + real-device dogfood
 
 ## References
 
-- [docs/roadmap.md](./roadmap.md) — milestone-level goals
+- [docs/status.md](./status.md) — milestone-level goals
 - [docs/status.md](./status.md) — **stale**, scheduled for update in Task 5
 - [docs/milestones/m3-user-submissions.md](./milestones/m3-user-submissions.md) — shipped M3.0/M3.1 pipeline
 - [CLAUDE.md](../CLAUDE.md) — codebase conventions

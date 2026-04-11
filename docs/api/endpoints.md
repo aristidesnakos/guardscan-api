@@ -1,42 +1,79 @@
 # Backend API Endpoints
 
-All routes are served from `https://guardscan-api.vercel.app`. Auth via `X-Dev-User-Id` header (dev) or `Authorization: Bearer <jwt>` (production). CORS allows `GET, POST, PUT, OPTIONS` from any origin.
+All routes are served from `https://guardscan-api.vercel.app`. Production requires `Authorization: Bearer <supabase_jwt>`. Local dev may use `X-Dev-User-Id: <id>` only if `ALLOW_DEV_AUTH=true` is set. Every `/api/*` route is rate-limited in [`proxy.ts`](../../proxy.ts) (tighter caps on scan). CORS allows `GET, POST, PUT, OPTIONS` from any origin.
 
-## Live (M1)
+Route source lives under [`app/api/`](../../app/api).
 
-| Method | Path | Returns |
-|--------|------|---------|
-| GET | `/api/health` | `{ status, service, version, timestamp }` |
-| GET | `/api/products/scan/:barcode` | `ScanResult` — OFF lookup + scoring + DB cache write |
+---
 
-## Stubs (return valid JSON, no business logic yet)
+## Scan & products
 
-| Method | Path | Response | Ships in |
-|--------|------|----------|----------|
-| GET | `/api/recommendations` | `[]` | M2.5 |
-| GET | `/api/products/:id` | `501 { error: 'not_implemented' }` | M2.5 |
-| GET | `/api/products/:id/alternatives` | `[]` | M2.5 |
-| GET | `/api/products/:id/score` | `501 { error: 'not_implemented' }` | — |
-| POST | `/api/products/search` | `{ data: [], total: 0, limit: 20, offset: 0 }` | M4 |
-| GET | `/api/profiles/me` | Default `UserProfile` | — |
-| PUT | `/api/profiles/me` | Echoes body merged with defaults | — |
-| GET | `/api/profiles/me/history` | `{ data: [], total: 0, limit: 20, offset: 0 }` | — |
-| GET | `/api/profiles/me/favorites` | `[]` | — |
-| POST | `/api/profiles/me/favorites/:productId` | `{ is_favorite: false }` | — |
-| POST | `/api/push/register` | `{ success: true }` | — |
+| Method | Path | Handler | Returns |
+|---|---|---|---|
+| GET | `/api/products/scan/:barcode` | [scan/[barcode]/route.ts](../../app/api/products/scan/%5Bbarcode%5D/route.ts) | `ScanResult` — DB cache hit or OFF/OBF/DSLD lookup, scored, with inline top alternatives. Returns `404 { capture: true }` on unknown barcodes so the client can trigger the submission flow. |
+| GET | `/api/products/:id` | [[id]/route.ts](../../app/api/products/%5Bid%5D/route.ts) | Product detail (with persisted ingredients). |
+| GET | `/api/products/:id/alternatives` | [[id]/alternatives/route.ts](../../app/api/products/%5Bid%5D/alternatives/route.ts) | `ProductAlternative[]` — same-subcategory products scoring ≥15 points higher. |
+| GET | `/api/products/:id/score` | [[id]/score/route.ts](../../app/api/products/%5Bid%5D/score/route.ts) | Score breakdown detail. |
 
-## Why stubs exist
+## Search
 
-The Expo frontend expects all 12 endpoints. When `EXPO_PUBLIC_USE_MOCK_API=false`, every call goes to the real backend. Without stubs, unimplemented routes return Vercel's default 404 HTML page, which the app can't parse.
+| Method | Path | Handler | Returns |
+|---|---|---|---|
+| POST | `/api/products/search` | [search/route.ts](../../app/api/products/search/route.ts) | `PaginatedResponse<Product>` — ILIKE + filters + sort (`relevance` \| `best_rated`). Excludes null-scored rows. |
+| GET | `/api/products/search/suggestions` | [search/suggestions/route.ts](../../app/api/products/search/suggestions/route.ts) | Autocomplete suggestions. Excludes null-scored rows. |
 
-Stubs return the minimum valid JSON so the frontend renders empty states instead of crashing. As each milestone ships, the stub is replaced with real logic in the same route file — no frontend changes needed.
+Supplement rows are intentionally excluded from search and suggestions for the MVP — they carry `score: null` until supplement scoring ships. See [../post-mvp/supplement-scoring.md](../post-mvp/supplement-scoring.md).
 
-## Types added for stubs
+## Submissions (M3.0 / M3.1)
 
-Added to `types/guardscan.ts` to support the new routes:
+| Method | Path | Handler | Returns |
+|---|---|---|---|
+| POST | `/api/products/submit` | [submit/route.ts](../../app/api/products/submit/route.ts) | Accepts barcode + front/back photos. Uploads to Supabase Storage, pre-extracts via Claude Vision, and either auto-publishes (confidence ≥ threshold + guardrails) or queues for admin review. |
 
-- `DietaryApproach` — diet union type
-- `UserProfile` — user health profile
-- `ScanHistoryItem` — scan history entry
-- `SearchFilters` — search request body
-- `PaginatedResponse<T>` — paginated wrapper
+Kill switch: `AUTO_PUBLISH_ENABLED=false` forces every submission through admin review regardless of confidence.
+
+## Recommendations
+
+| Method | Path | Handler | Returns |
+|---|---|---|---|
+| GET | `/api/recommendations` | [recommendations/route.ts](../../app/api/recommendations/route.ts) | `RecommendationPair[]` — user's Poor/Mediocre scans paired with the best same-subcategory alternative. |
+
+## Profile
+
+| Method | Path | Handler | Returns |
+|---|---|---|---|
+| GET | `/api/profiles/me` | [profiles/me/route.ts](../../app/api/profiles/me/route.ts) | `UserProfile` |
+| PUT | `/api/profiles/me` | same | Echoes merged profile |
+| GET | `/api/profiles/me/history` | [profiles/me/history/route.ts](../../app/api/profiles/me/history/route.ts) | `PaginatedResponse<ScanHistoryItem>` |
+| GET | `/api/profiles/me/favorites` | [profiles/me/favorites/route.ts](../../app/api/profiles/me/favorites/route.ts) | Favorites list |
+| POST | `/api/profiles/me/favorites/:productId` | [profiles/me/favorites/[productId]/route.ts](../../app/api/profiles/me/favorites/%5BproductId%5D/route.ts) | Toggle favorite |
+
+## Cron (Vercel-scheduled)
+
+Both routes require `Authorization: Bearer <CRON_SECRET>` (Vercel sets this automatically on scheduled invocations) and run with `maxDuration: 300`. Schedules are defined in [`vercel.json`](../../vercel.json).
+
+| Method | Path | Handler | Schedule |
+|---|---|---|---|
+| GET | `/api/cron/obf-delta` | [cron/obf-delta/route.ts](../../app/api/cron/obf-delta/route.ts) | `0 3 * * *` — Open Beauty Facts daily delta JSONL ingest |
+| GET | `/api/cron/dsld-sync` | [cron/dsld-sync/route.ts](../../app/api/cron/dsld-sync/route.ts) | `0 5 * * 0` — DSLD weekly supplement sync |
+
+## Infrastructure
+
+| Method | Path | Handler | Returns |
+|---|---|---|---|
+| GET | `/api/health` | [health/route.ts](../../app/api/health/route.ts) | `{ status, service, version, timestamp }` — liveness check, exempt from auth and rate limiting. |
+| POST | `/api/push/register` | [push/register/route.ts](../../app/api/push/register/route.ts) | Register a push token (stub — no backend side effects yet). |
+
+---
+
+## Shared types
+
+All response shapes are defined in [`types/guardscan.ts`](../../types/guardscan.ts) and must mirror the Expo client. Relevant exports:
+
+- `Product` / `ScanResult` / `ScoreBreakdown`
+- `ProductAlternative` / `RecommendationPair`
+- `UserProfile` / `DietaryApproach` / `LifeStage`
+- `ScanHistoryItem`
+- `SearchFilters` / `PaginatedResponse<T>`
+
+Breaking changes to any of these types require a coordinated change in [`cucumberdude`](../../../cucumberdude).

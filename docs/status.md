@@ -231,6 +231,8 @@ vercel env add AUTH_ENABLED preview
 ## References
 
 - [docs/mvp-sprint-plan.md](./mvp-sprint-plan.md) — **authoritative sprint plan** (source of truth)
-- [docs/roadmap.md](./roadmap.md) — Milestone-level goals
+- [docs/README.md](./README.md) — documentation index
+- [docs/architecture/scoring.md](./architecture/scoring.md) — scoring methodology
+- [docs/architecture/security.md](./architecture/security.md) — security audit trail
 - [CLAUDE.md](../CLAUDE.md) — Codebase conventions
 - [docs/milestones/m3-user-submissions.md](./milestones/m3-user-submissions.md) — M3.0/M3.1 pipeline detail
