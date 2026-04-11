@@ -142,14 +142,14 @@ export async function GET(
         const row = cached[0];
         logCacheHit(barcode, row.source);
 
-        // Serve from cache if we have score + persisted ingredients
-        if (row.scoreBreakdown) {
-          const cachedIngredients = await db
-            .select()
-            .from(productIngredients)
-            .where(eq(productIngredients.productId, row.id));
+        // Serve from cache if we have persisted ingredients, regardless of score state.
+        // Null-scored supplements (deferred to M2) still have ingredients to display.
+        const cachedIngredients = await db
+          .select()
+          .from(productIngredients)
+          .where(eq(productIngredients.productId, row.id));
 
-          if (cachedIngredients.length > 0) {
+        if (cachedIngredients.length > 0) {
             const product: Product = {
               id: row.id,
               barcode: row.barcode,
@@ -217,7 +217,6 @@ export async function GET(
               },
             });
           }
-        }
         // Cache hit but no ingredients persisted — fall through to live lookup
       }
     } catch (err) {

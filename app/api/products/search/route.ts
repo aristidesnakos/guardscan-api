@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { and, asc, eq, gte, ilike, inArray, or, sql } from 'drizzle-orm';
+import { and, asc, eq, gte, ilike, inArray, isNotNull, or, sql } from 'drizzle-orm';
 
 import type { PaginatedResponse, Product } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
@@ -79,6 +79,8 @@ export async function POST(request: Request) {
   if (subcategory) {
     conditions.push(eq(products.subcategory, subcategory as string));
   }
+  // Exclude null-scored products (deferred supplements, pending scores)
+  conditions.push(isNotNull(products.score));
   if (min_score != null && !Number.isNaN(Number(min_score))) {
     conditions.push(gte(products.score, Number(min_score)));
   }

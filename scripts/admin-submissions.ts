@@ -3,6 +3,8 @@
  *
  * Usage:
  *   npm run admin:submissions list            # list pending submissions
+ *   npm run admin:submissions inspect <id>    # read-only: show OCR + photos + duplicate check
+ *   npm run admin:submissions publish <id>    # non-interactive: publish directly
  *   npm run admin:submissions review <id>     # interactive review + publish
  *   npm run admin:submissions reject <id> <reason>
  */
@@ -11,7 +13,7 @@ import { asc, eq } from 'drizzle-orm';
 import { createInterface } from 'node:readline/promises';
 
 import { getDb } from '@/db/client';
-import { userSubmissions } from '@/db/schema';
+import { userSubmissions, products } from '@/db/schema';
 import { signedSubmissionUrl } from '@/lib/storage/supabase';
 import { lookupIngredient } from '@/lib/dictionary/lookup';
 import type { ProductCategory } from '@/types/guardscan';
@@ -32,6 +34,139 @@ async function listPending() {
     const ocr = row.ocrText ? (JSON.parse(row.ocrText) as { confidence?: number }) : null;
     const confidence = ocr?.confidence != null ? ` (confidence: ${ocr.confidence})` : ' (OCR pending)';
     console.log(`  ${row.id}  barcode=${row.barcode}  ${row.createdAt.toISOString()}${confidence}`);
+  }
+}
+
+// ── inspect ───────────────────────────────────────────────────────────────────
+
+async function inspectOne(submissionId: string) {
+  const db = getDb();
+  const [row] = await db
+    .select()
+    .from(userSubmissions)
+    .where(eq(userSubmissions.id, submissionId))
+    .limit(1);
+
+  if (!row) {
+    console.error('Submission not found:', submissionId);
+    process.exit(1);
+  }
+
+  type PhotoEntry = { role: string; path: string };
+  const photos = row.photos as PhotoEntry[];
+  const [frontUrl, backUrl] = await Promise.all([
+    signedSubmissionUrl(photos.find((p) => p.role === 'front')!.path),
+    signedSubmissionUrl(photos.find((p) => p.role === 'back')!.path),
+  ]);
+
+  const ocr = row.ocrText
+    ? (JSON.parse(row.ocrText) as {
+        name: string | null;
+        brand: string | null;
+        category: string | null;
+        ingredients: string[];
+        confidence: number;
+        notes: string[];
+      })
+    : null;
+
+  console.log('\n─── Submission ──────────────────────────────');
+  console.log(`ID:       ${row.id}`);
+  console.log(`Status:   ${row.status}`);
+  console.log(`Barcode:  ${row.barcode}`);
+  console.log(`Front:    ${frontUrl}`);
+  console.log(`Back:     ${backUrl}`);
+  console.log(`Created:  ${row.createdAt.toISOString()}`);
+
+  if (!ocr) {
+    console.log('\n─── OCR Status ──────────────────────────────');
+    console.log('(OCR not yet complete — wait a moment and retry)');
+    return;
+  }
+
+  console.log('\n─── Claude pre-fill ─────────────────────────');
+  console.log(`Confidence: ${ocr.confidence}`);
+  console.log(`Name:       ${ocr.name ?? '(none)'}`);
+  console.log(`Brand:      ${ocr.brand ?? '(none)'}`);
+  console.log(`Category:   ${ocr.category ?? '(none)'}`);
+  console.log(`Ingredients (${ocr.ingredients.length}):`);
+  ocr.ingredients.forEach((ing, i) => console.log(`  ${i + 1}. ${ing}`));
+  if (ocr.notes.length) console.log(`Notes: ${ocr.notes.join('; ')}`);
+
+  // Check for duplicate barcode in products table
+  const [existing] = await db
+    .select({ id: products.id, name: products.name })
+    .from(products)
+    .where(eq(products.barcode, row.barcode))
+    .limit(1);
+
+  console.log('\n─── Duplicate Check ─────────────────────────');
+  if (existing) {
+    console.log(`⚠ Barcode already exists in products table`);
+    console.log(`  product_id: ${existing.id}`);
+    console.log(`  name: ${existing.name}`);
+  } else {
+    console.log('✓ Barcode is new');
+  }
+}
+
+// ── publish ────────────────────────────────────────────────────────────────────
+
+async function publishOne(submissionId: string) {
+  const db = getDb();
+  const [row] = await db
+    .select()
+    .from(userSubmissions)
+    .where(eq(userSubmissions.id, submissionId))
+    .limit(1);
+
+  if (!row) {
+    console.error('Submission not found:', submissionId);
+    process.exit(1);
+  }
+
+  if (row.status !== 'pending' && row.status !== 'in_review') {
+    console.error(`Submission is already ${row.status}. Cannot publish.`);
+    process.exit(1);
+  }
+
+  const ocr = row.ocrText
+    ? (JSON.parse(row.ocrText) as {
+        name: string | null;
+        brand: string | null;
+        category: string | null;
+        ingredients: string[];
+        confidence: number;
+        notes: string[];
+      })
+    : null;
+
+  if (!ocr) {
+    console.error('OCR not yet complete. Retry after a moment.');
+    process.exit(1);
+  }
+
+  if (!ocr.name || !ocr.category || !['food', 'grooming', 'supplement'].includes(ocr.category)) {
+    console.error('Invalid OCR data: name and valid category are required.');
+    process.exit(1);
+  }
+
+  const reviewedBy = process.env.ADMIN_USER_IDS?.split(',')[0]?.trim() || 'cli';
+
+  try {
+    const { productId, score } = await publishExtracted({
+      submissionId,
+      barcode: row.barcode,
+      name: ocr.name,
+      brand: ocr.brand ?? null,
+      category: ocr.category as ProductCategory,
+      ingredients: ocr.ingredients,
+      reviewedBy,
+    });
+    console.log(`✓ Published  product_id=${productId}  score=${score ?? 'null'}`);
+  } catch (err) {
+    console.error('Failed to publish product:', String(err));
+    process.exit(1);
   }
 }
 
@@ -210,6 +345,10 @@ async function rejectOne(submissionId: string, reason: string) {
 
   if (cmd === 'list' || !cmd) {
     await listPending();
+  } else if (cmd === 'inspect' && arg) {
+    await inspectOne(arg);
+  } else if (cmd === 'publish' && arg) {
+    await publishOne(arg);
   } else if (cmd === 'review' && arg) {
     await reviewOne(arg);
   } else if (cmd === 'reject' && arg && rest[0]) {
@@ -218,6 +357,8 @@ async function rejectOne(submissionId: string, reason: string) {
     console.log(
       'Usage:\n' +
         '  admin-submissions list\n' +
+        '  admin-submissions inspect <id>\n' +
+        '  admin-submissions publish <id>\n' +
         '  admin-submissions review <id>\n' +
         '  admin-submissions reject <id> <reason>',
     );

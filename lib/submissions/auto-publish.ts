@@ -41,6 +41,7 @@ export type AutoPublishResult =
   | {
       kind: 'skipped';
       reason:
+        | 'disabled'
         | 'low_confidence'
         | 'guardrail_name'
         | 'guardrail_category'
@@ -166,6 +167,11 @@ export async function tryAutoPublish(args: {
   extracted: ExtractedSubmission;
 }): Promise<AutoPublishResult> {
   const { submissionId, barcode, extracted } = args;
+
+  // ── Kill switch ──────────────────────────────────────────────────────
+  if (process.env.AUTO_PUBLISH_ENABLED === 'false') {
+    return { kind: 'skipped', reason: 'disabled' };
+  }
 
   // ── Hard guardrails ──────────────────────────────────────────────────
   if (!extracted.name) {
