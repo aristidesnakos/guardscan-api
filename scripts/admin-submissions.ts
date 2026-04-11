@@ -9,15 +9,13 @@
 
 import { asc, eq } from 'drizzle-orm';
 import { createInterface } from 'node:readline/promises';
-import { randomUUID } from 'node:crypto';
 
 import { getDb } from '@/db/client';
-import { userSubmissions, products } from '@/db/schema';
+import { userSubmissions } from '@/db/schema';
 import { signedSubmissionUrl } from '@/lib/storage/supabase';
 import { lookupIngredient } from '@/lib/dictionary/lookup';
-import { scoreProduct } from '@/lib/scoring';
-import type { Product, ProductCategory } from '@/types/guardscan';
-import { upsertProduct } from '@/lib/cron/ingest-helpers';
+import type { ProductCategory } from '@/types/guardscan';
+import { publishExtracted } from '@/lib/submissions/auto-publish';
 
 // ── list ─────────────────────────────────────────────────────────────────────
 
@@ -129,21 +127,13 @@ async function reviewOne(submissionId: string) {
     return;
   }
 
-  // Preview scored ingredients
+  // Preview scored ingredients — the actual flag resolution happens
+  // again inside publishExtracted, but showing it here gives the
+  // operator a chance to bail before we touch the DB.
   console.log('\n─── Ingredient lookup preview ───────────────');
-  const resolvedIngredients = ingredients.map((ingName, i) => {
-    const normalized = ingName.toLowerCase().trim();
-    const entry = lookupIngredient(normalized);
-    const flag = entry?.flag ?? 'neutral';
-    console.log(`  ${i + 1}. ${ingName} → ${flag}`);
-    return {
-      name: ingName,
-      position: i + 1,
-      flag: flag as 'positive' | 'neutral' | 'caution' | 'negative',
-      reason: entry?.reason ?? '',
-      fertility_relevant: entry?.fertility_relevant ?? false,
-      testosterone_relevant: entry?.testosterone_relevant ?? false,
-    };
+  ingredients.forEach((ingName, i) => {
+    const entry = lookupIngredient(ingName.toLowerCase().trim());
+    console.log(`  ${i + 1}. ${ingName} → ${entry?.flag ?? 'neutral'}`);
   });
 
   const confirm = await rl.question('\nPublish? (y/N): ');
@@ -158,45 +148,32 @@ async function reviewOne(submissionId: string) {
     return;
   }
 
-  // Build canonical Product and score it
-  const now = new Date().toISOString();
-  const product: Product = {
-    id: randomUUID(),
-    barcode: row.barcode,
-    name,
-    brand: brand ?? '',
-    category: category as ProductCategory,
-    subcategory: null,
-    image_url: null,
-    data_completeness: 'full',
-    ingredient_source: 'user_contributed',
-    ingredients: resolvedIngredients,
-    created_at: now,
-    updated_at: now,
-  };
+  // Delegate the actual publish to the shared module that the
+  // auto-publish path also uses. This keeps both paths in lockstep —
+  // bug fixes and schema changes only need to happen in one place.
+  const reviewedBy =
+    process.env.ADMIN_USER_IDS?.split(',')[0]?.trim() || 'cli';
 
-  const score = scoreProduct({ product });
-
-  const productId = await upsertProduct(db, product, 'user', score, null, submissionId);
-
-  if (!productId) {
-    console.error('\nFailed to publish product. Check logs.');
+  try {
+    const { productId, score } = await publishExtracted({
+      submissionId,
+      barcode: row.barcode,
+      name,
+      brand: brand ?? null,
+      category: category as ProductCategory,
+      ingredients,
+      reviewedBy,
+    });
+    console.log(
+      `\n✓ Published  product_id=${productId}  score=${score ?? 'null'}`,
+    );
+  } catch (err) {
+    console.error('\nFailed to publish product:', String(err));
     await db
       .update(userSubmissions)
       .set({ status: 'pending' })
       .where(eq(userSubmissions.id, submissionId));
-    return;
   }
-
-  await db
-    .update(userSubmissions)
-    .set({
-      status: 'published',
-      reviewedBy: process.env.ADMIN_USER_IDS?.split(',')[0]?.trim() ?? 'cli',
-    })
-    .where(eq(userSubmissions.id, submissionId));
-
-  console.log(`\n✓ Published  product_id=${productId}  score=${score?.overall_score ?? 'null'}`);
 }
 
 // ── reject ────────────────────────────────────────────────────────────────────

@@ -146,3 +146,22 @@ export type PaginatedResponse<T> = {
   limit: number;
   offset: number;
 };
+
+// ── User submissions (M3.0 / M3.1) ──────────────────────────────────────────
+//
+// Response shape from POST /api/products/submit. Three terminal outcomes:
+//   - pending_review: submission stored, OCR may still be running or
+//     Claude's confidence was below AUTO_PUBLISH_CONFIDENCE_THRESHOLD
+//   - already_in_catalog: barcode already existed, no submission created
+//   - auto_published: M3.1 — Claude extraction met confidence + guardrails
+//     and the product was written straight into `products`
+
+export type SubmissionResponse =
+  | { status: 'pending_review'; submission_id: string; message?: string }
+  | { status: 'already_in_catalog'; product_id: string; message?: string }
+  | {
+      status: 'auto_published';
+      submission_id: string;
+      product_id: string;
+      message?: string;
+    };

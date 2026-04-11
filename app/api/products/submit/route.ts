@@ -8,7 +8,14 @@ import { requireUser } from '@/lib/auth';
 import { getDb } from '@/db/client';
 import { products, userSubmissions } from '@/db/schema';
 import { uploadSubmissionPhoto } from '@/lib/storage/supabase';
-import { extractSubmissionWithClaude } from '@/lib/ocr/claude-vision';
+import {
+  extractSubmissionWithClaude,
+  type ExtractedSubmission,
+} from '@/lib/ocr/claude-vision';
+import {
+  tryAutoPublish,
+  type AutoPublishResult,
+} from '@/lib/submissions/auto-publish';
 import { log } from '@/lib/logger';
 
 const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
@@ -89,9 +96,11 @@ export async function POST(request: Request) {
   });
 
   // OCR runs inline — after() silently no-ops on this Vercel deployment
-  // (waitUntil not provided). maxDuration=60 gives headroom for the Claude Vision call.
+  // (waitUntil not provided). maxDuration=60 gives headroom for the Claude
+  // Vision call plus the auto-publish upsert that follows.
+  let extracted: ExtractedSubmission | null = null;
   try {
-    const extracted = await extractSubmissionWithClaude({ frontPath, backPath });
+    extracted = await extractSubmissionWithClaude({ frontPath, backPath });
     await db
       .update(userSubmissions)
       .set({ ocrText: JSON.stringify(extracted) })
@@ -106,6 +115,57 @@ export async function POST(request: Request) {
       submission_id: submissionId,
       error: String(err),
     });
+  }
+
+  // ── M3.1 auto-publish ──────────────────────────────────────────────────
+  // If OCR succeeded and Claude met the confidence + guardrails bar, this
+  // promotes the submission straight into the `products` table with
+  // source='user'. Skipped / failed submissions stay `status='pending'` so
+  // `npm run admin:submissions review` can still clear them by hand.
+  let autoPublishOutcome: AutoPublishResult | null = null;
+  if (extracted) {
+    try {
+      autoPublishOutcome = await tryAutoPublish({
+        submissionId,
+        barcode,
+        extracted,
+      });
+      log.info('submission_auto_publish_outcome', {
+        submission_id: submissionId,
+        outcome: autoPublishOutcome.kind,
+        ...(autoPublishOutcome.kind === 'published' && {
+          product_id: autoPublishOutcome.productId,
+          score: autoPublishOutcome.score,
+        }),
+        ...(autoPublishOutcome.kind === 'skipped' && {
+          reason: autoPublishOutcome.reason,
+          confidence: extracted.confidence,
+        }),
+        ...(autoPublishOutcome.kind === 'failed' && {
+          error: autoPublishOutcome.error,
+        }),
+      });
+    } catch (err) {
+      // Defensive: tryAutoPublish traps its own errors, but if anything
+      // escapes we must not fail the request — the submission and photos
+      // are already durable in storage and the DB.
+      log.warn('submission_auto_publish_threw', {
+        submission_id: submissionId,
+        error: String(err),
+      });
+    }
+  }
+
+  if (autoPublishOutcome?.kind === 'published') {
+    return NextResponse.json(
+      {
+        submission_id: submissionId,
+        status: 'auto_published',
+        product_id: autoPublishOutcome.productId,
+        message: 'Thanks! This product has been added to the catalog.',
+      },
+      { status: 201 },
+    );
   }
 
   return NextResponse.json(

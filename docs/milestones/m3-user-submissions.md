@@ -1,9 +1,10 @@
 # M3 — User Submissions Pipeline (Backend)
 
-**Status:** Planning → Implementation
+**Status:** M3.0 shipped · M3.1 shipped · M3.2 deferred (Expo-side)
 **Depends on:** M2 (catalog seeded, cron ingest running)
-**Scope:** Backend only. Expo client UX lives in [cucumberdude/docs/product/USER-SUBMISSIONS-UX.md](../../cucumberdude/docs/product/USER-SUBMISSIONS-UX.md).
+**Scope:** Backend only. Expo client UX lives in [cucumberdude/docs/product/USER-SUBMISSIONS-UX.md](../../cucumberdude/docs/product/USER-SUBMISSIONS-UX.md) and shipped implementation notes in [cucumberdude/docs/product/SUBMISSION-FLOW-IMPL.md](../../cucumberdude/docs/product/SUBMISSION-FLOW-IMPL.md).
 **Exit criteria (M3.0):** User can submit front + back photos of an unknown product; Claude Vision pre-extracts metadata + ingredients; admin verifies and publishes via CLI within 24 hours.
+**Exit criteria (M3.1):** Submissions where Claude confidence ≥85 and all guardrails pass (`name`, `category`, ≥2 ingredients) are published straight into the catalog inside the submit request — no admin action required. Lower-confidence or guardrail-failing submissions fall back to the CLI admin tool.
 
 ---
 
@@ -494,38 +495,86 @@ ALTER TABLE user_submissions
 
 ## M3.1 — Auto-publish at high confidence
 
-**Timeline:** After M3.0 has run long enough to accumulate 50+ real submissions with OCR output (probably 2–4 weeks).
+**Status:** ✅ Shipped. Auto-publish runs inline inside `POST /api/products/submit` immediately after Claude Vision finishes.
 
-### What changes
+### Goal
 
-1. In the submission endpoint's `after()` callback, if `extracted.confidence >= 85`, call the shared publish logic directly (same function the CLI uses) and set `status = 'published'` with `reviewed_by = null`.
-2. The CLI's `list` command only shows `status = 'pending'`, so auto-published submissions never hit the admin queue.
-3. New CLI command: `npm run admin:audit [--limit=20]` samples recently auto-published submissions for weekly spot-checks.
-4. New CLI command: `npm run admin:unpublish <submission_id> <reason>` reverts an auto-publish if an audit finds it wrong.
+Skip the admin queue entirely for submissions Claude is confident about, while keeping the existing CLI tool as a fallback for the remaining edge cases. The operator should never touch a submission that was clearly photographed and correctly extracted.
 
-### Why 85% confidence
+### What shipped
 
-- Below 85: Claude has expressed doubt (blurry photo, partial list, ambiguous category). Admin should see these.
+1. **New shared module:** [`lib/submissions/auto-publish.ts`](../../lib/submissions/auto-publish.ts) exports two functions backed by a single private `buildAndPublish` helper:
+   - `tryAutoPublish({ submissionId, barcode, extracted })` — gated by guardrails + confidence, never throws, returns a discriminated `AutoPublishResult`.
+   - `publishExtracted({ submissionId, barcode, name, brand, category, ingredients, reviewedBy })` — unconditional publish for the CLI, throws on failure so the operator sees the error and the CLI rolls the submission back to `pending`.
+2. **Inline call from the submit route:** [`app/api/products/submit/route.ts`](../../app/api/products/submit/route.ts) calls `tryAutoPublish` immediately after the OCR try/catch, using the in-scope `extracted` value. A new `submission_auto_publish_outcome` log line records the result for every submission.
+3. **CLI refactor:** [`scripts/admin-submissions.ts`](../../scripts/admin-submissions.ts) `reviewOne()` no longer contains its own publish path — it calls `publishExtracted` with operator-supplied values. Preview of dictionary-resolved flags still prints before the `Publish? (y/N)` prompt so the operator can bail.
+4. **Type contract:** `SubmissionResponse` in [`types/guardscan.ts`](../../types/guardscan.ts) now carries a third variant, `auto_published`, returned when the inline publish succeeds. The existing `pending_review` and `already_in_catalog` variants are unchanged.
+
+No schema migration was required. Every column the flow depends on (`products.source='user'`, `user_submissions.reviewed_by`, `user_submissions.status='published'`) was already present from M3.0.
+
+### Confidence gate
+
+Auto-publish requires `extracted.confidence >= AUTO_PUBLISH_CONFIDENCE_THRESHOLD` (currently **85**, defined at the top of `lib/submissions/auto-publish.ts` for easy tuning).
+
+Rationale:
+- Below 85: Claude has expressed doubt (blurry photo, partial list, ambiguous category). The CLI operator should see these.
 - 85–95: Claude is confident and almost always right. Auto-publishing is low-risk.
 - 95+: essentially always correct.
 
-Revisit the threshold after the first audit cycle — if your spot-check accuracy at 85% is >98%, consider dropping to 80%. If it's <95%, raise to 90%.
+Revisit the threshold after ~50 real submissions have flowed through. If spot-check accuracy at 85 is >98%, consider dropping to 80. If it's <95%, raise to 90.
 
-### Guardrails
+### Guardrails (hard rejects, regardless of confidence)
 
-Even with auto-publish, refuse to auto-publish if:
-- `category` is null (can't route to correct scoring logic)
-- `ingredients.length < 2` (probably a failed extraction)
-- `name` is null (no catalog display)
-- A product with the same barcode was auto-published in the last 60 seconds (prevents duplicate races)
+`tryAutoPublish` bails out before touching the products table if any of the following are true:
+
+| Check | `reason` | Rationale |
+|---|---|---|
+| `extracted.name` is null | `guardrail_name` | No catalog display |
+| `extracted.category` is null | `guardrail_category` | Can't route to the correct scoring logic |
+| `extracted.ingredients.length < 2` | `guardrail_ingredients` | Probably a failed OCR pass |
+
+We intentionally do **not** implement the "duplicate barcode in the last 60 seconds" guardrail that an earlier draft of this doc proposed — the existing `products.barcode` UNIQUE constraint plus `onConflictDoUpdate` in `upsertProduct` already handle the race cleanly (latest write wins).
+
+### Failure handling
+
+Failed guardrails, low confidence, and upsert errors all leave the submission row as `status='pending'`. This preserves the CLI admin tool as a fallback: `npm run admin:submissions list` will still surface these rows, and the operator can review them manually whenever they want.
+
+The user-facing HTTP response never fails because of an auto-publish error — the photos and OCR are already durable. The client sees `pending_review` in the failure case (identical to M3.0 behavior) or the new `auto_published` variant on success.
+
+### `reviewed_by` semantics
+
+| `status` | `reviewed_by` | Meaning |
+|---|---|---|
+| `published` | `NULL` | Auto-published by M3.1 |
+| `published` | `'cli'` or an admin user ID | Manually published via the CLI |
+| `pending` | `NULL` | Unreviewed |
+
+Audit query for auto-published rows:
+```sql
+SELECT id, barcode, created_at
+FROM user_submissions
+WHERE status = 'published' AND reviewed_by IS NULL
+ORDER BY created_at DESC;
+```
 
 ### Verification checklist (M3.1)
 
-- [ ] `confidence >= 85` auto-publishes; lower confidence stays pending
-- [ ] Guardrails reject incomplete extractions
-- [ ] `npm run admin:audit` samples auto-published products for review
-- [ ] `npm run admin:unpublish` reverts a bad auto-publish and marks submission `rejected`
-- [ ] Log `submission_auto_published` and `submission_unpublished` events with structured fields
+- [ ] `confidence < 85` leaves the submission `pending` with outcome `low_confidence` in logs
+- [ ] `name = null` → `guardrail_name`, submission stays `pending`
+- [ ] `category = null` → `guardrail_category`, submission stays `pending`
+- [ ] `ingredients.length < 2` → `guardrail_ingredients`, submission stays `pending`
+- [ ] Happy path: confidence ≥ 85 + all fields valid → `products` row exists with `source='user'`, `source_id=submissionId`, score populated, and `user_submissions.status='published'` with `reviewed_by IS NULL`
+- [ ] Re-scanning the barcode immediately after auto-publish hits the DB cache (no 404, no second submission)
+- [ ] OCR failure path: submit still returns `pending_review`, no auto-publish is attempted, `submission_ocr_failed` log fires
+- [ ] Upsert failure path: `tryAutoPublish` returns `{ kind: 'failed' }`, logs `auto_publish_failed`, submission stays `pending`
+- [ ] CLI `npm run admin:submissions review <id>` still works end-to-end and sets `reviewed_by = 'cli'` (or the admin user ID)
+- [ ] `submission_auto_publish_outcome` log line appears exactly once per submission and contains the correct discriminator fields
+
+### What was intentionally deferred
+
+- **`npm run admin:audit` / `npm run admin:unpublish`.** These were planned here but aren't needed until auto-publish volume grows enough to warrant spot-checking. Add when the CLI queue has been mostly empty for several weeks and you want to sanity-check what went through without review.
+- **Expo "Added instantly!" celebration UX.** The backend ships the `auto_published` response variant; the Expo app at `app/submit-product.tsx` currently treats every success response identically. A client-side follow-up can branch on `status === 'auto_published'` to surface a celebratory message. See [cucumberdude/docs/product/SUBMISSION-FLOW-IMPL.md](../../../cucumberdude/docs/product/SUBMISSION-FLOW-IMPL.md).
+- **Migrating the inline OCR + publish work to `after()`.** The submit route's own comment explains why: `after()` silently no-ops on the current Vercel deployment because `waitUntil` isn't provided. Investigating that is a separate cleanup, not a blocker — `maxDuration=60` gives us comfortable headroom for the inline Claude call plus the ~100–500 ms upsert.
 
 ---
 
@@ -615,14 +664,16 @@ Everything else in the extraction pipeline stays the same: **one Claude Opus 4.6
 
 ## Admin workload projection
 
-| Volume / week | Without OCR pre-fill | With M3.0 pre-fill | With M3.1 auto-publish |
+| Volume / week | Without OCR pre-fill | With M3.0 pre-fill | With M3.1 auto-publish (shipped) |
 |---|---|---|---|
 | 10 | 20–50 min | 5–10 min | 0–5 min |
 | 50 | 2–4 hours | 25–40 min | 10–15 min |
 | 100 | 4–8 hours | 50–80 min | 20–30 min |
 | 300 | 15+ hours (untenable) | 2.5–4 hours | 1–1.5 hours |
 
-**Realistic early volume:** 0–5 submissions/week in month 1, 20–50/week by month 3 if users find value. You almost certainly won't hit the painful zone for months — which is why the CLI + Claude pre-fill approach gives you enough runway to build a real admin UI later only if the volume justifies it.
+**Post-M3.1:** the CLI is the fallback path, not the primary path. Any submission the operator sees is one Claude was explicitly unsure about, missing a required field, or failed to publish for infrastructure reasons. Expected fallback volume is 10–30% of total submissions, scaling down as photography conditions improve (M3.2 on-device cropping).
+
+**Realistic early volume:** 0–5 submissions/week in month 1, 20–50/week by month 3 if users find value. With auto-publish running, the operator's weekly CLI time should stay under 30 minutes even at 100 submissions/week.
 
 ---
 
@@ -646,8 +697,11 @@ Everything else in the extraction pipeline stays the same: **one Claude Opus 4.6
 
 | Action | File | What |
 |---|---|---|
-| Modify | `app/api/products/submit/route.ts` | Auto-publish branch in `after()` callback |
-| Modify | `scripts/admin-submissions.ts` | Add `audit` and `unpublish` subcommands |
+| New | `lib/submissions/auto-publish.ts` | `tryAutoPublish` (gated) + `publishExtracted` (CLI) sharing one `buildAndPublish` path |
+| Modify | `app/api/products/submit/route.ts` | Call `tryAutoPublish` inline after OCR; branch the response between `auto_published` and `pending_review` |
+| Modify | `types/guardscan.ts` | Add `SubmissionResponse` discriminated union with the `auto_published` variant |
+| Modify | `scripts/admin-submissions.ts` | Replace inline publish with a call to `publishExtracted`; keep the ingredient preview for operator context |
+| Modify | `docs/milestones/m3-user-submissions.md` | This doc — promote M3.1 from plan to shipped |
 
 ### M3.2 (Expo repo)
 
