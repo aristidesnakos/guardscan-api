@@ -10,6 +10,14 @@
  * ingredients never get caution or negative."
  *
  * Organized by category then flag severity.
+ *
+ * TODO(multi-brand): These entries are Mangood-biased (fertility,
+ * testosterone, men's grooming). Pomenatal needs its own seed subset —
+ * many ingredients flagged "neutral" here (retinoids, salicylic acid,
+ * caffeine, soy isoflavones) require stricter flags during pregnancy.
+ * Likely refactor: load brand-scoped seed files keyed by brand at ingest
+ * time, or move the dictionary to per-brand DB rows. See
+ * docs/multi-brand-migration.md.
  */
 
 import type { IngredientFlag } from '@/types/guardscan';

@@ -1,10 +1,18 @@
 # GuardScan — MVP Sprint Plan
 
 **Audience:** Product Manager + Product Designer (primary), Engineers (task cards)
-**Last updated:** 2026-04-11 (rev 2 — PM answers + codebase/client audit)
+**Last updated:** 2026-04-11 (rev 3 — blind spots resolved, multi-brand locked)
 **Status of upstream docs:** [docs/status.md](./status.md) is stale — still lists M3.0/M3.1 as pending and references S3 env vars that were never used. This plan is the source of truth until status.md is refreshed (see Task 5).
+**Execution plan for Tasks 0–3:** [docs/sprint-tasks-0-3-plan.md](./sprint-tasks-0-3-plan.md) — pre-flight findings, coverage-target blocker (supplement scoring stub vs. 90% target), code-first execution order, and explicit approval gates before any prod write / deploy.
 
 ---
+
+## What changed in rev 3
+
+1. **Multi-brand locked:** guardscan-api is **Mangood-only today**. Infrastructure is intended to be reused for Pomenatal later. No refactor this sprint; instead Task 9 adds 15 minutes of `// TODO(multi-brand):` markers and a one-page migration doc so future-us can find what to change.
+2. **Task 9 resolved in place:** `/api/products/:barcode/score` is **dead code in the client** — defined in [cucumberdude/lib/api.ts:195](../../cucumberdude/lib/api.ts) but never invoked from any screen. Backend requires no implementation. Task 9 is repurposed for the multi-brand future-proofing work above.
+3. **Recalls are an App Store risk, not just a deferred feature.** [cucumberdude/brands/mangood.ts:138](../../cucumberdude/brands/mangood.ts) promises "product recalls" in the iOS permission prompt; backend has no recall infra. Task 7 now includes a 30-second copy fix: soften to "product safety updates." Actual recall infrastructure stays deferred.
+4. **All three open PM questions closed with defaults** (multi-brand answered; search default and production sign-off get sensible defaults unless PM overrides).
 
 ## What changed in rev 2
 
@@ -13,8 +21,7 @@
 3. **Discovered three endpoints the client calls that are missing or broken on the backend.** Added tasks for the ones on the MVP critical path.
 4. **Fixed column name:** schema uses [`score`](../db/schema.ts#L37), not `score_overall`. Scripts must reference `score`.
 5. **Confirmed `/api/products/search` is POST with a body** (not GET with query params). Task 6 rewritten accordingly.
-6. **Added a Multi-brand section** — cucumberdude is white-label (Mangood + Pomenatal), each with its own backend. PM needs to confirm which brand this sprint targets.
-7. **Added a kill switch for auto-publish** in Task 1 — 30 minutes of work, removes a real rollback risk.
+6. **Added a kill switch for auto-publish** in Task 1 — 30 minutes of work, removes a real rollback risk.
 
 ---
 
@@ -22,10 +29,10 @@
 
 - **M3.0 and M3.1 shipped.** Users can submit unknown products; Claude Vision auto-publishes clean submissions. Edge cases fall back to a CLI admin tool. 8 submissions are queued against the live pipeline, waiting to be triaged.
 - **Catalog is dense but half-scored.** 1,417 products total; only 29% scored. ~600 unscored products already have ingredients (local rescore, no network). ~400 need a source refetch. 366 products lack subcategory — this silently cripples alternatives, recommendations, and filtered search. Data quality is the real asset in the backend.
-- **One MVP feature is a stub and two more are broken against the real client:**
-  - `POST /api/products/search` is a 10-line stub returning empty.
-  - `GET /api/products/search/suggestions` (autocomplete) is called by the Expo client but does not exist on the backend.
-  - `GET /api/products/:id/score` is called by the client; status unverified.
+- **One MVP feature is a stub and one more is broken against the real client:**
+  - `POST /api/products/search` is a 10-line stub returning empty (Task 6).
+  - `GET /api/products/search/suggestions` (autocomplete) is called by the Expo client but does not exist on the backend (Task 8).
+  - `GET /api/products/:barcode/score` is defined in the client's api layer but never invoked from any screen — **dead code, no backend work required** (confirmed in rev 3).
 - **Auth is 90% done.** Server code handles JWTs and graceful fallback. Expo client already sends Supabase JWTs in production. Flipping `AUTH_ENABLED=true` is a ~10-minute operation after a log check.
 - **Storage is Supabase, not S3.** Confirmed across backend, client, and env config. No migration.
 
@@ -42,9 +49,9 @@
 | Products missing subcategory | 366 (26%) | **Cripples `/alternatives`, `/recommendations`, and filtered search — now first-class sprint work** |
 | Dictionary entries | 147 | Sufficient for MVP |
 | Pending user submissions | 8 (7 pending + 1 in_review) | Will be dispositioned in Task 0 |
-| `POST /api/products/search` | Stub returning empty | Needs real query + subcategory + sort |
+| `POST /api/products/search` | Stub returning empty | Needs real query + subcategory + sort (Task 6) |
 | `GET /api/products/search/suggestions` | **Missing (404)** | Called by client autocomplete — Task 8 |
-| `GET /api/products/:id/score` | **Unverified** | Called by client — Task 9 audits it |
+| `GET /api/products/:barcode/score` | Dead code in client | No backend work needed (rev 3 audit) |
 | Expo client auth header | `Authorization: Bearer <supabase_jwt>` in prod | Verified in cucumberdude — Task 4 is safe |
 
 ## What "MVP launched" means
@@ -56,7 +63,7 @@ A user can:
 4. Receive alternative recommendations drawn from a dense scored-and-subcategorized pool.
 5. Use the app over JWT-authenticated requests — no anonymous access.
 
-All of the above, **for a single brand** (see Multi-brand section).
+All of the above, **for Mangood** (the first of two brands that will eventually share this backend — see Multi-brand section).
 
 ---
 
@@ -79,7 +86,7 @@ Every bullet is a 1–5 minute check. All five together are the cheapest insuran
 - [ ] **Preview env vars present** — run `vercel env ls preview` and confirm: `OPENROUTER_API_KEY`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `DATABASE_URL`, `OFF_USER_AGENT`. Any missing var will make Task 1 fail in misleading ways (e.g., OCR silently returning nothing → looks like a guardrail trip).
 - [ ] **Expo client is sending JWTs in production** — confirmed in source at [cucumberdude/lib/api.ts:26-40](../../cucumberdude/lib/api.ts), and `EXPO_PUBLIC_USE_MOCK_AUTH=false` in production builds. During Task 1's e2e, tail `vercel logs` and verify `Authorization: Bearer` is present on incoming requests. If it isn't, **stop Task 4 and fix the client first.**
 - [ ] **Search endpoint is POST, not GET** — confirmed against the stub and the client. Task 6 is POST with a JSON body.
-- [ ] **Multi-brand scope answered** — which brand does this sprint target (Mangood or Pomenatal)? See Multi-brand section below. Affects seed data, life-stage multipliers, and subcategory taxonomy.
+- [ ] **Multi-brand scope: Mangood only** — confirmed in rev 3. No brand-aware refactor this sprint. Task 9 adds TODO markers for the future Pomenatal migration.
 
 ---
 
@@ -381,15 +388,17 @@ Response: PaginatedResponse<Product>
    - **Loading skeleton** — 3 placeholders; confirm fit against real card dimensions
    - **Autocomplete** — depends on Task 8; if Task 8 isn't done, hide suggestions behind a flag
    - **Best rated toggle** — confirm backend now honors `sort_by` (Task 6)
-   - **Category dropdown default** — currently "grooming" per cucumberdude code; PM to confirm or change for launch
-4. Ship an internal TestFlight / APK build for dogfooding
-5. File any UX issues as separate tickets — do not fix in this card
+   - **Category dropdown default** — currently "grooming" per cucumberdude code; PM default is to keep it unless overridden
+4. **Fix the recall permission copy** (App Store risk) — edit [cucumberdude/brands/mangood.ts:138](../../cucumberdude/brands/mangood.ts) `notificationPermissionReason`. Current copy: *"Mangood sends alerts about product recalls and safety updates."* We have zero recall infrastructure and asking for push permission under a false pretext is an Apple Review 5.1.1 risk. Change to: *"Mangood sends product safety updates and scan reminders."* (30-second change, client-side only.)
+5. Ship an internal TestFlight / APK build for dogfooding
+6. File any UX issues as separate tickets — do not fix in this card
 
 **Acceptance criteria:**
 - [ ] Search tab returns real results from preview backend
 - [ ] "Best rated" toggle produces visibly different ordering
 - [ ] Category dropdown narrows results
 - [ ] Empty/loading/zero-result states pass designer review
+- [ ] Recall permission copy softened in `brands/mangood.ts`
 - [ ] Dogfood build is on internal testers' phones
 
 **Why it matters:** This is the only user-visible artifact in the sprint. Without designer review, we ship a search tab full of real data in states designed against mock data.
@@ -427,52 +436,71 @@ Response: PaginatedResponse<Product>
 
 ---
 
-### Task 9 — Audit `/api/products/:id/score`
+### Task 9 — Multi-brand future-proofing (markers + migration doc)
 
-**Stream:** C · **Owner:** Backend engineer · **Estimate:** 15–45 min · **Blockers:** None
+**Stream:** C · **Owner:** Any engineer · **Estimate:** 15–30 min · **Blockers:** None
 
-**Context:** The cucumberdude client calls `GET /api/products/:id/score` for a personalized score breakdown. This endpoint **does not exist on the backend filesystem**. Either:
-- The client has a dead code path (most likely — may be called only from a feature behind a disabled flag)
-- Or the feature is broken in production today and nobody has noticed
+**Context:** guardscan-api is Mangood-only today, but the infrastructure is intended to be reused for Pomenatal later. A code audit in rev 3 confirmed the following files carry **Mangood-specific assumptions** that will need brand-scoping when Pomenatal onboards:
+
+| File | Mangood-specific assumption |
+|---|---|
+| [types/guardscan.ts:102-107](../types/guardscan.ts#L102-L107) | `LifeStage` type only has Mangood values (`actively_trying_to_conceive`, `testosterone_optimization`, `athletic_performance`, `longevity_focus`, `general_wellness`). Pomenatal needs pregnancy/postpartum variants. |
+| [lib/scoring/constants.ts:53-59](../lib/scoring/constants.ts#L53-L59) | `LIFE_STAGE_MULTIPLIERS` is keyed to the Mangood `LifeStage` type. Pomenatal's multipliers will differ — some ingredients neutral for adult men are dangerous during pregnancy. |
+| [lib/dictionary/seed.ts](../lib/dictionary/seed.ts) | The 147 curated entries are Mangood-biased. Pomenatal needs its own seed subset. |
+| [lib/classify/](../lib/classify/) (LLM subcategory classifier prompt) | Prompt is tuned for grooming / men's supplements / food. Pomenatal's product mix (prenatal vitamins, maternal food, postpartum care) will miss-classify with the current prompt. |
+
+**The goal is NOT to refactor any of this now.** That's wasted work without a concrete Pomenatal launch date. The goal is to make the future refactor findable with one `grep`.
 
 **Do:**
-1. `grep -r "products/.*/score" cucumberdude/` to see where this is called and whether the caller is reachable from UI
-2. **If the caller is unreachable** (commented out, behind a disabled feature flag, or dead code) → no backend change needed. Write a one-line sprint note: "Task 9: dead code confirmed, no action."
-3. **If the caller is reachable** → decide between:
-   - Implement the endpoint on the backend (reads `score_breakdown` from products, optionally adjusts by the user's health profile)
-   - Or change the client to use `score_breakdown` already returned by `/api/products/:id` and `/api/products/scan/:barcode`
-4. Whichever path is chosen, file it as a separate ticket — do not implement in this card
+1. Add a `// TODO(multi-brand): ...` comment at the top of each of the four files above, briefly describing what needs to change when Pomenatal joins. Example:
+   ```ts
+   // TODO(multi-brand): LifeStage enum is Mangood-biased (men's-health values only).
+   // When Pomenatal onboards, extend with pregnancy/postpartum values or extract
+   // to a brand-scoped type. See docs/multi-brand-migration.md.
+   ```
+2. Create [docs/multi-brand-migration.md](./multi-brand-migration.md) — one page, listing:
+   - Current state: guardscan-api is Mangood-only
+   - Files that need to change (reuse the table above)
+   - Suggested approach: brand-scoped config object passed through scoring, not global constants
+   - NOT a detailed plan — a sketch for the future sprint
+3. Do NOT introduce any brand parameter, brand column, or brand config in code this sprint. Keep the change surface to comments + one doc file.
 
 **Acceptance criteria:**
-- [ ] We know whether the endpoint is needed
-- [ ] Decision recorded in the sprint note
-- [ ] If needed: ticket filed with scope estimate
-- [ ] If not needed: client code path flagged for cleanup post-MVP
+- [ ] Four `// TODO(multi-brand):` markers added, each with a one-sentence description
+- [ ] `grep -r "TODO(multi-brand)" .` returns the four expected hits
+- [ ] [docs/multi-brand-migration.md](./multi-brand-migration.md) exists and is ≤1 page
+- [ ] No production code paths touched
+
+**Why it matters:** 15 minutes now saves a week of archaeology when Pomenatal onboards. The alternative — discovering Mangood assumptions by breakage during a future sprint — is expensive.
 
 ---
 
-## Multi-brand context (**needs PM decision**)
+## Multi-brand context (resolved)
 
-The cucumberdude client is white-label and supports two brands. Per [cucumberdude/README.md](../../cucumberdude/README.md):
+The cucumberdude client is white-label and supports two brands:
 
-> Each brand has its own Supabase project (OAuth credentials, user pool)
-> Each brand has its own backend API (ingredient database, scoring logic)
-
-| Brand | Focus | Categories they care about |
+| Brand | Focus | Status |
 |---|---|---|
-| **Mangood** | Men's health & grooming | Grooming, men's supplements, food |
-| **Pomenatal** | Postpartum/maternal | Food, prenatal/postnatal supplements |
+| **Mangood** | Men's health & grooming | **Current target of guardscan-api** |
+| **Pomenatal** | Postpartum/maternal | Planned — will reuse this infrastructure |
 
-**Question for PM:** Is `guardscan-api` the Mangood backend, the Pomenatal backend, or a shared backend serving both?
+**Decision (PM, rev 3):** guardscan-api is Mangood-only today. The infrastructure is intended to serve Pomenatal later, sharing the same codebase. No brand-scoped refactor happens in this sprint.
 
-This affects:
+**What this means for each task:**
 
-- **Task 2 Phase B seed priorities.** The 402 products missing ingredients skew toward a specific mix. If guardscan-api is Mangood, refetch grooming first. If Pomenatal, refetch food/supplements first.
-- **Life-stage multipliers in [lib/scoring/food-grooming.ts](../lib/scoring/food-grooming.ts).** Currently supports men's-health life stages. If this backend also serves Pomenatal, multipliers need to be brand-scoped (a fertility-relevant ingredient is bad for men but the rules are different for pregnant users).
-- **Subcategory taxonomy in Task 2 Phase A backfill.** The LLM classifier's prompt should match the target brand's actual product mix.
-- **Dictionary entries.** 147 current entries — are they Mangood-weighted, Pomenatal-weighted, or balanced?
+- **Task 2 Phase B (refetch)** — refetch by arbitrary source order; no brand-weighted prioritization. Mangood's product mix is already densest.
+- **Task 2 Phase A (subcategory backfill)** — LLM classifier uses its current (Mangood-tuned) prompt. No changes.
+- **Task 6 (search)** — no `brand_scope` column or filter. All products belong to Mangood.
+- **Task 9** — adds TODO markers so the future Pomenatal migration can `grep` for Mangood-specific assumptions.
 
-**Default assumption if PM doesn't answer before kickoff:** guardscan-api is the **Mangood** backend only, and Pomenatal is a separate sprint. This matches the content skew of the current dictionary (men's-health biased) and avoids blocking the sprint on an architectural decision.
+**What's explicitly deferred to a future "Pomenatal onboarding" sprint:**
+
+- Brand column on `products`, `user_submissions`, and potentially `profiles`
+- Brand-scoped life-stage multipliers in [lib/scoring/constants.ts](../lib/scoring/constants.ts)
+- Brand-scoped dictionary entries
+- Brand-tuned LLM classifier prompts
+- Brand-specific seed scripts
+- Per-brand Supabase project / auth pool question (may or may not stay separate)
 
 ---
 
@@ -538,9 +566,10 @@ Don't introduce Vercel Blob, Vercel KV, Neon, or Upstash. Consolidating on one p
 - **M5 — commercial provider fallback.** Not MVP-blocking. Revisit if unknown barcodes cause measurable drop-off.
 - **Automated tests** — post-manual-QA.
 - **Rate limiting on submit** — defer until abuse is observed.
-- **Push notifications for recalls.** The cucumberdude README lists this as a feature. There is currently **no backend infrastructure** for product recalls. Out of scope this sprint; flag for post-MVP.
+- **Push notifications for actual recalls.** No backend infrastructure for product recalls exists. The *user-facing promise* of recalls is softened in Task 7 (permission copy fix). Real recall infrastructure — FDA/FSIS feed ingestion, cross-reference to catalog, targeted push — is deferred post-MVP. A minimal intermediate option (a `product_recalls` table + admin CLI to push a manual recall) is ~2 hours if a specific recall event forces our hand before we build the full pipeline.
 - **Photo retention policy.** Per PM: **keep forever.** No lifecycle rules in the `submissions` bucket. Add a storage cost line to the monthly review after launch.
-- **Second-brand sprint.** If Pomenatal needs its own backend/seed/taxonomy, that's a separate sprint. See Multi-brand section.
+- **Pomenatal onboarding.** Separate future sprint. Task 9 adds `TODO(multi-brand)` markers to the four files that will need changes. See [docs/multi-brand-migration.md](./multi-brand-migration.md) (created in Task 9) for the sketch.
+- **Dead-code cleanup in cucumberdude.** [lib/api.ts:195](../../cucumberdude/lib/api.ts) exports `products.score()` which no screen calls. File a one-line cleanup ticket in the cucumberdude repo for post-MVP — not a guardscan-api task.
 
 ---
 
@@ -560,7 +589,8 @@ Day 2 (Tue) — parallel feature + data
 
 Day 3 (Wed) — QA, designer, promotion
   Stream B:     Task 3 (M2.5 QA against dense pool)
-  Stream C:     Task 7 (Expo wiring + designer review), Task 9 (audit)
+  Stream C:     Task 7 (Expo wiring + designer review + recall copy fix)
+                Task 9 (multi-brand TODO markers + migration doc, 15 min)
   Stream A:     Task 4 production flip (gated on Expo dogfood success)
   All:          Promote Task 1 to production (gated on Task 3 pass)
 
@@ -569,22 +599,29 @@ Day 4 (Thu) — buffer + real-device dogfood
   Monitor auto-publish queue, monitor 401 rate
 ```
 
-**Minimum viable sprint** (if one engineer is sick or unavailable): Tasks 0, 1, 2A, 2B, 3, 4, 6, 8. Defer Task 7 (designer review) and Task 9 (audit) to follow-ups. **Auth (Task 4) is in the MVP per PM decision — do not defer.**
+**Minimum viable sprint** (if one engineer is sick or unavailable): Tasks 0, 1, 2A, 2B, 3, 4, 6, 8. Defer Task 7 (designer review) and Task 9 (multi-brand markers) to follow-ups. **Auth (Task 4) is in the MVP per PM decision — do not defer.** Do NOT defer the Task 7 recall copy fix — it's 30 seconds and removes an App Store risk; pull it out of Task 7 and into Task 1 if Task 7 slips.
 
 ---
 
 ## Questions for PM/PD
 
-Three remain. Everything else is answered.
+**Zero open questions.** All prior items are either answered or closed with a default in rev 3. The defaults below apply unless PM explicitly overrides before kickoff:
 
-1. **Multi-brand scope.** Is guardscan-api the Mangood backend, the Pomenatal backend, or shared? Default assumption if unanswered: Mangood-only, Pomenatal is a separate sprint.
-2. **Search tab default category.** The cucumberdude tab currently defaults to "grooming". Correct for launch, or should it default to "All"?
-3. **Task 1 production promotion.** Confirm: PM approves promotion after seeing Task 3 QA notes AND Task 4 preview auth verification.
+- **Search tab default category →** keep "grooming" (matches Mangood brand positioning; the only product the client ships today).
+- **Task 1 production promotion sign-off →** PM approves promotion after (a) Task 3 M2.5 QA notes pass and (b) Task 4 preview auth verification shows no 401 spike. Process, not a decision.
 
 ---
 
-## Answered in rev 2 (no longer open)
+## Answered history
 
+### rev 3 (2026-04-11)
+- Multi-brand scope → **Mangood only today; Pomenatal reuses this infra later** (Task 9 adds TODO markers)
+- `/api/products/:barcode/score` → **dead code in client, no backend work** (Task 9 repurposed)
+- Recalls in permission copy → **soften the copy in Task 7** (App Store 5.1.1 risk; 30-second fix)
+- Search tab default category → **keep "grooming"** (default)
+- Task 1 production sign-off → **process clarified, PM approves post-Task 3 + Task 4 preview**
+
+### rev 2 (2026-04-11)
 - Auth in MVP → **yes** (Task 4 is mandatory)
 - Coverage target → **90% scored + 90% subcategorized** (Task 2 A+B both mandatory)
 - Subcategory filter in search → **yes** (Task 6 includes it)
@@ -592,7 +629,7 @@ Three remain. Everything else is answered.
 - 8 pending submissions → **publish non-duplicates, reject duplicates** (Task 0)
 - Photo retention → **keep forever** (documented in Deferred)
 - Admin dashboard trigger → **20 submissions/week** (documented in Admin section)
-- Auto-publish rollback story → **env-var kill switch** (added to Task 1) — *recommendation, since PM was "not sure"*
+- Auto-publish rollback story → **env-var kill switch** (added to Task 1)
 - Expo client auth header → **already sends `Authorization: Bearer <jwt>`** in production (verified in cucumberdude/lib/api.ts)
 - Search endpoint verb → **POST** (verified; Task 6 matches client)
 

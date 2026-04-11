@@ -99,6 +99,9 @@ export type RecommendationsFilter = {
   category?: ProductCategory;
 };
 
+// TODO(multi-brand): LifeStage enum is Mangood-biased — only men's-health
+// values. When Pomenatal onboards, extend with pregnancy/postpartum variants
+// or split into a brand-scoped type. See docs/multi-brand-migration.md.
 export type LifeStage =
   | 'general_wellness'
   | 'actively_trying_to_conceive'
@@ -137,7 +140,20 @@ export type ScanHistoryItem = {
 export type SearchFilters = {
   query: string;
   category?: ProductCategory;
+  subcategory?: string;
   min_score?: number;
+  sort_by?: 'relevance' | 'best_rated';
+};
+
+/**
+ * Autocomplete suggestion returned by GET /api/products/search/suggestions.
+ * Mirrors the Expo client's SearchSuggestion so the client can render
+ * HighlightedText using the matchStart/matchEnd offsets.
+ */
+export type SearchSuggestion = {
+  text: string;
+  matchStart: number;
+  matchEnd: number;
 };
 
 export type PaginatedResponse<T> = {

@@ -50,6 +50,11 @@ export function getDeduction(flag: string, position: number): number {
 
 // ── Life stage multipliers ──────────────────────────────────────────────────
 
+// TODO(multi-brand): Multipliers are keyed to the Mangood LifeStage enum.
+// Pomenatal's multipliers will differ — some ingredients neutral for adult
+// men are dangerous during pregnancy (retinoids, high-dose vitamin A, etc.).
+// Likely refactor: pass a brand-scoped multiplier map through the scoring
+// call instead of reading this global constant. See docs/multi-brand-migration.md.
 export const LIFE_STAGE_MULTIPLIERS: Record<LifeStage, number> = {
   actively_trying_to_conceive: 1.5,
   testosterone_optimization: 1.3,

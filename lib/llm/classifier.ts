@@ -22,6 +22,14 @@
  * Determinism: temperature=0 plus a constrained prompt + server-side
  * validation against SUBCATEGORY_HINTS gives ~stable output. Anything that
  * fails validation is coerced back to null so we never persist garbage.
+ *
+ * TODO(multi-brand): The vocabulary in SUBCATEGORY_HINTS (lib/subcategory.ts)
+ * is Mangood-tuned — grooming / men's supplements / food. Pomenatal's product
+ * mix (prenatal vitamins, maternal food, postpartum care) will be miss-classified
+ * by this prompt because there are no anchor words for prenatal_vitamin,
+ * maternal_snack, nursing_balm, etc. Likely refactor: extend SUBCATEGORY_HINTS
+ * with a `brand` scope, or pass a brand-specific vocabulary into this
+ * classifier. See docs/multi-brand-migration.md.
  */
 
 import type { ProductCategory } from '@/types/guardscan';
