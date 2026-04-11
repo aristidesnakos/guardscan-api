@@ -20,8 +20,7 @@
     "db:seed:supplements": "tsx scripts/seed-supplements.ts",
     "db:seed:all": "tsx scripts/seed-dictionary.ts && tsx scripts/seed-top-products.ts && tsx scripts/seed-grooming.ts && tsx scripts/seed-supplements.ts",
     "smoke": "tsx scripts/smoke.ts",
-    "admin:submissions": "tsx scripts/admin-submissions.ts list",
-    "admin:review": "tsx scripts/admin-submissions.ts review"
+    "admin:submissions": "dotenv tsx scripts/admin-submissions.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.47.0",
@@ -37,6 +36,7 @@
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.28.1",
     "eslint": "^9.15.0",
     "eslint-config-next": "^16.0.0",
