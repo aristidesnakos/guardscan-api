@@ -11,6 +11,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:coverage": "tsx scripts/db-coverage.ts",
+    "db:rescore": "tsx scripts/rescore-products.ts",
     "db:backfill:subcategory": "tsx scripts/backfill-subcategories.ts",
     "test:classifier": "tsx scripts/test-classifier.ts",
     "db:seed:dictionary": "tsx scripts/seed-dictionary.ts",

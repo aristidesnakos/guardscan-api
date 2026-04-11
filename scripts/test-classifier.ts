@@ -79,7 +79,7 @@ const FIXTURES: Fixture[] = [
 async function main() {
   console.log(`Classifier smoke test (${FIXTURES.length} fixtures)`);
   console.log(`  llm: ${isLlmClassifierEnabled() ? 'enabled' : 'disabled (no OPENROUTER_API_KEY)'}`);
-  console.log(`  model: ${process.env.OPENROUTER_CLASSIFIER_MODEL ?? 'qwen/qwen-2.5-7b-instruct (default)'}`);
+  console.log(`  model: ${process.env.OPENROUTER_CLASSIFIER_MODEL ?? 'qwen/qwen3.5-9b (default)'}`);
   console.log('');
 
   let hits = 0;

@@ -18,6 +18,11 @@
  *   npx tsx scripts/backfill-subcategories.ts --dry           # preview only
  *   npx tsx scripts/backfill-subcategories.ts --no-llm        # keyword only
  *   npx tsx scripts/backfill-subcategories.ts --limit 50      # cap rows touched
+ *   npx tsx scripts/backfill-subcategories.ts --null-only     # only fill rows
+ *                                                             # where subcategory
+ *                                                             # IS NULL (never
+ *                                                             # overwrites existing).
+ *                                                             # Used by Task 2A.
  */
 
 import { readFileSync } from 'fs';
@@ -37,7 +42,7 @@ try {
   }
 } catch {}
 
-import { eq } from 'drizzle-orm';
+import { and, eq, isNull } from 'drizzle-orm';
 import { getDb, closeDb } from '../db/client';
 import { products } from '../db/schema';
 import { inferSubcategory } from '../lib/subcategory';
@@ -64,13 +69,14 @@ function delay(ms: number): Promise<void> {
 async function main() {
   const dryRun = process.argv.includes('--dry');
   const disableLlm = process.argv.includes('--no-llm');
+  const nullOnly = process.argv.includes('--null-only');
   const limitFlag = process.argv.indexOf('--limit');
   const limit = limitFlag >= 0 ? parseInt(process.argv[limitFlag + 1], 10) : 0;
 
   const llmEnabled = !disableLlm && isLlmClassifierEnabled();
 
   console.log(
-    `Backfill subcategories (${dryRun ? 'DRY RUN' : 'APPLY'}, llm=${llmEnabled ? 'on' : 'off'}${limit ? `, limit=${limit}` : ''})`,
+    `Backfill subcategories (${dryRun ? 'DRY RUN' : 'APPLY'}, llm=${llmEnabled ? 'on' : 'off'}${nullOnly ? ', null-only' : ''}${limit ? `, limit=${limit}` : ''})`,
   );
 
   if (!disableLlm && !isLlmClassifierEnabled()) {
@@ -80,7 +86,7 @@ async function main() {
   }
 
   const db = getDb();
-  const allRows = await db
+  const baseSelect = db
     .select({
       id: products.id,
       barcode: products.barcode,
@@ -89,6 +95,10 @@ async function main() {
       subcategory: products.subcategory,
     })
     .from(products);
+
+  const allRows = nullOnly
+    ? await baseSelect.where(isNull(products.subcategory))
+    : await baseSelect;
 
   const rows = limit > 0 ? allRows.slice(0, limit) : allRows;
 
@@ -131,10 +141,20 @@ async function main() {
     });
 
     if (!dryRun) {
-      await db
-        .update(products)
-        .set({ subcategory: inferred })
-        .where(eq(products.id, row.id));
+      // In --null-only mode, skip writes that would clear an existing value
+      // and guard the WHERE clause so we can never overwrite a non-null row.
+      if (nullOnly) {
+        if (inferred === null) continue;
+        await db
+          .update(products)
+          .set({ subcategory: inferred })
+          .where(and(eq(products.id, row.id), isNull(products.subcategory)));
+      } else {
+        await db
+          .update(products)
+          .set({ subcategory: inferred })
+          .where(eq(products.id, row.id));
+      }
     }
 
     // Lightweight progress ping every 25 rows so long runs don't look stuck.

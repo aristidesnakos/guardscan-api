@@ -9,14 +9,14 @@
  * path continues to call the sync keyword pass directly, never this.
  *
  * Model choice:
- *   Defaults to `qwen/qwen-2.5-7b-instruct`. At ~$0.06/M input + $0.15/M
+ *   Defaults to `qwen/qwen3.5-9b`. At ~$0.06/M input + $0.15/M
  *   output via OpenRouter, 10k classifications cost ~$0.09. Override with
  *   OPENROUTER_CLASSIFIER_MODEL if you want something different — keep it
  *   cheap and instruction-tuned.
  *
  * Env:
  *   OPENROUTER_API_KEY            required; when absent, LLM fallback is a no-op
- *   OPENROUTER_CLASSIFIER_MODEL   optional, defaults to qwen/qwen-2.5-7b-instruct
+ *   OPENROUTER_CLASSIFIER_MODEL   optional, defaults to qwen/qwen3.5-9b
  *   OPENROUTER_BASE_URL           optional, defaults to https://openrouter.ai/api/v1
  *
  * Determinism: temperature=0 plus a constrained prompt + server-side
@@ -39,7 +39,7 @@ import {
 } from '@/lib/subcategory';
 import { log } from '@/lib/logger';
 
-const DEFAULT_MODEL = 'qwen/qwen-2.5-7b-instruct';
+const DEFAULT_MODEL = 'qwen/qwen3.5-9b';
 const DEFAULT_BASE_URL = 'https://openrouter.ai/api/v1';
 
 const VOCABULARY: readonly string[] = SUBCATEGORY_HINTS.map((h) => h.key);
