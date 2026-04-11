@@ -110,11 +110,13 @@ export async function extractAuth(request: Request): Promise<AuthContext> {
 export async function requireUser(
   request: Request,
 ): Promise<AuthContext | NextResponse> {
-  if (AUTH_DISABLED) {
-    return { userId: null, source: 'anonymous' };
-  }
+  // Always try to extract a real identity first. Previously this was
+  // short-circuited by AUTH_DISABLED, which silently ignored ALLOW_DEV_AUTH
+  // and made user-scoped routes (history, favorites, scan events) useless
+  // in local dev.
   const ctx = await extractAuth(request);
   if (ctx.userId) return ctx;
+  if (AUTH_DISABLED) return ctx; // anonymous is acceptable
   return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 }
 
