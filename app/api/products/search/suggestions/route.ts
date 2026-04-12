@@ -2,10 +2,14 @@
  * GET /api/products/search/suggestions
  *
  * Autocomplete for the search tab. Called by the Expo client every time
- * the user types (debounced on the client at 200ms). Prefix-biased:
+ * the user types (debounced on the client at 200ms). Substring match with
+ * prefix-priority ranking:
  *   - Query is matched against `products.name` and `products.brand` with
- *     an `ILIKE 'q%'` pattern — full substring search lives in the
- *     regular /search endpoint.
+ *     an `ILIKE '%q%'` substring pattern so mid-word hits ("shower gel",
+ *     "hydrating") surface too. Results where the query matches the
+ *     *start* of the name or brand are still prioritised via a CASE in
+ *     the ORDER BY, so natural prefix typing ("Expert", "Sanex") still
+ *     feels snappy.
  *   - We only surface products with `score IS NOT NULL` so the dropdown
  *     never shows "mystery products" the scan tab can't explain.
  *
@@ -23,7 +27,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { and, desc, eq, ilike, isNotNull, or } from 'drizzle-orm';
+import { and, desc, eq, ilike, isNotNull, or, sql } from 'drizzle-orm';
 
 import type { ProductCategory, SearchSuggestion } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
@@ -82,12 +86,14 @@ export async function GET(request: Request) {
     return NextResponse.json([], { headers: CACHE_HEADERS });
   }
 
-  const pattern = `${escapeLikePattern(rawQuery)}%`;
+  const escaped = escapeLikePattern(rawQuery);
+  const substringPattern = `%${escaped}%`;
+  const prefixPattern = `${escaped}%`;
   const db = getDb();
 
   const whereClauses = [
     isNotNull(products.score),
-    or(ilike(products.name, pattern), ilike(products.brand, pattern)),
+    or(ilike(products.name, substringPattern), ilike(products.brand, substringPattern)),
   ];
   if (category) {
     whereClauses.push(eq(products.category, category));
@@ -102,7 +108,15 @@ export async function GET(request: Request) {
       })
       .from(products)
       .where(and(...whereClauses))
-      .orderBy(desc(products.score), products.name)
+      .orderBy(
+        // Prefix matches (name OR brand starts with the query) rank
+        // above mid-string matches so "Sanex" still lands on top when
+        // the user types "San", even though substring search also
+        // returns products whose ingredient lists mention Sanex.
+        sql`CASE WHEN ${products.name} ILIKE ${prefixPattern} OR ${products.brand} ILIKE ${prefixPattern} THEN 0 ELSE 1 END`,
+        desc(products.score),
+        products.name,
+      )
       .limit(OVERFETCH_LIMIT);
 
     const lowerQuery = rawQuery.toLowerCase();

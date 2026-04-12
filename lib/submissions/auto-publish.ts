@@ -33,7 +33,7 @@ import { log } from '@/lib/logger';
 import type { ExtractedSubmission } from '@/lib/ocr/claude-vision';
 
 /** Minimum Claude confidence (0–100) required for auto-publish. */
-export const AUTO_PUBLISH_CONFIDENCE_THRESHOLD = 85;
+export const AUTO_PUBLISH_CONFIDENCE_THRESHOLD = 90;
 
 /** Discriminated result from {@link tryAutoPublish}. */
 export type AutoPublishResult =
