@@ -1020,7 +1020,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'glycerin',
     aliases: ['glycerol', 'vegetable glycerin'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Natural humectant — draws moisture to the skin, very well tolerated.',
     category: 'both',
     fertility_relevant: false,
@@ -1475,7 +1475,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'water',
     aliases: ['aqua', 'purified water', 'deionized water', 'eau'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Base solvent — safe, universal carrier for active ingredients.',
     category: 'both',
     fertility_relevant: false,
@@ -1485,7 +1485,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'citric acid',
     aliases: ['e330'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Natural acid found in citrus — safe pH adjuster and preservative.',
     category: 'both',
     fertility_relevant: false,
@@ -1495,7 +1495,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'sodium chloride',
     aliases: ['salt', 'sea salt', 'table salt'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Essential mineral — safe in moderation. Excess linked to hypertension.',
     category: 'both',
     fertility_relevant: false,
@@ -1505,7 +1505,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'lactic acid',
     aliases: ['e270'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Natural alpha hydroxy acid — gentle exfoliant and pH adjuster.',
     category: 'both',
     fertility_relevant: false,
@@ -1515,7 +1515,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'xanthan gum',
     aliases: ['e415'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Natural thickener — well-tolerated prebiotic fiber, safe food additive.',
     category: 'both',
     fertility_relevant: false,
@@ -1525,7 +1525,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'pectin',
     aliases: ['e440'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Soluble fiber from fruit — supports gut health and cholesterol reduction.',
     category: 'food',
     fertility_relevant: false,
@@ -1535,7 +1535,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'gelatin',
     aliases: ['gelatine'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Protein — source of collagen, widely used as a capsule material.',
     category: 'both',
     fertility_relevant: false,
@@ -1545,7 +1545,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'cellulose',
     aliases: ['microcrystalline cellulose', 'e460', 'vegetable cellulose'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Plant-derived fiber — safe excipient used in tablets and capsules.',
     category: 'both',
     fertility_relevant: false,
@@ -1555,7 +1555,7 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
   {
     normalized: 'rice flour',
     aliases: ['brown rice flour'],
-    flag: 'positive',
+    flag: 'neutral',
     reason: 'Natural filler and flow agent — safe, commonly used in capsules.',
     category: 'both',
     fertility_relevant: false,

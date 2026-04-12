@@ -39,7 +39,7 @@ export function positionTier(position: number): PositionTier {
 export const FLAG_DEDUCTIONS: Record<string, Record<PositionTier, number>> = {
   negative: { high: -15, mid: -10, low: -5 },
   caution: { high: -8, mid: -5, low: -3 },
-  positive: { high: 5, mid: 3, low: 2 },
+  positive: { high: 0, mid: 0, low: 0 },
   neutral: { high: 0, mid: 0, low: 0 },
 };
 
@@ -112,4 +112,4 @@ export function nutriscoreToGuardScan(nutriscoreScore: number): number {
 
 // ── Scoring version (stamped on every scoring output) ───────────────────────
 
-export const SCORE_VERSION = 'v1.1.0';
+export const SCORE_VERSION = 'v1.2.0';

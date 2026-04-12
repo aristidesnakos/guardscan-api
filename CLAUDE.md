@@ -55,14 +55,16 @@ Smoke test scans barcode `3017620422003` and validates the full `ScanResult` sha
 | `lib/auth.ts` | M1 auth: `X-Dev-User-Id` header or Bearer token |
 | `proxy.ts` | CORS handler for `/api/*` OPTIONS preflight |
 
-## Scoring Algorithm
+## Scoring Algorithm (v1.2.0 — subtract-only)
 
 1. Start at 100. Iterate ingredients by position (high=1–3, mid=4–8, low=9+).
-2. Deduct/add based on flag × position tier (NEGATIVE: −15/−10/−5; CAUTION: −8/−5/−3; POSITIVE: +5/+3/+2).
+2. Deduct based on flag × position tier (NEGATIVE: −15/−10/−5; CAUTION: −8/−5/−3). Positive flags do NOT contribute to the numeric score.
 3. If ingredient is fertility/testosterone-relevant and deduction is negative, apply life-stage multiplier (1.0–1.5×).
 4. Clamp to 0–100 → ingredient safety score.
 5. If Nutri-Score is present: combine 60% nutritional quality + 40% ingredient safety. Otherwise 100% ingredient safety.
 6. Rating bands: ≥80 Excellent, ≥60 Good, ≥40 Mediocre, <40 Poor.
+
+See `docs/architecture/scoring-v1.2-subtract-only-report.md` for the rationale behind this design.
 
 ## Environment Variables
 

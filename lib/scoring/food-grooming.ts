@@ -1,5 +1,5 @@
 /**
- * Food + grooming scoring.
+ * Food + grooming scoring (v1.2.0 — subtract-only).
  *
  * Pure function: takes an ingredient list and an optional life stage, returns a
  * complete `ScoreBreakdown`. No DB, no I/O. Tests can call this directly with
@@ -7,7 +7,8 @@
  *
  * Algorithm (matches Expo `constants/Scoring.ts`):
  *   1. Start at 100.
- *   2. Sum position-weighted deductions per flag (`high`/`mid`/`low`).
+ *   2. Sum position-weighted deductions for caution/negative flags only.
+ *      Positive flags do not contribute to the numeric score (v1.2.0 change).
  *   3. Apply life-stage multiplier to deductions for ingredients marked
  *      `fertility_relevant` or `testosterone_relevant`.
  *   4. Clamp to [0, 100].

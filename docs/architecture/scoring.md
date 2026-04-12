@@ -1,8 +1,8 @@
-# GuardScan Scoring Methodology
+# ManGood Scoring Methodology
 
 ## Overview
 
-GuardScan scores products on a **0-100 scale** using ingredient-level safety analysis and, where available, nutritional quality data. The scoring is transparent, deterministic, and personalized to user life stages.
+ManGood scores products on a **0-100 scale** using ingredient-level safety analysis and, where available, nutritional quality data. The scoring is transparent, deterministic, and personalized to user life stages.
 
 ### Rating Bands
 
@@ -17,7 +17,7 @@ GuardScan scores products on a **0-100 scale** using ingredient-level safety ana
 
 ## Product Categories
 
-GuardScan evaluates three product categories, each with a tailored scoring approach:
+ManGood evaluates three product categories, each with a tailored scoring approach:
 
 | Category | Data Sources | Scoring Dimensions |
 |----------|-------------|-------------------|
@@ -33,9 +33,9 @@ Food products are scored across two dimensions when Nutri-Score data is availabl
 
 ### Dimension 1: Nutritional Quality (60% weight)
 
-Derived from the product's **Nutri-Score** (the European nutritional grading system). GuardScan converts the raw Nutri-Score (range: -15 to 40, lower = better) to a 0-100 scale:
+Derived from the product's **Nutri-Score** (the European nutritional grading system). ManGood converts the raw Nutri-Score (range: -15 to 40, lower = better) to a 0-100 scale:
 
-| Nutri-Score (raw) | GuardScan Score | Meaning |
+| Nutri-Score (raw) | ManGood Score | Meaning |
 |---|---|---|
 | -15 | 100 | Exceptional nutritional profile |
 | 0 | 73 | Good nutritional profile |
@@ -71,26 +71,26 @@ Every product begins with a perfect score.
 
 Ingredients are evaluated by their **position** in the ingredient list (listed by weight per FDA/EU regulations). Earlier positions mean higher concentration:
 
-| Position | Tier | Negative | Caution | Positive |
-|----------|------|----------|---------|----------|
-| 1-3 | High | -15 | -8 | +5 |
-| 4-8 | Mid | -10 | -5 | +3 |
-| 9+ | Low | -5 | -3 | +2 |
+| Position | Tier | Negative | Caution |
+|----------|------|----------|---------|
+| 1-3 | High | -15 | -8 |
+| 4-8 | Mid | -10 | -5 |
+| 9+ | Low | -5 | -3 |
 
-**Neutral ingredients receive no deduction or bonus.**
+**Neutral and positive-flagged ingredients receive no deduction.** Positive flags exist in the dictionary for metadata purposes but do not contribute to the numeric score (v1.2.0 change — see [scoring-v1.2-subtract-only-report.md](./scoring-v1.2-subtract-only-report.md)).
 
 ### Step 3: Ingredient Flags
 
-Each ingredient is classified against GuardScan's curated dictionary:
+Each ingredient is classified against ManGood's curated dictionary:
 
-| Flag | Meaning | Example |
-|------|---------|---------|
-| **Positive** | Beneficial ingredient | Water, Glycerin, Vitamin E |
-| **Neutral** | Safe / no significant concern | Most standard ingredients |
-| **Caution** | Minor concern at high levels | Fragrance (undisclosed mixture), Stearic Acid |
-| **Negative** | Ingredient of concern | BHT, Sodium Nitrite, Parabens |
+| Flag | Meaning | Scoring Impact | Example |
+|------|---------|---------------|---------|
+| **Negative** | Ingredient of concern | Position-weighted deduction | BHT, Sodium Nitrite, Parabens |
+| **Caution** | Minor concern at high levels | Position-weighted deduction (smaller) | Fragrance (undisclosed mixture), Sodium Benzoate |
+| **Neutral** | Safe / no significant concern | No impact | Most standard ingredients |
+| **Positive** | Beneficial active ingredient | No impact (metadata only) | Niacinamide, Hyaluronic Acid, Vitamin E |
 
-Unknown ingredients default to **Neutral** -- GuardScan does not penalize ingredients it hasn't evaluated.
+Unknown ingredients default to **Neutral** — ManGood does not penalize ingredients it hasn't evaluated. Positive flags are stored in the dictionary as metadata for potential future use but do not affect the numeric safety score.
 
 ### Step 4: Life-Stage Personalization
 
@@ -104,7 +104,7 @@ For users who set a life stage, deductions on fertility-relevant or testosterone
 | Athletic Performance | 1.0x | Standard scoring |
 | General Wellness | 1.0x | Standard scoring |
 
-The multiplier only applies to **negative deductions** on sensitive ingredients. Positive ingredients are not scaled up.
+The multiplier only applies to **negative deductions** on sensitive ingredients.
 
 ### Step 5: Clamp to 0-100
 
@@ -127,10 +127,11 @@ A minimum of 2 dimensions must have data for a score to be generated.
 
 ---
 
-## How GuardScan Compares to Yuka
+## How ManGood Compares to Yuka
 
-| Aspect | GuardScan | Yuka |
+| Aspect | ManGood | Yuka |
 |--------|-----------|------|
+| **Scoring Model** | Subtract-only from 100 (no positive credits) | Subtract-only; worst ingredient also caps maximum |
 | **Food Scoring** | 60% nutrition + 40% ingredient safety | 60% nutrition + 30% additives + 10% organic |
 | **Cosmetics Scoring** | 100% ingredient safety with position-weighted deductions | Capped by worst ingredient (1 hazardous = max 25/100) |
 | **Personalization** | Life-stage multipliers (fertility, testosterone, longevity) | No personalization |
@@ -141,19 +142,21 @@ A minimum of 2 dimensions must have data for a score to be generated.
 
 ### Key Differentiators
 
-1. **Position-weighted scoring**: GuardScan penalizes harmful ingredients more when they appear earlier (higher concentration), rather than using a flat penalty. Yuka caps cosmetics scores by the single worst ingredient regardless of concentration.
+1. **Subtract-only safety scoring**: Both ManGood and competitors use a subtract-only model where the safety score reflects hazard enumeration only. Positive/beneficial ingredients are classified in the dictionary but do not inflate the numeric score. A score of 100 means "no known concerns detected" — a defensible, unambiguous claim.
 
-2. **Life-stage personalization**: Users trying to conceive or optimizing testosterone see amplified penalties on relevant endocrine disruptors. No competitor offers this.
+2. **Position-weighted scoring**: ManGood penalizes harmful ingredients more when they appear earlier (higher concentration), rather than using a flat penalty. Yuka caps cosmetics scores by the single worst ingredient regardless of concentration.
 
-3. **Supplement support**: Dedicated four-dimension scoring for dietary supplements goes beyond ingredient-list analysis to assess manufacturing quality, testing, and efficacy.
+3. **Life-stage personalization**: Users trying to conceive or optimizing testosterone see amplified penalties on relevant endocrine disruptors. No competitor offers this.
 
-4. **Conservative unknowns**: Unknown ingredients default to Neutral, avoiding false alarms on novel or regional ingredients that haven't been evaluated yet.
+4. **Supplement support**: Dedicated four-dimension scoring for dietary supplements goes beyond ingredient-list analysis to assess manufacturing quality, testing, and efficacy.
+
+5. **Conservative unknowns**: Unknown ingredients default to Neutral, avoiding false alarms on novel or regional ingredients that haven't been evaluated yet.
 
 ---
 
 ## Scoring Version
 
-Current: **v1.1.0**
+Current: **v1.2.0**
 
 Score versions are stamped on every score output, enabling the app to detect when a product should be re-scored after algorithm updates.
 
@@ -177,4 +180,4 @@ Products are automatically classified using a multi-signal approach:
 2. **Category tags**: Open Food Facts category taxonomy tags (e.g., `en:body-creams`, `en:shampoos`) can override the default food classification.
 3. **Product name**: Keywords in the product name (e.g., "moisturizing cream", "shampoo", "body wash") serve as a fallback detection signal.
 
-When a product exists in both food and beauty databases, GuardScan uses the beauty database when grooming signals are detected, ensuring accurate categorization and scoring.
+When a product exists in both food and beauty databases, ManGood uses the beauty database when grooming signals are detected, ensuring accurate categorization and scoring.
