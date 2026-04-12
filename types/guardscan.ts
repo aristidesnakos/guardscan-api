@@ -156,6 +156,12 @@ export type SearchSuggestion = {
   matchEnd: number;
 };
 
+export type SearchResultItem = {
+  product: Product;
+  score: number | null;
+  rating: RatingLabel | null;
+};
+
 export type PaginatedResponse<T> = {
   data: T[];
   total: number;
