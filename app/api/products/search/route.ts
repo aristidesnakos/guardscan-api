@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { and, asc, eq, gte, ilike, inArray, isNotNull, or, sql } from 'drizzle-orm';
 
-import type { PaginatedResponse, Product } from '@/types/guardscan';
+import type { PaginatedResponse, Product, SearchResultItem } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
+import { getRating } from '@/lib/scoring/constants';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { productIngredients, products } from '@/db/schema';
 import { log } from '@/lib/logger';
@@ -142,9 +143,9 @@ export async function POST(request: Request) {
     ingsByProduct.set(ing.productId, list);
   }
 
-  const data: Product[] = rows.map((row) => {
+  const data: SearchResultItem[] = rows.map((row) => {
     const ings = ingsByProduct.get(row.id) ?? [];
-    return {
+    const product: Product = {
       id: row.id,
       barcode: row.barcode,
       name: row.name,
@@ -165,6 +166,9 @@ export async function POST(request: Request) {
       created_at: row.createdAt.toISOString(),
       updated_at: row.lastSyncedAt.toISOString(),
     };
+    const score = row.score ?? null;
+    const rating = score != null ? getRating(score).label : null;
+    return { product, score, rating };
   });
 
   log.info('search_ok', {
@@ -177,5 +181,5 @@ export async function POST(request: Request) {
     offset,
   });
 
-  return NextResponse.json<PaginatedResponse<Product>>({ data, total, limit, offset });
+  return NextResponse.json<PaginatedResponse<SearchResultItem>>({ data, total, limit, offset });
 }
