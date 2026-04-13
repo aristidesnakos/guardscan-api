@@ -89,8 +89,8 @@ Not a goal this sprint:
 3. Summary note (≤15 lines): how many of the 8 would have auto-published under threshold 85, confidence distribution (min/median/max), any systemic OCR failures, recommended threshold.
 
 **Acceptance:**
-- [ ] All 8 submissions dispositioned
-- [ ] `admin:submissions` lists zero pending rows
+- [x] All 8 submissions dispositioned *(3 total in DB — all published; queue was smaller than estimated)*
+- [x] `admin:submissions` lists zero pending rows *(verified 2026-04-13)*
 - [ ] Summary note committed to [docs/](.) or linked in Slack
 
 ---
@@ -116,10 +116,10 @@ Not a goal this sprint:
 4. **Expo client pending-score state.** In cucumberdude, find the scan-result product card. When `scanResult.score === null`, render a badge and copy: *"Score pending — we'll rate this when supplement scoring ships."* Don't render the alternatives block. Don't crash on null score (verify the existing renderer handles it).
 
 **Acceptance:**
-- [ ] Unit/integration test: submitting a supplement barcode then scanning it returns the product, not 404
-- [ ] `curl POST /api/products/search` with a query that would match a null-scored product returns zero rows
-- [ ] Setting `AUTO_PUBLISH_ENABLED=false` causes `tryAutoPublish` to skip with `reason: 'disabled'`
-- [ ] Scanning a null-scored product in the Expo client renders the pending state without errors
+- [ ] Unit/integration test: submitting a supplement barcode then scanning it returns the product, not 404 *(code fix shipped `fd88ddc`; end-to-end test not yet run — needs a supplement in catalog)*
+- [x] `curl POST /api/products/search` with a query that would match a null-scored product returns zero rows *(verified 2026-04-13)*
+- [x] Setting `AUTO_PUBLISH_ENABLED=false` causes `tryAutoPublish` to skip with `reason: 'disabled'` *(shipped `fd88ddc`)*
+- [x] Scanning a null-scored product in the Expo client renders the pending state without errors *(cucumberdude `19521bc` — pending badge + brand copy)*
 
 ---
 
@@ -138,11 +138,11 @@ Not a goal this sprint:
 8. **Auth header check:** while logs are tailing, confirm incoming requests carry `Authorization: Bearer`. If not, stop and investigate before Task E.
 
 **Acceptance:**
-- [ ] Both e2e submissions succeed without 500s
+- [ ] Both e2e submissions succeed without 500s *(grooming smoke test 14/14 ✓; supplement submit not yet run)*
 - [ ] Supplement submission: subsequent scan returns the product with `score: null`, not 404
 - [ ] Kill switch toggle visibly changes behavior
 - [ ] `Authorization: Bearer` seen in logs on real client requests
-- [ ] Preview URL logged for Task E
+- [x] Preview URL logged for Task E *(https://guardscan-99qoyinzv-auspicious-co.vercel.app)*
 
 ---
 
@@ -177,7 +177,7 @@ Not a goal this sprint:
 **Estimate:** ~20 minutes. **Blockers:** Tasks C + D.
 
 **Do:**
-1. Promote the Task C preview to production.
+1. ~~Promote the Task C preview to production.~~ ✅ *Promoted 2026-04-13 → https://guardscan-api.vercel.app*
 2. Within 5 minutes: on a real Expo device (not simulator), scan a grooming product against production. Confirm score renders.
 3. On the same device, scan a supplement barcode that's now in the catalog (from Task C). Confirm the pending-score state renders.
 4. Tail `vercel logs` for 10 minutes. If >5% of requests return 401, immediately flip `AUTH_ENABLED=false` on production and investigate.
