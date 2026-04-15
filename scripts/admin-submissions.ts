@@ -153,6 +153,10 @@ async function publishOne(submissionId: string) {
 
   const reviewedBy = process.env.ADMIN_USER_IDS?.split(',')[0]?.trim() || 'cli';
 
+  type PhotoEntry = { role: string; path: string };
+  const photos = row.photos as PhotoEntry[];
+  const frontPath = photos.find((p) => p.role === 'front')?.path ?? null;
+
   try {
     const { productId, score } = await publishExtracted({
       submissionId,
@@ -162,6 +166,7 @@ async function publishOne(submissionId: string) {
       category: ocr.category as ProductCategory,
       ingredients: ocr.ingredients,
       reviewedBy,
+      frontImagePath: frontPath,
     });
     console.log(`✓ Published  product_id=${productId}  score=${score ?? 'null'}`);
   } catch (err) {
@@ -289,6 +294,8 @@ async function reviewOne(submissionId: string) {
   const reviewedBy =
     process.env.ADMIN_USER_IDS?.split(',')[0]?.trim() || 'cli';
 
+  const frontPath = photos.find((p) => p.role === 'front')?.path ?? null;
+
   try {
     const { productId, score } = await publishExtracted({
       submissionId,
@@ -298,6 +305,7 @@ async function reviewOne(submissionId: string) {
       category: category as ProductCategory,
       ingredients,
       reviewedBy,
+      frontImagePath: frontPath,
     });
     console.log(
       `\n✓ Published  product_id=${productId}  score=${score ?? 'null'}`,

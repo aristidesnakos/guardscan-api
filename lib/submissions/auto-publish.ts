@@ -86,6 +86,7 @@ async function buildAndPublish(args: {
   category: ProductCategory;
   rawIngredients: string[];
   reviewedBy: string | null;
+  frontImagePath?: string | null;
 }): Promise<
   | { ok: true; productId: string; score: number | null }
   | { ok: false; error: string }
@@ -102,7 +103,7 @@ async function buildAndPublish(args: {
     brand: args.brand ?? '',
     category: args.category,
     subcategory: null,
-    image_url: null,
+    image_url: args.frontImagePath ?? null,
     data_completeness: 'full',
     ingredient_source: 'user_contributed',
     ingredients,
@@ -165,6 +166,7 @@ export async function tryAutoPublish(args: {
   submissionId: string;
   barcode: string;
   extracted: ExtractedSubmission;
+  frontImagePath?: string | null;
 }): Promise<AutoPublishResult> {
   const { submissionId, barcode, extracted } = args;
 
@@ -198,6 +200,7 @@ export async function tryAutoPublish(args: {
     category: extracted.category,
     rawIngredients: extracted.ingredients,
     reviewedBy: null, // null ⇒ auto-published
+    frontImagePath: args.frontImagePath,
   });
 
   if (!result.ok) {
@@ -233,6 +236,7 @@ export async function publishExtracted(args: {
   category: ProductCategory;
   ingredients: string[];
   reviewedBy: string;
+  frontImagePath?: string | null;
 }): Promise<{ productId: string; score: number | null }> {
   const result = await buildAndPublish({
     submissionId: args.submissionId,
@@ -242,6 +246,7 @@ export async function publishExtracted(args: {
     category: args.category,
     rawIngredients: args.ingredients,
     reviewedBy: args.reviewedBy,
+    frontImagePath: args.frontImagePath,
   });
 
   if (!result.ok) {

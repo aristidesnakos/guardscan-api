@@ -85,7 +85,12 @@ export default function AdminSubmissionsPage() {
 
   return (
     <main style={{ fontFamily: 'system-ui, sans-serif', padding: 40, maxWidth: 900, margin: '0 auto' }}>
-      <h1 style={{ marginBottom: 4 }}>Submission Review</h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+        <h1 style={{ marginBottom: 4 }}>Submission Review</h1>
+        <Link href="/admin/calibration" style={{ color: '#0066cc', textDecoration: 'none', fontSize: 14 }}>
+          Score Calibration →
+        </Link>
+      </div>
       <p style={{ color: '#6c757d', marginTop: 0, fontSize: 14 }}>Local dev only</p>
 
       {/* Admin ID bar */}
