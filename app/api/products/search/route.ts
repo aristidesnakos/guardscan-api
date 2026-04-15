@@ -4,6 +4,7 @@ import { and, asc, eq, gte, ilike, inArray, isNotNull, or, sql } from 'drizzle-o
 import type { PaginatedResponse, Product, SearchResultItem } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
 import { getRating } from '@/lib/scoring/constants';
+import { resolveImageUrl } from '@/lib/storage/supabase';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { productIngredients, products } from '@/db/schema';
 import { log } from '@/lib/logger';
@@ -143,7 +144,7 @@ export async function POST(request: Request) {
     ingsByProduct.set(ing.productId, list);
   }
 
-  const data: SearchResultItem[] = rows.map((row) => {
+  const data: SearchResultItem[] = await Promise.all(rows.map(async (row) => {
     const ings = ingsByProduct.get(row.id) ?? [];
     const product: Product = {
       id: row.id,
@@ -152,7 +153,7 @@ export async function POST(request: Request) {
       brand: row.brand ?? '',
       category: row.category as Product['category'],
       subcategory: row.subcategory ?? null,
-      image_url: row.imageFront ?? null,
+      image_url: await resolveImageUrl(row.imageFront),
       data_completeness: 'full',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
       ingredients: ings.map((ing) => ({
@@ -169,7 +170,7 @@ export async function POST(request: Request) {
     const score = row.score ?? null;
     const rating = score != null ? getRating(score).label : null;
     return { product, score, rating };
-  });
+  }));
 
   log.info('search_ok', {
     query: query.slice(0, 50),

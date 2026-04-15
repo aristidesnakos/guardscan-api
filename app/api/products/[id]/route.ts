@@ -16,6 +16,7 @@ import { requireUser } from '@/lib/auth';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { products, productIngredients } from '@/db/schema';
 import { log } from '@/lib/logger';
+import { resolveImageUrl } from '@/lib/storage/supabase';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -89,7 +90,7 @@ export async function GET(
       brand: row.brand ?? '',
       category: row.category as Product['category'],
       subcategory: row.subcategory ?? null,
-      image_url: row.imageFront ?? null,
+      image_url: await resolveImageUrl(row.imageFront),
       data_completeness: ings.length > 0 ? 'full' : 'partial',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
       ingredients: ings.map((ing) => ({

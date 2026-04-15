@@ -144,6 +144,7 @@ export async function POST(request: Request) {
         submissionId,
         barcode,
         extracted,
+        frontImagePath: frontPath,
       });
       log.info('submission_auto_publish_outcome', {
         submission_id: submissionId,

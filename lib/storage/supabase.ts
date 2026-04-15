@@ -35,6 +35,24 @@ export async function uploadSubmissionPhoto(
   return path; // store path not URL — sign on demand
 }
 
+/**
+ * Resolve a product's image_front value to a usable URL.
+ * - HTTP(S) URLs (from OFF/OBF) pass through unchanged.
+ * - Supabase Storage paths (from user submissions) get signed.
+ * - Null/empty returns null.
+ */
+export async function resolveImageUrl(
+  imageFront: string | null,
+): Promise<string | null> {
+  if (!imageFront) return null;
+  if (imageFront.startsWith('http')) return imageFront;
+  try {
+    return await signedSubmissionUrl(imageFront, 172_800); // 48h
+  } catch {
+    return null;
+  }
+}
+
 export async function signedSubmissionUrl(
   path: string,
   expiresInSeconds = 3600,
