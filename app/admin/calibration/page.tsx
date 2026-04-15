@@ -160,7 +160,7 @@ export default function CalibrationPage() {
     const rows = filtered.map((p) => {
       const mangood = p.score ?? '';
       const yuka    = yukaScores[p.id] ?? '';
-      const gap     = p.score != null && yuka !== '' ? p.score - (yuka as number) : '';
+      const gap     = p.score != null && yukaScores[p.id] != null ? p.score - yukaScores[p.id] : '';
       const flags   = p.flaggedIngredients
         .map((f) => `${f.name}(${f.flag[0].toUpperCase()})`)
         .join('; ');

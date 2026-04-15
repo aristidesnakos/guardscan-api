@@ -13,6 +13,12 @@
  *   npx tsx scripts/backfill-submission-images.ts --dry    # preview only
  */
 
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+config({ path: resolve(process.cwd(), '.env.local') }); // overrides
+config({ path: resolve(process.cwd(), '.env') });        // fallback
+
 import { eq, and, isNull } from 'drizzle-orm';
 
 import { getDb } from '@/db/client';
@@ -43,8 +49,9 @@ async function main() {
   for (const row of rows) {
     // sourceId stores the submissionId (passed as sourceId in upsertProduct)
     const submissionId = row.sourceId;
-    if (!submissionId) {
-      console.log(`  SKIP  ${row.barcode}  "${row.name}" — no sourceId`);
+    const uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!submissionId || !uuidRe.test(submissionId)) {
+      console.log(`  SKIP  ${row.barcode}  "${row.name}" — sourceId is not a UUID: ${submissionId}`);
       skipped++;
       continue;
     }
