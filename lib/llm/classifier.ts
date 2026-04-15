@@ -39,7 +39,7 @@ import {
 } from '@/lib/subcategory';
 import { log } from '@/lib/logger';
 
-const DEFAULT_MODEL = 'qwen/qwen3.5-9b';
+const DEFAULT_MODEL = 'google/gemma-4-26b-a4b-it';
 const DEFAULT_BASE_URL = 'https://openrouter.ai/api/v1';
 
 const VOCABULARY: readonly string[] = SUBCATEGORY_HINTS.map((h) => h.key);
@@ -100,7 +100,7 @@ export async function classifySubcategoryWithLlm(
   if (!name || name.trim().length === 0) return null;
 
   const baseUrl = process.env.OPENROUTER_BASE_URL ?? DEFAULT_BASE_URL;
-  const model = process.env.OPENROUTER_CLASSIFIER_MODEL ?? DEFAULT_MODEL;
+  const model = process.env.OPENROUTER_CLASSIFIER_MODEL ?? process.env.OPENROUTER_MODEL ?? DEFAULT_MODEL;
 
   try {
     const res = await fetch(`${baseUrl}/chat/completions`, {
@@ -120,7 +120,7 @@ export async function classifySubcategoryWithLlm(
           { role: 'user', content: userPrompt(name, category) },
         ],
       }),
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(30_000),
     });
 
     if (!res.ok) {
