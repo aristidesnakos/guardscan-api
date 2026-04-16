@@ -32,6 +32,7 @@ The following are the implementation plans written *before* each milestone shipp
 | Doc | Purpose |
 |---|---|
 | [post-mvp/supplement-scoring.md](./post-mvp/supplement-scoring.md) | Why supplement scoring is deferred and what shipping it requires |
+| [post-mvp/ingredient-enrichment.md](./post-mvp/ingredient-enrichment.md) | Rich ingredient detail pages — schema, data sourcing, and implementation plan |
 | [multi-brand-migration.md](./multi-brand-migration.md) | Sketch for the Pomenatal (second brand) onboarding refactor |
 
 ## Navigating
