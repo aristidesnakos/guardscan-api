@@ -89,6 +89,9 @@ export const ingredientDictionary = pgTable('ingredient_dictionary', {
   notes: text('notes'),
   fertilityRelevant: boolean('fertility_relevant').notNull().default(false),
   testosteroneRelevant: boolean('testosterone_relevant').notNull().default(false),
+  // Phase 1 enrichment (2026-04-16): ingredient family + hazard tags for detail pages
+  ingredientGroup: text('ingredient_group'),
+  healthRiskTags: text('health_risk_tags').array().notNull().default([]),
 });
 
 // ── user_submissions ────────────────────────────────────────────────────────

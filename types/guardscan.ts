@@ -162,6 +162,24 @@ export type SearchResultItem = {
   rating: RatingLabel | null;
 };
 
+/**
+ * Ingredient detail returned by GET /api/ingredients/:normalized.
+ * Returns only enrichment fields — the Expo app already has flag/reason/
+ * fertility_relevant/testosterone_relevant from the scan result's Ingredient
+ * type, so we avoid duplicating those here.
+ *
+ * If description is null (pre-Phase 3), the app falls back to showing
+ * the reason sentence from the scan result.
+ */
+export type IngredientDetail = {
+  normalized: string;
+  display_name: string;
+  ingredient_group: string;
+  health_risk_tags: string[];
+  description: string | null;  // null until Phase 3 description generation
+  evidence_url: string;
+};
+
 export type PaginatedResponse<T> = {
   data: T[];
   total: number;
