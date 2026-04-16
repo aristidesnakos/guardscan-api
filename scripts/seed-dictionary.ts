@@ -27,6 +27,7 @@ try {
   }
 } catch {}
 
+import { sql } from 'drizzle-orm';
 import { getDb, closeDb } from '../db/client';
 import { ingredientDictionary } from '../db/schema';
 import { SEED_ENTRIES } from '../lib/dictionary/seed';
@@ -51,6 +52,8 @@ async function main() {
       notes: entry.reason,
       fertilityRelevant: entry.fertility_relevant,
       testosteroneRelevant: entry.testosterone_relevant,
+      ingredientGroup: entry.ingredient_group,
+      healthRiskTags: entry.health_risk_tags,
     }));
 
     await db
@@ -59,8 +62,15 @@ async function main() {
       .onConflictDoUpdate({
         target: ingredientDictionary.normalized,
         set: {
-          flag: rows[0].flag, // placeholder — actual per-row handled by Postgres
-          notes: rows[0].notes,
+          displayName: sql`excluded.display_name`,
+          flag: sql`excluded.flag`,
+          category: sql`excluded.category`,
+          evidenceUrl: sql`excluded.evidence_url`,
+          notes: sql`excluded.notes`,
+          fertilityRelevant: sql`excluded.fertility_relevant`,
+          testosteroneRelevant: sql`excluded.testosterone_relevant`,
+          ingredientGroup: sql`excluded.ingredient_group`,
+          healthRiskTags: sql`excluded.health_risk_tags`,
         },
       });
 
