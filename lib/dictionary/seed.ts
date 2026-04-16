@@ -30,6 +30,7 @@ export type DictionaryEntry = {
   category: 'food' | 'grooming' | 'supplement' | 'both';
   ingredient_group: string;       // Phase 1: ingredient family (e.g. "Sulfates", "Parabens")
   health_risk_tags: string[];     // Phase 1: hazard tags (e.g. ["irritant", "endocrine_disruptor"])
+  pubchem_cid?: number;           // Phase 2: PubChem Compound ID (for Phase 3 description generation)
   fertility_relevant: boolean;
   testosterone_relevant: boolean;
   evidence_url: string;
