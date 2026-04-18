@@ -85,6 +85,5 @@ The `AUTO_PUBLISH_ENABLED` env var is a safety valve, not a tuning knob:
 
 ## Reference
 
-- [MVP sprint plan](./mvp-sprint-plan.md#task-a--cli-triage-helpers--disposition-8-submissions)
 - [lib/submissions/auto-publish.ts](../lib/submissions/auto-publish.ts) — `AUTO_PUBLISH_CONFIDENCE_THRESHOLD`
 - [docs/post-mvp/supplement-scoring.md](./post-mvp/supplement-scoring.md) — related work on supplement handling

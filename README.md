@@ -19,7 +19,7 @@ See [CLAUDE.md](CLAUDE.md) for codebase conventions and [docs/README.md](docs/RE
 | M5 — Commercial provider fallback | deferred |
 | Supplement scoring | deferred (post-MVP, see [docs/post-mvp/supplement-scoring.md](docs/post-mvp/supplement-scoring.md)) |
 
-Authoritative state: [docs/status.md](docs/status.md). Current sprint: [docs/mvp-sprint-plan.md](docs/mvp-sprint-plan.md).
+Authoritative state: [docs/status.md](docs/status.md).
 
 ## Quickstart
 

@@ -1,8 +1,8 @@
 # Supplement Scoring — Deferred to Post-MVP (M2)
 
 **Status:** Not in MVP. Scheduled for the sprint immediately after launch.
-**Decision date:** 2026-04-11 (see [docs/mvp-sprint-plan.md](../mvp-sprint-plan.md) rev 4)
-**Affects:** 603 of 1,417 products in the current catalog (~43%). All supplements.
+**Decision date:** 2026-04-11
+**Affects:** 688 supplements in the current catalog (56% of 1,227 products). All unscored by design.
 
 ---
 
@@ -113,5 +113,5 @@ Server side:
 - [scripts/rescore-products.ts](../../scripts/rescore-products.ts) — reused as the M2 backfill tool
 - [lib/scoring/constants.ts](../../lib/scoring/constants.ts) — life-stage multipliers, needs supplement-specific extension
 - [lib/dictionary/seed.ts](../../lib/dictionary/seed.ts) — current dictionary, will need supplement-specific entries (dose metadata)
-- [docs/mvp-sprint-plan.md](../mvp-sprint-plan.md) — rev 4 where this deferral was decided
+- [docs/status.md](../status.md) — current system state
 - [docs/multi-brand-migration.md](../multi-brand-migration.md) — Pomenatal onboarding sketch; supplement scoring is a prerequisite for that brand

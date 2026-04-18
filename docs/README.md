@@ -2,8 +2,7 @@
 
 Authoritative entry points:
 
-- **[status.md](./status.md)** — current milestone status, environment surface, DB coverage, known limitations. Start here.
-- **[mvp-sprint-plan.md](./mvp-sprint-plan.md)** — the live sprint plan (rev 4). Source of truth for what's actively being worked on.
+- **[status.md](./status.md)** — current state: shipped milestones, catalog numbers, API surface, known limitations. Start here.
 - **[../README.md](../README.md)** — quickstart, scripts, deployment, architecture overview.
 - **[../CLAUDE.md](../CLAUDE.md)** — codebase conventions for AI-assisted work.
 
@@ -12,9 +11,13 @@ Authoritative entry points:
 | Doc | Purpose |
 |---|---|
 | [api/endpoints.md](./api/endpoints.md) | All shipped HTTP routes + their handlers |
-| [architecture/scoring.md](./architecture/scoring.md) | Full scoring methodology (food / grooming / supplement) |
-| [architecture/security.md](./architecture/security.md) | Security audit trail, env-var checklist, open findings, best practices |
-| [testing/submission-flow-production.md](./testing/submission-flow-production.md) | Runbook: end-to-end submission test against production |
+| [architecture/scoring.md](./architecture/scoring.md) | Scoring methodology v1.2.0 (subtract-only) |
+| [architecture/scoring-v1.2-subtract-only-report.md](./architecture/scoring-v1.2-subtract-only-report.md) | v1.2.0 investigation report |
+| [architecture/scoring-calibration-protocol.md](./architecture/scoring-calibration-protocol.md) | Score calibration protocol |
+| [architecture/security.md](./architecture/security.md) | Security audit trail, env-var checklist, open findings |
+| [ocr-confidence-tuning.md](./ocr-confidence-tuning.md) | OCR auto-publish threshold analysis |
+| [testing/submission-flow-production.md](./testing/submission-flow-production.md) | Submission e2e runbook |
+| [marketing/ingredient-science-brief.md](./marketing/ingredient-science-brief.md) | Ingredient science messaging brief |
 
 ## Historical milestone plans
 
@@ -26,6 +29,7 @@ The following are the implementation plans written *before* each milestone shipp
 | [milestones/m2-cron-ingest.md](./milestones/m2-cron-ingest.md) | M2 — OBF / DSLD cron ingest | shipped |
 | [milestones/m2.5-recommendations-api.md](./milestones/m2.5-recommendations-api.md) | M2.5 — Recommendations + alternatives | shipped |
 | [milestones/m3-user-submissions.md](./milestones/m3-user-submissions.md) | M3.0 / M3.1 — Submissions + OCR | shipped |
+| [milestones/m3.2-admin-dashboard.md](./milestones/m3.2-admin-dashboard.md) | M3.2 — Admin web dashboard | shipped |
 
 ## Forward-looking / deferred
 
@@ -38,7 +42,6 @@ The following are the implementation plans written *before* each milestone shipp
 ## Navigating
 
 - Need to understand the **current state** of the system → [status.md](./status.md)
-- Need to know what's **being built this sprint** → [mvp-sprint-plan.md](./mvp-sprint-plan.md)
 - Need an **HTTP route reference** → [api/endpoints.md](./api/endpoints.md)
 - Need to understand **why a product got a score** → [architecture/scoring.md](./architecture/scoring.md)
 - Need to **review security posture** or add a new route safely → [architecture/security.md](./architecture/security.md)

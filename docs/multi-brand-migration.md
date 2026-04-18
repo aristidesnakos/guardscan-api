@@ -2,7 +2,7 @@
 
 **Status:** Not started · planning sketch only
 **Trigger:** Pomenatal onboarding sprint (date TBD)
-**Related:** [docs/mvp-sprint-plan.md Task 9](./mvp-sprint-plan.md#task-9--multi-brand-future-proofing-markers--migration-doc)
+**Related:** Multi-brand markers already shipped in cucumberdude (brand configs, BrandContext, white-label architecture)
 
 ---
 
