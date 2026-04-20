@@ -4,6 +4,7 @@ import { sql } from 'drizzle-orm';
 import { requireUser } from '@/lib/auth';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { getRating } from '@/lib/scoring/constants';
+import { resolveImageUrl } from '@/lib/storage/supabase';
 import type { ScanHistoryItem, Product } from '@/types/guardscan';
 
 export async function GET(request: Request) {
@@ -63,7 +64,7 @@ export async function GET(request: Request) {
   `);
   const total = Number((countRows[0] as { count: number | string } | undefined)?.count ?? 0);
 
-  const data: ScanHistoryItem[] = (rows as Record<string, unknown>[]).map((row) => {
+  const data: ScanHistoryItem[] = await Promise.all((rows as Record<string, unknown>[]).map(async (row) => {
     const scoreVal = (row.score as number | null) ?? null;
     const rating = scoreVal != null ? getRating(scoreVal).label : null;
 
@@ -74,7 +75,7 @@ export async function GET(request: Request) {
       brand: (row.brand as string) ?? '',
       category: row.category as Product['category'],
       subcategory: (row.subcategory as string) ?? null,
-      image_url: (row.image_front as string) ?? null,
+      image_url: await resolveImageUrl((row.image_front as string) ?? null),
       data_completeness: 'full',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
       ingredients: [], // Omit ingredients in list view for payload size
@@ -90,7 +91,7 @@ export async function GET(request: Request) {
       scanned_at: new Date(row.scanned_at as string | Date).toISOString(),
       is_favorite: false, // Favorites not yet implemented
     };
-  });
+  }));
 
   return NextResponse.json({ data, total, limit, offset });
 }

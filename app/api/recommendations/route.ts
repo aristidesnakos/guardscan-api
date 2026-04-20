@@ -25,6 +25,7 @@ import { MIN_SCORE_DELTA } from '@/lib/scoring/constants';
 import { getRating } from '@/lib/scoring/constants';
 import { log } from '@/lib/logger';
 import { eq } from 'drizzle-orm';
+import { resolveImageUrl } from '@/lib/storage/supabase';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -154,7 +155,7 @@ export async function GET(request: Request) {
         brand: (r.brand as string) ?? '',
         category: r.category as Product['category'],
         subcategory: (r.subcategory as string) ?? null,
-        image_url: (r.image_front as string) ?? null,
+        image_url: await resolveImageUrl((r.image_front as string) ?? null),
         data_completeness: 'full',
         ingredient_source: r.source === 'dsld' ? 'verified' : 'open_food_facts',
         ingredients: scannedIngs.map((ing) => ({
@@ -176,7 +177,7 @@ export async function GET(request: Request) {
         brand: (r.alt_brand as string) ?? '',
         category: r.alt_category as Product['category'],
         subcategory: (r.alt_subcategory as string) ?? null,
-        image_url: (r.alt_image_front as string) ?? null,
+        image_url: await resolveImageUrl((r.alt_image_front as string) ?? null),
         data_completeness: 'full',
         ingredient_source: r.alt_source === 'dsld' ? 'verified' : 'open_food_facts',
         ingredients: altIngs.map((ing) => ({
