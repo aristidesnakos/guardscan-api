@@ -51,7 +51,7 @@ export async function GET(
       display_name: entry.aliases[0] ?? entry.normalized,
       ingredient_group: entry.ingredient_group,
       health_risk_tags: entry.health_risk_tags,
-      description: null,   // populated in Phase 3
+      description: entry.description ?? null,
       evidence_url: entry.evidence_url,
     };
 

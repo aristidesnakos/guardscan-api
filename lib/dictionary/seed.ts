@@ -34,6 +34,7 @@ export type DictionaryEntry = {
   fertility_relevant: boolean;
   testosterone_relevant: boolean;
   evidence_url: string;
+  description?: string;           // Phase 3: Claude-generated consumer description
 };
 
 export const SEED_ENTRIES: DictionaryEntry[] = [
