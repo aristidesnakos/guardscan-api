@@ -125,7 +125,7 @@ export function resolveImageUrl(imageFront: string | null): string | null {
 });
 ```
 
-`signedSubmissionUrl` becomes unused. It can be removed or left in place — it does not affect correctness.
+`signedSubmissionUrl` becomes unused. Remove it.
 
 #### Existing uploads
 
@@ -171,7 +171,7 @@ image_url: resolveImageUrl(row.imageFront),
 
 #### `app/api/products/search/route.ts` — line 156
 
-The outer `Promise.all(rows.map(async (row) => ...))` pattern was introduced to support `await resolveImageUrl`. With a synchronous resolver the map can be simplified, but the `Promise.all` pattern is harmless to leave if other async operations are added later.
+The outer `Promise.all(rows.map(async (row) => ...))` pattern was introduced to support `await resolveImageUrl`. With a synchronous resolver, remove the `async` and the `Promise.all` wrapper.
 
 ```ts
 // BEFORE
@@ -214,18 +214,28 @@ image_url: resolveImageUrl((r.alt_image_front as string) ?? null),
 This route was changed from `.map()` to `await Promise.all(map(async ...))` when `resolveImageUrl` was async. With a synchronous resolver it can be reverted:
 
 ```ts
-// BEFORE (current — necessary when resolveImageUrl was async)
+// BEFORE
 const data: ScanHistoryItem[] = await Promise.all((rows as Record<string, unknown>[]).map(async (row) => {
-  ...
-  image_url: await resolveImageUrl((row.image_front as string) ?? null),
-  ...
+  const scoreVal = (row.score as number | null) ?? null;
+  const rating = scoreVal != null ? getRating(scoreVal).label : null;
+  const product: Product = {
+    // ... all product fields unchanged ...
+    image_url: await resolveImageUrl((row.image_front as string) ?? null),
+    // ... remaining fields unchanged ...
+  };
+  return { /* ScanHistoryItem fields */ };
 }));
 
-// AFTER
+// AFTER — remove async, remove Promise.all
 const data: ScanHistoryItem[] = (rows as Record<string, unknown>[]).map((row) => {
-  ...
-  image_url: resolveImageUrl((row.image_front as string) ?? null),
-  ...
+  const scoreVal = (row.score as number | null) ?? null;
+  const rating = scoreVal != null ? getRating(scoreVal).label : null;
+  const product: Product = {
+    // ... all product fields unchanged ...
+    image_url: resolveImageUrl((row.image_front as string) ?? null),
+    // ... remaining fields unchanged ...
+  };
+  return { /* ScanHistoryItem fields */ };
 });
 ```
 
@@ -235,9 +245,12 @@ const data: ScanHistoryItem[] = (rows as Record<string, unknown>[]).map((row) =>
 
 1. **Flip bucket to public** in Supabase dashboard (reversible in 10 seconds if needed).
 2. **Apply code changes** — `lib/storage/supabase.ts` first, then routes.
-3. **`pnpm run build`** — verify TypeScript is clean.
-4. **Deploy to Vercel.**
-5. **Verify CDN caching is active** — see [Fast Load Verification](#fast-load-verification) below.
+3. **`npm run build`** — verify TypeScript is clean.
+4. **Deploy to a Vercel preview** (`vercel deploy`). Run [Fast Load Verification](#fast-load-verification) against the preview URL.
+5. **Promote to production** (`vercel deploy --prod`).
+6. **Verify CDN caching is active** against the production URL.
+
+**Rollback:** If production behaves unexpectedly, run `vercel rollback` to revert the function code instantly. Then flip the bucket back to private in the Supabase dashboard. Both steps are independent and take under a minute each.
 
 ---
 
@@ -247,14 +260,20 @@ After deploying, run these checks to confirm CDN caching is working — not just
 
 ### 1. Confirm the API returns a public URL
 
-Scan barcode `8718951594883` and inspect the `image_url` field in the response:
+Use a barcode from a user-submitted product (i.e. one where `source = 'user'` in the DB — query below):
+
+```sql
+SELECT barcode FROM products WHERE source = 'user' AND image_front IS NOT NULL LIMIT 1;
+```
 
 ```bash
-curl -s "https://{your-api}/api/products/scan/8718951594883" | jq '.image_url'
+curl -s "https://{your-api}/api/products/scan/{barcode}" | jq '.image_url'
 ```
 
 **Pass:** URL matches `https://{project}.supabase.co/storage/v1/object/public/submissions/...` with no `?token=` parameter.
 **Fail:** URL contains `/object/sign/` or `?token=` — the code change wasn't deployed.
+
+> **Note:** OFF/OBF products (`source = 'off'` or `'obf'`) will always return an absolute external URL regardless of this change — they are not a valid test case.
 
 ### 2. Confirm Cloudflare is caching the image
 
@@ -332,7 +351,7 @@ At current scale (a handful of user-submitted products, ~200–500 KB each), tot
 | Privacy of product photos | Not a concern. These are photos of retail product packaging submitted to enrich a public catalog. No personal data. |
 | URL stability | Public URLs are permanent and deterministic. Signed URLs expired after 48h — the new approach is strictly more stable. |
 | Someone scraping the storage bucket | Risk is negligible. Images are product packaging photos with no commercial or personal value to a scraper. |
-| `SUPABASE_URL` must be set | Already required for DB access. Not a new dependency. |
+| `SUPABASE_URL` must be set | Already required for storage uploads (`lib/storage/supabase.ts`). Not a new dependency. |
 | Existing uploads may not have long-lived cache headers | Objects uploaded before this change may show `CF-Cache-Status: MISS` until re-uploaded. See [Existing uploads](#existing-uploads). |
 
 ---

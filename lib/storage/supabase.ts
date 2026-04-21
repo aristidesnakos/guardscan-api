@@ -30,37 +30,22 @@ export async function uploadSubmissionPhoto(
     .upload(path, file, {
       contentType: 'image/jpeg',
       upsert: true,
+      cacheControl: '31536000', // 1 year — immutable product photos
     });
   if (error) throw error;
-  return path; // store path not URL — sign on demand
+  return path; // store relative path; URL constructed in resolveImageUrl
 }
 
 /**
  * Resolve a product's image_front value to a usable URL.
  * - HTTP(S) URLs (from OFF/OBF) pass through unchanged.
- * - Supabase Storage paths (from user submissions) get signed.
+ * - Supabase Storage paths (from user submissions) become public CDN URLs.
  * - Null/empty returns null.
  */
-export async function resolveImageUrl(
-  imageFront: string | null,
-): Promise<string | null> {
+export function resolveImageUrl(imageFront: string | null): string | null {
   if (!imageFront) return null;
   if (imageFront.startsWith('http')) return imageFront;
-  try {
-    return await signedSubmissionUrl(imageFront, 172_800); // 48h
-  } catch {
-    return null;
-  }
-}
-
-export async function signedSubmissionUrl(
-  path: string,
-  expiresInSeconds = 3600,
-): Promise<string> {
-  const { data, error } = await getStorageClient()
-    .storage
-    .from('submissions')
-    .createSignedUrl(path, expiresInSeconds);
-  if (error || !data) throw error ?? new Error('signed_url_failed');
-  return data.signedUrl;
+  const supabaseUrl = process.env.SUPABASE_URL;
+  if (!supabaseUrl) return null;
+  return `${supabaseUrl}/storage/v1/object/public/submissions/${imageFront}`;
 }

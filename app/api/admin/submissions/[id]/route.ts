@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { requireAdmin } from '@/lib/auth';
 import { getDb } from '@/db/client';
 import { userSubmissions, products } from '@/db/schema';
-import { signedSubmissionUrl } from '@/lib/storage/supabase';
+import { resolveImageUrl } from '@/lib/storage/supabase';
 import { lookupIngredient } from '@/lib/dictionary/lookup';
 
 type PhotoEntry = { role: string; path: string };
@@ -42,8 +42,8 @@ export async function GET(
     try {
       const frontPhoto = photos.find((p) => p.role === 'front');
       const backPhoto = photos.find((p) => p.role === 'back');
-      if (frontPhoto) frontUrl = await signedSubmissionUrl(frontPhoto.path);
-      if (backPhoto) backUrl = await signedSubmissionUrl(backPhoto.path);
+      if (frontPhoto) frontUrl = resolveImageUrl(frontPhoto.path);
+      if (backPhoto) backUrl = resolveImageUrl(backPhoto.path);
     } catch {
       // Storage not configured — leave URLs null
     }

@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { signedSubmissionUrl } from '@/lib/storage/supabase';
+import { resolveImageUrl } from '@/lib/storage/supabase';
 
 export type ExtractedSubmission = {
   name: string | null;
@@ -50,10 +50,9 @@ export async function extractSubmissionWithClaude(opts: {
   frontPath: string;
   backPath: string;
 }): Promise<ExtractedSubmission> {
-  const [frontUrl, backUrl] = await Promise.all([
-    signedSubmissionUrl(opts.frontPath, 600),
-    signedSubmissionUrl(opts.backPath, 600),
-  ]);
+  const frontUrl = resolveImageUrl(opts.frontPath);
+  const backUrl = resolveImageUrl(opts.backPath);
+  if (!frontUrl || !backUrl) throw new Error('supabase_url_not_configured');
 
   const response = await getClient().chat.completions.create({
     model: process.env.OPENROUTER_MODEL || 'anthropic/claude-opus-4-6',

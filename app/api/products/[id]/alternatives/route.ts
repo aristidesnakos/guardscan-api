@@ -97,7 +97,7 @@ export async function GET(
       brand: row.brand ?? '',
       category: row.category as Product['category'],
       subcategory: row.subcategory ?? null,
-      image_url: await resolveImageUrl(row.imageFront),
+      image_url: resolveImageUrl(row.imageFront),
       data_completeness: 'full',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
       ingredients: ings.map((ing) => ({

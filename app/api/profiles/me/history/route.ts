@@ -64,7 +64,7 @@ export async function GET(request: Request) {
   `);
   const total = Number((countRows[0] as { count: number | string } | undefined)?.count ?? 0);
 
-  const data: ScanHistoryItem[] = await Promise.all((rows as Record<string, unknown>[]).map(async (row) => {
+  const data: ScanHistoryItem[] = (rows as Record<string, unknown>[]).map((row) => {
     const scoreVal = (row.score as number | null) ?? null;
     const rating = scoreVal != null ? getRating(scoreVal).label : null;
 
@@ -75,7 +75,7 @@ export async function GET(request: Request) {
       brand: (row.brand as string) ?? '',
       category: row.category as Product['category'],
       subcategory: (row.subcategory as string) ?? null,
-      image_url: await resolveImageUrl((row.image_front as string) ?? null),
+      image_url: resolveImageUrl((row.image_front as string) ?? null),
       data_completeness: 'full',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
       ingredients: [], // Omit ingredients in list view for payload size
@@ -91,7 +91,7 @@ export async function GET(request: Request) {
       scanned_at: new Date(row.scanned_at as string | Date).toISOString(),
       is_favorite: false, // Favorites not yet implemented
     };
-  }));
+  });
 
   return NextResponse.json({ data, total, limit, offset });
 }

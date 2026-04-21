@@ -155,7 +155,7 @@ export async function GET(request: Request) {
         brand: (r.brand as string) ?? '',
         category: r.category as Product['category'],
         subcategory: (r.subcategory as string) ?? null,
-        image_url: await resolveImageUrl((r.image_front as string) ?? null),
+        image_url: resolveImageUrl((r.image_front as string) ?? null),
         data_completeness: 'full',
         ingredient_source: r.source === 'dsld' ? 'verified' : 'open_food_facts',
         ingredients: scannedIngs.map((ing) => ({
@@ -177,7 +177,7 @@ export async function GET(request: Request) {
         brand: (r.alt_brand as string) ?? '',
         category: r.alt_category as Product['category'],
         subcategory: (r.alt_subcategory as string) ?? null,
-        image_url: await resolveImageUrl((r.alt_image_front as string) ?? null),
+        image_url: resolveImageUrl((r.alt_image_front as string) ?? null),
         data_completeness: 'full',
         ingredient_source: r.alt_source === 'dsld' ? 'verified' : 'open_food_facts',
         ingredients: altIngs.map((ing) => ({

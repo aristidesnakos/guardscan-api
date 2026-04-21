@@ -14,7 +14,7 @@ import { createInterface } from 'node:readline/promises';
 
 import { getDb } from '@/db/client';
 import { userSubmissions, products } from '@/db/schema';
-import { signedSubmissionUrl } from '@/lib/storage/supabase';
+import { resolveImageUrl } from '@/lib/storage/supabase';
 import { lookupIngredient } from '@/lib/dictionary/lookup';
 import type { ProductCategory } from '@/types/guardscan';
 import { publishExtracted } from '@/lib/submissions/auto-publish';
@@ -54,10 +54,8 @@ async function inspectOne(submissionId: string) {
 
   type PhotoEntry = { role: string; path: string };
   const photos = row.photos as PhotoEntry[];
-  const [frontUrl, backUrl] = await Promise.all([
-    signedSubmissionUrl(photos.find((p) => p.role === 'front')!.path),
-    signedSubmissionUrl(photos.find((p) => p.role === 'back')!.path),
-  ]);
+  const frontUrl = resolveImageUrl(photos.find((p) => p.role === 'front')!.path);
+  const backUrl = resolveImageUrl(photos.find((p) => p.role === 'back')!.path);
 
   const ocr = row.ocrText
     ? (JSON.parse(row.ocrText) as {
@@ -203,10 +201,8 @@ async function reviewOne(submissionId: string) {
 
   type PhotoEntry = { role: string; path: string };
   const photos = row.photos as PhotoEntry[];
-  const [frontUrl, backUrl] = await Promise.all([
-    signedSubmissionUrl(photos.find((p) => p.role === 'front')!.path),
-    signedSubmissionUrl(photos.find((p) => p.role === 'back')!.path),
-  ]);
+  const frontUrl = resolveImageUrl(photos.find((p) => p.role === 'front')!.path);
+  const backUrl = resolveImageUrl(photos.find((p) => p.role === 'back')!.path);
 
   const ocr = row.ocrText
     ? (JSON.parse(row.ocrText) as {
