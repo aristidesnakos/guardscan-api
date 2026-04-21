@@ -134,6 +134,8 @@
 | GET | `/api/recommendations` | Personalized recommendation pairs |
 | GET | `/api/profiles/me` | User profile |
 | PUT | `/api/profiles/me` | Update profile |
+| GET | `/api/profiles/me/subscription` | Subscription status |
+| POST | `/api/profiles/me/subscription` | Update subscription tier after purchase |
 | GET | `/api/profiles/me/history` | Scan history |
 | GET | `/api/profiles/me/favorites` | Favorite products |
 | POST | `/api/profiles/me/favorites/:productId` | Toggle favorite |
