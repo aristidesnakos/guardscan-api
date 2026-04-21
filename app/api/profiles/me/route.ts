@@ -10,6 +10,7 @@ const DEFAULT_PROFILE: UserProfile = {
   trying_to_conceive: false,
   allergens: [],
   dietary_approach: 'standard',
+  subscription_tier: 'free',
 };
 
 /** Stub — returns a default profile until profile endpoints are implemented. */

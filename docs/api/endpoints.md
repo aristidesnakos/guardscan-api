@@ -44,6 +44,8 @@ Kill switch: `AUTO_PUBLISH_ENABLED=false` forces every submission through admin 
 |---|---|---|---|
 | GET | `/api/profiles/me` | [profiles/me/route.ts](../../app/api/profiles/me/route.ts) | `UserProfile` |
 | PUT | `/api/profiles/me` | same | Echoes merged profile |
+| GET | `/api/profiles/me/subscription` | [profiles/me/subscription/route.ts](../../app/api/profiles/me/subscription/route.ts) | `SubscriptionStatus` — current tier (`free` \| `pro`) and expiry. Stub until RevenueCat validation ships. |
+| POST | `/api/profiles/me/subscription` | same | Accept tier update from client after RevenueCat purchase. Body: `{ tier }`. Stub — echoes tier without verifying receipt. |
 | GET | `/api/profiles/me/history` | [profiles/me/history/route.ts](../../app/api/profiles/me/history/route.ts) | `PaginatedResponse<ScanHistoryItem>` |
 | GET | `/api/profiles/me/favorites` | [profiles/me/favorites/route.ts](../../app/api/profiles/me/favorites/route.ts) | Favorites list |
 | POST | `/api/profiles/me/favorites/:productId` | [profiles/me/favorites/[productId]/route.ts](../../app/api/profiles/me/favorites/%5BproductId%5D/route.ts) | Toggle favorite |

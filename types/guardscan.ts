@@ -118,6 +118,8 @@ export type DietaryApproach =
   | 'vegetarian'
   | 'vegan';
 
+export type SubscriptionTier = 'free' | 'pro';
+
 export type UserProfile = {
   id: string;
   user_id: string;
@@ -126,6 +128,13 @@ export type UserProfile = {
   trying_to_conceive: boolean;
   allergens: string[];
   dietary_approach: DietaryApproach;
+  subscription_tier: SubscriptionTier;
+};
+
+export type SubscriptionStatus = {
+  tier: SubscriptionTier;
+  /** ISO-8601 timestamp of when the current period ends, or null for free tier. */
+  expires_at: string | null;
 };
 
 export type ScanHistoryItem = {
