@@ -53,6 +53,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/23594708/',
+    description: `High fructose corn syrup is a liquid sweetener derived from corn starch. It is one of the most common additives in the modern diet, frequently found in processed foods like sodas, candies, baked goods, and many packaged condiments.
+
+Consuming high amounts of this sweetener is strongly linked to metabolic issues, including insulin resistance, obesity, and non-alcoholic fatty liver disease. Regarding male reproductive health, excessive sugar intake and the resulting metabolic dysfunction can negatively impact fertility by disrupting hormonal balance and increasing systemic inflammation.
+
+The FDA classifies high fructose corn syrup as generally recognized as safe for consumption within a balanced diet. However, health organizations emphasize that its high concentration in processed foods contributes significantly to metabolic syndrome. Because it is a food ingredient rather than a topical grooming additive, there are no rinse-off or leave-on usage distinctions to consider.`,
   },
   {
     normalized: 'partially hydrogenated oil',
@@ -69,6 +74,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://www.fda.gov/food/food-additives-petitions/trans-fat',
+    description: `Partially hydrogenated oil is a type of fat created through an industrial process that adds hydrogen to liquid vegetable oils to make them solid at room temperature. It is commonly found in processed snack foods, fried foods, margarines, and many shelf-stable baked goods.
+
+This ingredient is a primary source of artificial trans fats, which are strongly linked to increased LDL cholesterol and a higher risk of cardiovascular disease. For men, these metabolic disruptions can indirectly impact reproductive health. High levels of systemic inflammation and poor cardiovascular health are known to negatively affect testosterone production and overall sperm quality.
+
+Due to these significant health risks, the FDA has largely phased out its use in the United States, and many other countries have implemented strict bans. While some products may list "0g trans fat" due to labeling thresholds, consumers should check for partially hydrogenated oils specifically to avoid these harmful fats.`,
   },
   {
     normalized: 'potassium bromate',
@@ -82,6 +92,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://monographs.iarc.who.int/list-of-classifications/',
+    description: `Potassium bromate is a chemical additive used primarily in the food industry as a flour improver. It is commonly found in baked goods like bread, rolls, and certain pastries, where it helps strengthen dough and increases the volume of the final product.
+
+Regarding health effects, the International Agency for Research on Cancer (IARC) classifies potassium bromate as a Group 2B carcinogen, meaning it is possibly carcinogenic to humans. While research in animal studies has shown links to tumor development, human evidence is less definitive. It is not specifically linked to male reproductive health or testosterone levels, but its potential for long-term toxicity remains a primary concern for consumers.
+
+Due to these safety concerns, the regulatory landscape is strict. Potassium bromate is banned for use in food in the European Union, Canada, and Brazil. In the United States, the FDA allows its use, though it is subject to strict limits. Because it is an ingested food additive, there are no distinctions between rinse-off or leave-on applications as seen in grooming products.`,
   },
   {
     normalized: 'butylated hydroxyanisole',
@@ -95,6 +110,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://monographs.iarc.who.int/list-of-classifications/',
+    description: `Butylated hydroxyanisole, often called BHA, is a synthetic antioxidant used to prevent oils and fats from going rancid. You will frequently find it in men's grooming products like shaving creams and beard oils, as well as in processed foods and certain dietary supplements.
+
+Research suggests BHA may act as an endocrine disruptor, meaning it could interfere with the body's natural hormone signaling. Because hormones regulate vital functions, there are concerns regarding its impact on male reproductive health, including potential effects on testosterone levels and fertility. Additionally, the International Agency for Research on Cancer has classified it as possibly carcinogenic to humans.
+
+Regulatory bodies like the FDA permit its use in food and cosmetics, but it remains a subject of ongoing scrutiny. In grooming products, its safety profile can vary depending on whether it is in a rinse-off product like soap or a leave-on product like facial moisturizer. Consumers looking to minimize hormonal exposure may choose to avoid products containing this ingredient.`,
   },
   {
     normalized: 'sodium nitrite',
@@ -108,6 +128,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.iarc.who.int/news-events/iarc-monographs-evaluate-consumption-of-red-meat-and-processed-meat/',
+    description: `Sodium nitrite is a chemical preservative commonly used in the food industry. You will most frequently find it in processed meats such as bacon, deli meats, hot dogs, and sausages to maintain color and prevent the growth of harmful bacteria.
+
+When consumed, sodium nitrite can react with other compounds in the body or during high-heat cooking to form nitrosamines. Scientific evidence has linked the regular consumption of these nitrosamines to an increased risk of colorectal cancer. While it does not have a direct impact on testosterone or male fertility, its role in long-term cancer risk makes it a significant dietary concern.
+
+Regulatory bodies like the FDA and EFSA monitor its use, setting strict limits on how much can be added to food products to minimize risk. Because it is a food additive rather than a grooming ingredient, its safety is managed through dietary intake levels and cooking methods rather than topical application.`,
   },
   {
     normalized: 'sodium nitrate',
@@ -121,6 +146,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.iarc.who.int/news-events/iarc-monographs-evaluate-consumption-of-red-meat-and-processed-meat/',
+    description: `Sodium nitrate is a common food preservative used primarily to maintain the color and prevent bacterial growth in processed meats like bacon, deli meats, and hot dogs. It is widely utilized in the food industry to extend shelf life and ensure food safety during storage.
+
+When consumed, sodium nitrate converts into nitrites within the body. These can react with amines in the stomach to form nitrosamines, which are compounds linked to an increased risk of certain cancers. While the evidence regarding direct dietary links is a subject of ongoing scientific study, health organizations monitor its consumption due to these potential carcinogenic pathways.
+
+Regulatory bodies like the FDA and EFSA set strict limits on the allowable levels of nitrates in processed foods to minimize health risks. Because it is an ingested food additive rather than a topical grooming ingredient, its safety is managed through dietary intake guidelines and maximum permitted concentration levels in commercial food products.`,
   },
   {
     normalized: 'red 40',
@@ -134,6 +164,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/1327',
+    description: `Red 40 is a synthetic azo dye used extensively to provide a vibrant red color to various products. It is most commonly found in processed foods like candies, soft drinks, cereals, and snack foods, as well as in some cosmetics and personal care items.
+
+While generally recognized as safe for most adults, some studies have suggested a link between synthetic dyes like Red 40 and increased hyperactivity in sensitive children. It is also considered a potential allergen for some individuals. There is currently no established evidence linking this specific dye to negative impacts on male reproductive health or testosterone levels.
+
+Regulatory status varies significantly by region. While the FDA permits its use in the United States, the European Union has stricter regulations, requiring warning labels on foods containing certain azo dyes due to concerns regarding child behavior. When used in grooming products, its safety profile is typically managed based on whether the product is rinsed off or left on the skin.`,
   },
   {
     normalized: 'yellow 5',
@@ -147,6 +182,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/1331',
+    description: `Yellow 5, also known as Tartrazine, is a synthetic azo dye used to provide a vibrant yellow color to various products. It is most commonly found in processed foods like snacks, cereals, soft drinks, and candies, as well as in certain personal care items like soaps or shampoos.
+
+While generally recognized as safe for most people, some evidence suggests a link between certain synthetic dyes and increased hyperactivity in children. Additionally, it is a known allergen that can trigger skin reactions or hives in sensitive individuals. It does not have a documented impact on male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA and EFSA permit its use in food, though labeling requirements vary by region to alert consumers to its presence. In grooming products, its safety profile often depends on whether it is a rinse-off product, like a body wash, or a leave-on product, which increases the potential for skin contact.`,
   },
   {
     normalized: 'yellow 6',
@@ -160,6 +200,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/1330',
+    description: `Yellow 6 is a synthetic azo dye commonly used to provide a vibrant yellow or orange hue to various products. You will frequently find it in processed foods, such as snacks, cereals, and soft drinks, as well as in certain cosmetic items like soaps or lotions.
+
+Regarding health effects, some studies have linked certain synthetic dyes to increased hyperactivity in children. While the evidence is debated, it is widely recognized as a potential allergen for sensitive individuals. It is not currently linked to changes in testosterone or male reproductive health.
+
+In the European Union, regulations require a warning label on foods containing this dye due to its potential impact on child behavior. In the United States, the FDA permits its use in food and cosmetics, though it is subject to specific usage limits. Because it is often used in both ingestible foods and topical grooming products, its safety profile is monitored across different regulatory bodies.`,
   },
   {
     normalized: 'blue 1',
@@ -173,6 +218,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/2818',
+    description: `Blue 1, also known as Brilliant Blue FCF, is a synthetic food coloring used to give products a vibrant blue hue. It is commonly found in candies, beverages, frostings, and various processed snacks.
+
+While it is widely used, some studies have raised questions regarding its long-term effects on health. Currently, there is limited evidence directly linking it to significant toxicity in humans, but because it is a synthetic substance, some consumers prefer to avoid it. It is not specifically categorized as a risk to male reproductive health or testosterone levels.
+
+Regulatory status`,
   },
   {
     normalized: 'brominated vegetable oil',
@@ -186,6 +236,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/food/food-additives-petitions/brominated-vegetable-oil-bvo',
+    description: `Brominated vegetable oil, often abbreviated as BVO, is a synthetic additive used primarily as an emulsifier in liquid foods. It was historically added to products like sodas and citrus juices to prevent citrus oils from separating and floating to the top.
+
+Research indicates that BVO contains bromine, which can accumulate in human body tissues over time. Because it can build up in the system, it is classified as an organ toxicant. While specific links to testosterone are not the primary concern, its potential for tissue accumulation raises significant questions regarding long-term reproductive health and overall endocrine stability.
+
+The regulatory landscape for BVO has changed significantly. Following safety concerns regarding its persistence in the body, the FDA has moved to ban its use in food products, with the ban becoming effective in 2024. Consumers should check labels for any remaining traces in older stock, as the ingredient is no longer considered safe for consumption.`,
   },
   {
     normalized: 'aspartame',
@@ -199,6 +254,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://www.iarc.who.int/news-events/aspartame-hazard-and-risk-assessment-results-released/',
+    description: `Aspartame is a widely used artificial sweetener commonly found in diet sodas, sugar-free gums, tabletop sweeteners, and various processed foods. It is designed to provide a high level of sweetness while containing very few calories compared to traditional sugar.
+
+Regarding health effects, the International Agency for Research on Cancer (IARC) recently classified aspartame as possibly carcinogenic to humans (Group 2B). While research is ongoing, some studies suggest potential links to metabolic changes. For men, some emerging research explores how artificial sweeteners might influence gut health and metabolic markers, which can indirectly impact overall reproductive wellness and hormonal balance.
+
+Regulatory bodies like the FDA and EFSA maintain that aspartame is safe for the general population when consumed within established daily intake limits. However, the recent IARC classification has increased scrutiny. Consumers should be mindful of total daily intake, especially when consuming multiple diet-labeled products throughout the day.`,
   },
   {
     normalized: 'red 3',
@@ -212,6 +272,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/food/food-additives-petitions/red-no-3',
+    description: `Red 3, also known as Erythrosine, is a synthetic coal-tar-derived dye. It is commonly used to provide a vibrant reddish-pink hue to various food products, including candies, baked goods, and processed snacks.
+
+While it has been used widely for decades, recent scientific scrutiny has raised concerns regarding its safety. Evidence from animal studies has linked high exposure to the development of thyroid tumors. Because of these potential carcinogenic risks, the ingredient is no longer considered safe for human consumption in many contexts.
+
+The regulatory landscape for Red 3 has changed significantly. Following evidence of health risks in animal models, the FDA revoked its authorization for use in food in 2025. Consumers should check labels carefully, as this dye is being phased out of the food supply due to these safety concerns.`,
   },
   {
     normalized: 'blue 2',
@@ -225,6 +290,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/2818',
+    description: `Blue 2 is a synthetic food coloring used to provide a vibrant blue hue to various products, including candies, cereals, and beverages. Because it is a manufactured dye rather than a natural pigment, it is widely used in the processed food industry to ensure consistent color across different batches.
+
+Regarding health effects, some animal studies have suggested a potential link between high exposure to certain synthetic dyes and the development of brain tumors. While these findings in laboratory animals have not been definitively proven to occur in humans at normal consumption levels, the ingredient is often flagged due to these precautionary concerns. It does not have a direct impact on male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA permit its use in food, though it is subject to specific usage limits to ensure safety. Because it is an ingested additive rather than a topical grooming ingredient, its safety profile is primarily evaluated based on daily dietary intake rather than skin absorption.`,
   },
   {
     normalized: 'green 3',
@@ -238,6 +308,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/2818',
+    description: `Green 3, also known as Fast Green FCF, is a synthetic food dye used to provide a vibrant green color to various products. It is commonly found in processed foods, beverages, and some confectionery items to enhance visual appeal.
+
+Regarding health effects, there is ongoing scientific discussion concerning its safety. Some animal studies have suggested a potential link between certain synthetic dyes and the development of bladder tumors. While human evidence is limited, these findings have led to caution regarding long-term exposure. It is not specifically linked to changes in testosterone or male fertility.
+
+Regulatory oversight varies by region. While it is permitted in some jurisdictions, it is subject to strict usage limits and monitoring by agencies like the FDA and EFSA. Because it is primarily used in food, its concentration is regulated to ensure it stays within safe consumption levels for the general population.`,
   },
   {
     normalized: 'acesulfame potassium',
@@ -251,6 +326,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/31242491/',
+    description: `Acesulfame potassium, often called Ace-K, is a non-nutritive artificial sweetener used to provide sweetness without the calories of sugar. It is commonly found in diet sodas, sugar-free snacks, energy drinks, and various processed foods to enhance flavor.
+
+While widely used, some emerging research suggests it may impact metabolic health. Specifically, studies indicate it could potentially influence insulin signaling and alter the composition of the gut microbiome. While it is not directly linked to testosterone or male fertility, maintaining a healthy gut environment is important for overall metabolic function.
+
+The FDA and EFSA have approved its use as a safe food additive within established daily limits. However, because it is a highly potent sweetener, it is typically used in small amounts alongside other sweeteners. Consumers looking to optimize gut health may choose to limit its intake in favor of whole food alternatives.`,
   },
   {
     normalized: 'tertiary butylhydroquinone',
@@ -264,6 +344,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/front/4580',
+    description: `Tertiary butylhydroquinone, often abbreviated as TBHQ, is a synthetic antioxidant used to prevent oils and fats from spoiling. It is commonly found in processed foods, such as snack foods, fried items, and vegetable oils, to extend shelf life by preventing oxidation.
+
+While effective at preserving food quality, high doses of TBHQ have been linked to potential health concerns. Some studies suggest it may impair immune function, and it is recognized as a potential skin irritant and allergen. While it is not specifically linked to testosterone or fertility, its classification as an organ toxicant means it should be consumed within established safety limits.
+
+Regulatory bodies like the FDA and EFSA permit its use in food, provided it stays within strictly defined concentration limits. Because it is a synthetic additive, its presence is monitored to ensure it does not reach levels that could cause systemic toxicity or significant irritation.`,
   },
   {
     normalized: 'titanium dioxide',
@@ -277,6 +362,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/6585',
+    description: `Titanium dioxide is a naturally occurring mineral often used as a bright white pigment. In the food industry, it has historically been added to candies, frostings, and condiments to enhance color and opacity.
+
+While widely used, recent scientific concerns have focused on its potential to disrupt gut health. Some studies suggest that consuming titanium dioxide, particularly in nanoparticle form, may cause inflammation in the digestive tract. Because of these potential risks to the intestinal lining, it is increasingly viewed with caution regarding long-term digestive wellness.
+
+The regulatory landscape for titanium dioxide has shifted significantly. In 2022, the European Food Safety Authority (EFSA) banned its use as a food additive in the EU due to concerns regarding genotoxicity and its impact on the gut. While it remains permitted in many other regions, consumers should be aware of its changing status in global food safety standards.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -294,6 +384,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/4426',
+    description: `Palm oil is a vegetable oil derived from the fruit of the oil palm tree. It is one of the most widely used ingredients in the global food industry, commonly found in processed snacks, margarines, baked goods, and many ready-to-eat meals due to its long shelf life and unique texture.
+
+From a nutritional standpoint, palm oil is high in saturated fats. While it provides essential nutrients like vitamin E, a high intake of saturated fats is generally linked to increased cholesterol levels and cardiovascular concerns. There is no specific evidence linking palm oil directly to changes in male reproductive health or testosterone levels, but overall dietary patterns play a significant role in metabolic wellness.
+
+Regulatory bodies like the FDA and EFSA recognize palm oil as safe for consumption within standard dietary guidelines. However, it is a subject of significant environmental scrutiny. The cultivation of oil palms is frequently linked to deforestation and habitat loss. Consumers looking to minimize their environmental footprint may want to look for products labeled as sustainably sourced.`,
   },
   {
     normalized: 'sugar',
@@ -307,6 +402,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.who.int/news-room/fact-sheets/detail/healthy-diet',
+    description: `Sugar is a simple carbohydrate that provides quick energy to the body. It is most commonly found in processed foods, sweetened beverages, snacks, and many condiments used in daily diets.
+
+While sugar is a necessary fuel source in moderation, excessive consumption is strongly linked to health issues like obesity, type 2 diabetes, and metabolic syndrome. Scientific evidence consistently shows that high sugar intake can disrupt metabolic health and lead to systemic inflammation. While it does not directly target hormones like testosterone, the metabolic strain from high sugar levels can indirectly impact overall vitality and long-term wellness.
+
+Regulatory bodies like the FDA and EFSA provide guidelines on daily intake limits to help manage these risks. Because sugar is a primary ingredient in the food category, there are no specific concentration limits like those found in cosmetics, but health experts recommend prioritizing whole foods over highly processed, sugar-heavy products to maintain metabolic balance.`,
   },
   {
     normalized: 'sucralose',
@@ -320,6 +420,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/37003585/',
+    description: `Sucralose is a widely used artificial sweetener commonly found in diet sodas, sugar-free snacks, and various processed foods. It is designed to provide a high level of sweetness without the calories associated with traditional sugar.
+
+While generally recognized as safe for consumption, some emerging research suggests it may influence the gut microbiome and insulin response. While evidence is still developing, some studies indicate that regular intake could potentially alter beneficial gut bacteria or affect how the body manages blood sugar. It is not currently linked to direct changes in testosterone or male fertility.
+
+Regulatory bodies like the FDA and EFSA have approved sucralose for use in food products within specific daily limits. Because it is primarily ingested through food and beverages rather than applied topically, its safety profile focuses on metabolic and digestive health rather than skin absorption or grooming concerns.`,
   },
   {
     normalized: 'sodium benzoate',
@@ -333,6 +438,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/food/chemicals/questions-and-answers-occurrence-benzene-soft-drinks-and-other-beverages',
+    description: `Sodium benzoate is a common preservative used to prevent the growth of bacteria, mold, and yeast. You will frequently find it in many processed foods, such as sodas, fruit juices, condiments, and pickled items, as well as in some personal care products.
+
+It is generally considered safe for consumption when used at regulated levels. However, a specific concern exists when sodium benzoate is combined with vitamin C (ascorbic acid) in acidic environments, as this reaction can produce small amounts of benzene, a known carcinogen. While the levels produced are typically very low, it is a point of caution for long-term high intake. It is not specifically linked to changes in male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA and EFSA recognize sodium benzoate as safe within established limits. In food, usage is strictly controlled to minimize risks. In grooming products, it is often used to maintain shelf life, though it may cause mild skin or eye irritation in sensitive individuals.`,
   },
   {
     normalized: 'carrageenan',
@@ -345,6 +455,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/front/4876',
+    description: `Carrageenan is a natural additive derived from red seaweed. It is widely used in the food industry as a thickening, stabilizing, and emulsifying agent to improve texture. You will commonly find it in dairy products like almond milk, yogurts, and ice creams, as well as in processed meats and some protein shakes.
+
+While carrageenan is generally recognized as safe, some scientific research has raised concerns regarding its impact on the digestive system. Specifically, certain animal studies suggest that degraded forms of carrageenan may trigger inflammation in the gastrointestinal tract. While the evidence in humans is not yet definitive, it is a subject of ongoing investigation regarding gut health and potential intestinal irritation.
+
+Regulatory bodies like the FDA currently classify carrageenan as safe for consumption. However, some health advocates suggest caution for individuals with sensitive digestive systems. Because it is primarily an ingested food additive rather than a topical grooming ingredient, its safety profile is evaluated based on cumulative dietary intake rather than skin absorption.`,
   },
   {
     normalized: 'natural flavors',
@@ -357,6 +472,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/food/food-ingredients-packaging/overview-food-ingredients-additives-colors',
+    description: `Natural flavors are substances used in food and grooming products to provide specific tastes or scents. They are derived from natural sources like fruits, vegetables, herbs, or spices through processes like distillation or extraction. Because the term is broad, it can encompass a wide variety of botanical extracts.
+
+While generally recognized as safe, the primary concern with natural flavors is their lack of transparency. The term acts as a catch-all, meaning a single label can hide hundreds of individual chemical constituents. While there is no direct evidence linking standard natural flavors to testosterone or fertility issues, the complexity of these mixtures makes it difficult for consumers to know exactly what they are ingesting or applying.
+
+Regulatory bodies like the FDA allow the use of the term natural flavors without requiring companies to disclose the specific chemical makeup of the blend. This lack of detailed labeling is why some safety experts suggest caution. In food, these flavors are ingested, whereas in grooming products, they are often part of a scent profile that may stay on the skin.`,
   },
   {
     normalized: 'monosodium glutamate',
@@ -370,6 +490,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/food/food-additives-petitions/questions-and-answers-monosodium-glutamate-msg',
+    description: `Monosodium glutamate, commonly known as MSG, is a flavor enhancer used to provide a savory umami taste. It is widely found in processed foods, snacks, canned soups, and many restaurant dishes to intensify savory profiles.
+
+Regarding health effects, MSG is generally recognized as safe for the vast majority of the population. However, some sensitive individuals report mild, short-term reactions such as headaches or flushing after consuming large amounts on an empty stomach. Scientific evidence does not support a link between MSG and long-term issues with male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA and EFSA classify MSG as safe for general consumption. While it is a staple in the food industry, the level of sensitivity varies by person. It is typically used in small amounts to boost flavor rather than as a primary preservative.`,
   },
   {
     normalized: 'maltodextrin',
@@ -382,6 +507,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22254107/',
+    description: `Maltodextrin is a white, powdery carbohydrate used extensively as a filler, thickener, and stabilizer. It is commonly found in processed foods, energy drinks, protein powders, and various dietary supplements to improve texture and shelf life.
+
+While it provides a quick source of energy, maltodextrin has a very high glycemic index, meaning it causes rapid spikes in blood sugar levels. For individuals managing metabolic health or insulin sensitivity, frequent consumption can be a concern. While it does not directly impact testosterone or male reproductive health, maintaining stable blood sugar is important for overall metabolic wellness.
+
+Regulatory bodies like the FDA recognize maltodextrin as safe for general consumption. However, because it is a highly processed starch, its impact depends on the amount consumed and the frequency of use. In the context of supplements, it is often used as an inexpensive bulking agent to help package ingredients into capsules or powders.`,
   },
   {
     normalized: 'butylated hydroxytoluene',
@@ -395,6 +525,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/front/4580',
+    description: `Butylated hydroxytoluene, often called BHT, is a synthetic antioxidant used to prevent oils and fats from going rancid. You will commonly find it in both food products to extend shelf life and in men's grooming items, such as shaving creams or hair styling products, to stabilize the formula.
+
+Regarding health effects, BHT is widely used, but some studies suggest it may act as an endocrine disruptor at very high doses. While there is limited evidence linking it to significant reproductive or testosterone changes in humans at typical exposure levels, some animal studies have raised concerns about potential organ toxicity. It is also known to be a potential skin allergen for some individuals.
+
+Regulatory bodies like the FDA and CIR monitor its use. In cosmetics, its safety depends largely on concentration and whether the product is a rinse-off item like soap or a leave-on product like lotion. While generally considered safe in small amounts, its classification as a potential endocrine disruptor means consumers should be mindful of cumulative exposure across multiple products.`,
   },
   {
     normalized: 'soybean oil',
@@ -407,6 +542,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/29610056/',
+    description: `Soybean oil is a vegetable oil extracted from soybeans, one of the most widely produced crops globally. It is a staple ingredient in many processed foods, including salad dressings, margarines, fried snacks, and various baked goods.
+
+This oil is highly concentrated in omega-6 fatty acids. While these fats are essential for health, consuming them in excessive amounts relative to omega-3s may promote systemic inflammation in the body. Current nutritional science suggests that a high ratio of omega-6 to omega-3 can contribute to inflammatory processes, though it is generally considered safe when part of a balanced diet.
+
+The FDA classifies soybean oil as Generally Recognized as Safe (GRAS) for food use. There are no specific concentration limits for its use in food products, but health experts often recommend moderation. Because it is a common ingredient in highly processed items, consumers should check labels to manage their overall intake of seed oils.`,
   },
   {
     normalized: 'canola oil',
@@ -431,6 +571,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/29610056/',
+    description: `Corn oil is a vegetable oil extracted from the kernels of corn. It is one of the most common cooking oils found in processed foods, salad dressings, and many snack items due to its high smoke point and neutral flavor.
+
+In terms of health, corn oil is very high in omega-6 fatty acids. While these are essential, a diet excessively high in omega-6 relative to omega-3 fatty acids may promote inflammatory pathways in the body. Most nutritional evidence suggests that balancing these fats is key to maintaining long-term metabolic health.
+
+From a regulatory standpoint, corn oil is classified as GRAS (Generally Recognized as Safe) by the FDA and is widely permitted in food production globally. There are no specific concentration limits for its use, but health experts often recommend using it in moderation as part of a balanced diet to avoid an imbalance in fatty acid intake.`,
   },
   {
     normalized: 'sunflower oil',
@@ -443,6 +588,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/29610056/',
+    description: `Sunflower oil is a common vegetable oil extracted from the seeds of the sunflower plant. It is a staple in many kitchens and is frequently used for frying, salad dressings, and as an ingredient in processed snack foods and baked goods.
+
+This oil is a rich source of vitamin E and essential fatty acids, particularly omega-6 linoleic acid. While these fats are necessary for health, some nutritional research suggests that a diet excessively high in omega-6 relative to omega-3 can promote systemic inflammation. For men, maintaining a balanced ratio of these fats is important for overall metabolic health, though sunflower oil is not directly linked to changes in testosterone or fertility.
+
+Sunflower oil is widely recognized as safe by regulatory bodies like the FDA and EFSA when consumed in normal dietary amounts. There are no specific concentration limits for food use, but health experts generally recommend moderation to ensure a balanced intake of different types of fats.`,
   },
   {
     normalized: 'polysorbate 80',
@@ -455,6 +605,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25731162/',
+    description: `Polysorbate 80 is a common food additive used as an emulsifier. It helps mix oil and water together to create smooth textures in products like ice cream, salad dressings, and processed snacks.
+
+Current research suggests that consuming high amounts of certain emulsifiers may impact gut health. Some studies indicate that polysorbate 80 could potentially alter the gut microbiome and promote low-level intestinal inflammation in some individuals. While these findings are an area of active scientific investigation, more human-based clinical trials are needed to fully understand the long-term effects on digestive wellness.
+
+Regulatory bodies like the FDA and EFSA generally recognize polysorbate 80 as safe for consumption within established limits. It is widely used across the food industry, though health-conscious consumers often monitor its intake to maintain optimal gut barrier function.`,
   },
   {
     normalized: 'carboxymethylcellulose',
@@ -468,6 +623,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25731162/',
+    description: `Carboxymethylcellulose, often called CMC, is a common food additive used as a thickener and stabilizer. You will frequently find it in processed foods like ice creams, sauces, and dairy alternatives to improve texture and prevent ingredients from separating.
+
+While it is widely used, some animal studies suggest that high consumption may disrupt the gut microbiome and trigger low-level inflammation in the digestive tract. While research is ongoing, these findings have led to increased scrutiny regarding its long-term impact on gut health. It is not currently linked to changes in testosterone or male reproductive health.
+
+Regulatory bodies like the FDA generally recognize it as safe for consumption within specific limits. However, because of the emerging research on intestinal health, some consumers choose to limit its intake. It is primarily used in food products rather than grooming items, so its impact is almost entirely related to dietary habits.`,
   },
   {
     normalized: 'artificial flavor',
@@ -480,6 +640,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/food/food-ingredients-packaging/overview-food-ingredients-additives-colors',
+    description: `Artificial flavor refers to a broad category of synthetic compounds used in food and grooming products to mimic the taste or scent of natural ingredients. These substances are created in laboratories and are commonly found in processed snacks, beverages, and many flavored supplements.
+
+While these compounds are generally recognized as safe for consumption, they are often labeled as a single generic term. This lack of transparency means the specific chemical makeup is frequently undisclosed. While there is no direct evidence linking common artificial flavors to changes in testosterone or male fertility, some synthetic additives may cause sensitivities or digestive discomfort in certain individuals.
+
+Regulatory bodies like the FDA oversee the use of these substances, requiring them to meet safety standards before entering the market. However, because the exact chemical identity is often protected as a trade secret, consumers may not know the precise composition of what they are ingesting. In food, these are meant for consumption, whereas in grooming products, they are used to enhance the sensory experience.`,
   },
   {
     normalized: 'dextrose',
@@ -493,6 +658,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22254107/',
+    description: `Dextrose is a simple sugar, also known as glucose, that is naturally found in many fruits and vegetables. In the food industry, it is frequently added to processed snacks, beverages, and supplements to provide sweetness and quick energy.
+
+Consuming dextrose can lead to rapid spikes in blood sugar levels due to its high glycemic index. While it provides an immediate source of fuel for the body, frequent consumption of high-glycemic sugars is linked to metabolic concerns like insulin resistance. It does not have a direct, documented impact on testosterone or male reproductive health, but overall metabolic health is important for long-term wellness.
+
+Dextrose is widely recognized as safe by regulatory bodies like the FDA and EFSA when consumed in moderation. It is a standard food additive used globally. Because it is a simple carbohydrate, the primary safety consideration for consumers is managing total sugar intake to avoid excessive caloric consumption and blood sugar fluctuations.`,
   },
   {
     normalized: 'corn syrup',
@@ -505,6 +675,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.who.int/news-room/fact-sheets/detail/healthy-diet',
+    description: `Corn syrup is a highly refined liquid sweetener derived from corn starch. It is one of the most common additives in the modern food industry and is found in a vast array of processed goods, including sodas, candies, baked goods, and many pre-packaged condiments.
+
+While it provides quick energy, corn syrup offers virtually no nutritional value, such as vitamins or minerals. Because it is a simple sugar, it has a high glycemic index, meaning it can cause rapid spikes in blood glucose levels. Frequent consumption is linked to metabolic concerns like insulin resistance and weight gain, though it does not have a direct, specific impact on testosterone or male fertility.
+
+Regulatory bodies like the FDA classify corn syrup as a safe food additive when consumed in moderation. However, health experts generally recommend limiting its intake due to its role in promoting empty calories. In the context of a balanced diet, the primary concern is the total amount of added sugars consumed daily rather than the specific presence of corn syrup itself.`,
   },
   {
     normalized: 'modified corn starch',
@@ -518,6 +693,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/topics/topic/modified-starches',
+    description: `Modified corn starch is a type of carbohydrate derived from corn that has been physically, enzymatically, or chemically altered. It is widely used in the food industry as a thickener, stabilizer, and texture enhancer. You will commonly find it in processed foods like sauces, dressings, frozen meals, and snack foods to help maintain consistency and prevent separation.
+
+In terms of health effects, modified starch is generally considered safe for consumption and is not linked to specific hormonal or reproductive issues. However, it is a hallmark of ultra-processed foods. High consumption of these types of processed foods is often associated with metabolic concerns, such as blood sugar spikes and weight management challenges, though the starch itself is not the sole cause.
+
+Regulatory bodies like the FDA and EFSA recognize modified starches as safe for use in food at various concentrations. Because it is an additive used to improve food stability, its presence is more an indicator of food processing levels rather than direct toxicity. There are no specific restrictions on its use, provided it meets food-grade safety standards.`,
   },
   {
     normalized: 'sodium phosphate',
@@ -531,6 +711,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22205311/',
+    description: `Sodium phosphate is a common food additive used primarily as a preservative, emulsifier, and pH buffer. It is frequently found in processed foods such as deli meats, cheeses, frozen meals, and many bottled beverages to maintain texture and shelf life.
+
+While essential in small amounts for bodily functions, excessive intake through highly processed diets is a concern. High levels of phosphate are linked to increased cardiovascular risk and can place significant stress on the kidneys. While it does not directly impact testosterone or male fertility, maintaining healthy mineral balance is vital for overall metabolic and organ health.
+
+Regulatory bodies like the FDA and EFSA permit its use in food, provided it stays within established safety limits. However, because it is so prevalent in modern diets, health experts often suggest monitoring total intake to avoid chronic overconsumption. Unlike grooming products where usage depends on whether the item is rinsed off, food intake is cumulative and directly affects internal organ function.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -548,6 +733,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/24925270/',
+    description: `Olive oil is a liquid fat extracted from olives and is a staple in Mediterranean diets. It is most commonly found in cooking oils, salad dressings, and certain health supplements.
+
+This ingredient is primarily composed of monounsaturated fats and polyphenols, which are antioxidants. Extensive clinical evidence suggests that regular consumption supports cardiovascular health by helping to maintain healthy cholesterol levels. While it is not directly linked to testosterone or fertility, its role in supporting overall metabolic and heart health makes it a beneficial component of a balanced diet.
+
+From a regulatory standpoint, olive oil is classified as a food ingredient and is widely recognized as safe by global authorities like the FDA and EFSA. It is highly stable and used extensively in both culinary applications and as a nourishing base in skin grooming products. There are no specific concentration limits for its use in food, though quality varies based on extraction methods.`,
   },
   {
     normalized: 'avocado oil',
@@ -560,6 +750,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/23957433/',
+    description: `Avocado oil is a nutrient-dense oil extracted from the pulp of avocados. It is widely used in culinary settings as a cooking oil and is also a popular ingredient in high-end skincare products due to its moisturizing properties.
+
+This oil is primarily composed of monounsaturated fats, specifically oleic acid, which is widely recognized for supporting heart health. It also contains lutein, an antioxidant that supports eye health. While it is highly beneficial for nutrient absorption and skin hydration, there is no significant evidence suggesting it impacts male reproductive health or testosterone levels.
+
+From a regulatory standpoint, avocado oil is classified as GRAS (Generally Recognized as Safe) by the FDA for food consumption. In the grooming industry, it is considered a safe, non-irritating ingredient for both leave-on moisturizers and rinse-off products. It is highly regarded for its stability and ability to nourish the skin without causing adverse effects.`,
   },
   {
     normalized: 'oats',
@@ -572,6 +767,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/front/1885',
+    description: `Oats are a widely consumed whole grain known for their versatile use in breakfast cereals, baked goods, and plant-based milks. They are a staple in many diets due to their hearty texture and ability to be processed into various forms like flour or flakes.
+
+Consuming oats provides significant health benefits, primarily due to their high content of beta-glucan, a type of soluble fiber. Scientific evidence supports that this fiber helps reduce LDL cholesterol levels and promotes healthy digestion. While oats are not directly linked to testosterone or fertility, their ability to support metabolic health and stable blood sugar makes them a nutritious addition to a balanced diet.
+
+Oats are classified as a safe food ingredient and are widely recognized by global food safety authorities like the FDA. They are naturally occurring and do not require specific concentration limits in food products. Because they are a whole food source, they are generally considered a low-risk, high-nutrition ingredient for most consumers.`,
   },
   {
     normalized: 'flax seed',
@@ -584,6 +784,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25740909/',
+    description: `Flax seed is a nutrient-dense plant source commonly consumed as a whole seed, ground meal, or oil. It is widely used in health foods, smoothies, and baked goods due to its unique nutritional profile.
+
+This ingredient is a significant source of alpha-linolenic acid (ALA), a plant-based omega-3 fatty acid, and lignans. Scientific evidence suggests these components provide anti-inflammatory benefits and support cardiovascular health. While flax contains phytoestrogens, current research generally indicates that moderate dietary consumption does not negatively impact male reproductive health or testosterone levels in humans.
+
+Flax seed is classified as a food ingredient and is widely recognized as safe for consumption by global regulatory bodies like the FDA. Because it is primarily ingested rather than applied topically, there are no specific rinse-off or leave-on usage restrictions. It is best consumed in moderate amounts as part of a balanced diet to maximize its nutritional benefits.`,
   },
   {
     normalized: 'turmeric',
@@ -597,6 +802,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/17569207/',
+    description: `Turmeric is a bright yellow spice derived from the rhizome of the Curcuma longa plant. It is widely used globally as a culinary staple in many traditional cuisines and is frequently found in health supplements and functional foods.
+
+The primary active compound in turmeric is curcumin, which is well-documented for its potent antioxidant and anti-inflammatory properties. While research suggests it may help manage systemic inflammation, most evidence comes from clinical studies on curcumin extracts rather than raw turmeric powder alone. It is generally considered safe for consumption in standard dietary amounts, though extremely high doses in supplement form may cause digestive discomfort in some individuals.
+
+From a regulatory standpoint, turmeric is recognized as safe for use in food by agencies like the FDA. Because it is a natural food ingredient, it is not subject to the same cosmetic concentration limits as synthetic additives. When used in topical grooming products, it is typically used in small amounts for its color or skin-soothing benefits, though concentrated forms may cause mild skin or eye irritation in sensitive users.`,
   },
   {
     normalized: 'cocoa',
@@ -609,6 +819,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22301923/',
+    description: `Cocoa is a natural ingredient derived from the seeds of the Theobroma cacao tree. It is most commonly consumed as chocolate or cocoa powder in various food products, ranging from beverages and snacks to baking ingredients.
+
+Cocoa is highly regarded for its high concentration of flavanols, which are potent antioxidants. Scientific evidence suggests that these compounds can support cardiovascular health by improving blood flow and may also benefit cognitive function. While it is a nutrient-dense food, it is often processed with added sugars and fats, which can impact its overall health profile.
+
+From a regulatory standpoint, cocoa is classified as a standard food ingredient and is widely recognized as safe by agencies like the FDA. There are no specific concentration limits for its use in food, though nutritional labeling typically accounts for its calorie and sugar content. In the context of grooming, cocoa butter is often used in leave-on products for its moisturizing properties.`,
   },
   {
     normalized: 'hazelnuts',
@@ -621,6 +836,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/26561616/',
+    description: `Hazelnuts are edible nuts derived from the hazel tree, commonly used in various foods, snacks, and natural grooming ingredients. They are a staple in many diets and are frequently found in spreads, cereals, and botanical oils.
+
+These nuts are a dense source of healthy monounsaturated fats, vitamin E, and essential minerals like manganese. Scientific evidence generally supports their role in providing antioxidant protection and supporting heart health. While they are not specifically linked to testosterone or fertility modulation, their nutrient profile contributes to overall metabolic wellness.
+
+From a regulatory standpoint, hazelnuts are classified as safe for human consumption by major food safety authorities like the FDA and EFSA. In the context of grooming products, hazelnut oil is often used as a skin-conditioning agent. Because they are natural food products, they are considered low-risk, though individuals with specific nut allergies should exercise caution when using hazelnut-derived ingredients in topical applications.`,
   },
   {
     normalized: 'almonds',
@@ -633,6 +853,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/21457263/',
+    description: `Almonds are edible seeds from the almond tree, widely consumed as a nutrient-dense snack, flour substitute, or ingredient in plant-based milks and oils. They are a staple in many diets due to their versatile texture and mild, nutty flavor.
+
+These nuts are a rich source of heart-healthy monounsaturated fats, vitamin E, and magnesium. Scientific evidence generally supports their role in promoting cardiovascular health and managing healthy cholesterol levels. While they are highly nutritious, they are calorie-dense, so moderation is key for weight management.
+
+Almonds are classified as a food ingredient and are regulated by agencies like the FDA. They are considered safe for general consumption, though they are a common allergen. In the context of grooming products, almond oil is frequently used as a skin emollient due to its moisturizing properties, where it is considered safe for topical application.`,
   },
   {
     normalized: 'walnuts',
@@ -645,6 +870,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22153059/',
+    description: `Walnuts are nutrient-dense edible seeds commonly found in snack mixes, salads, and various breakfast foods. They are a unique plant source of alpha-linolenic acid (ALA), a type of essential omega-3 fatty acid that the body cannot produce on its own.
+
+Scientific evidence suggests that the omega-3s in walnuts support brain function and help reduce systemic inflammation. For men, walnuts are particularly relevant to reproductive health; studies indicate that regular consumption may improve sperm quality, motility, and overall vitality. This makes them a beneficial addition to a diet focused on male fertility.
+
+Walnuts are classified as a food ingredient and are generally recognized as safe by regulatory bodies like the FDA. There are no specific concentration limits for dietary intake, though they are calorie-dense. Because they are consumed as whole food rather than applied topically, they do not fall under cosmetic safety assessments like CIR or SCCS.`,
   },
   {
     normalized: 'coconut oil',
@@ -657,6 +887,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/26545671/',
+    description: `Coconut oil is a vegetable oil extracted from the kernel or meat of mature coconuts. It is a staple in kitchens worldwide and is frequently used in both cooking and natural personal care products like moisturizers and hair treatments.
+
+This oil is primarily composed of medium-chain triglycerides, which are fats that the body can use quickly for energy. Research suggests these fats may offer antimicrobial properties, helping to support skin health. While it is a popular energy source, it is high in saturated fats, so it is best consumed in moderation as part of a balanced diet. It does not have a known impact on male reproductive health or testosterone levels.
+
+From a regulatory standpoint, coconut oil is widely recognized as safe for consumption by the FDA and is commonly used in food products globally. In grooming products, it is considered safe for both leave-on skin creams and rinse-off items. Because it is a natural plant extract, it is generally viewed as a low-risk ingredient for most consumers.`,
   },
   {
     normalized: 'chia seeds',
@@ -669,6 +904,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/26561616/',
+    description: `Chia seeds are small, edible seeds derived from the Salvia hispanica plant, a member of the mint family. They are commonly consumed as a whole food in smoothies, puddings, and breakfast bowls, or ground into flour for baking.
+
+These seeds are a potent source of alpha-linolenic acid (ALA), a plant-based omega-3 fatty acid, along with dietary fiber and antioxidants. Scientific evidence suggests that the ALA and fiber content can support heart health and help maintain healthy cholesterol levels. While they provide general nutritional benefits, they are not specifically linked to changes in testosterone or male reproductive hormone levels.
+
+Chia seeds are classified as a food ingredient and are generally recognized as safe for consumption by major regulatory bodies like the FDA. Because they are ingested rather than applied topically, there are no specific rinse-off or leave-on usage restrictions. They are considered a nutrient-dense addition to a balanced diet.`,
   },
   {
     normalized: 'honey',
@@ -681,6 +921,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28539592/',
+    description: `Honey is a natural substance produced by bees from the nectar of flowering plants. It is widely used as a sweetener in various foods and is a staple ingredient in many dietary supplements and wellness products.
+
+In terms of health effects, honey is recognized for its antioxidant and antimicrobial properties. Scientific evidence suggests it can help reduce inflammation and support immune function. While it is a nutrient-dense sweetener, it is high in natural sugars, so moderation is key for overall metabolic health. It does not have a direct impact on male reproductive health or testosterone levels.
+
+From a regulatory standpoint, honey is classified as a food ingredient and is generally recognized as safe by agencies like the FDA. Because it is a natural food product, it is subject to standard food safety guidelines regarding purity and labeling. It is commonly consumed orally and is also used in topical grooming products for its soothing skin benefits.`,
   },
   {
     normalized: 'whey protein',
@@ -693,6 +938,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28698222/',
+    description: `Whey protein is a high-quality protein derived from milk during the cheesemaking process. It is a staple ingredient in many dietary supplements, protein powders, and fortified food products, ranging from meal replacement shakes to protein bars.
+
+As a complete protein, whey contains all nine essential amino acids required by the body. It is particularly valued for its high concentration of leucine, an amino acid that plays a critical role in triggering muscle protein synthesis. Scientific evidence generally supports its effectiveness for muscle recovery and growth following exercise. While it is highly beneficial for physical performance, it is not specifically linked to changes in testosterone or male reproductive health.
+
+Whey protein is widely recognized as safe by major regulatory bodies, including the FDA, and is categorized as a common food ingredient. Because it is consumed as a food product rather than applied topically, there are no specific rinse-off or leave-on usage nuances. It is most commonly used in dietary amounts to supplement daily protein intake.`,
   },
   {
     normalized: 'green tea extract',
@@ -706,6 +956,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/17906191/',
+    description: `Green tea extract is a concentrated form of the leaves from the Camellia sinensis plant. It is widely used as a dietary supplement, a functional food ingredient, and a flavoring agent in various beverages and wellness products.
+
+The extract is most notable for its high concentration of catechins, particularly EGCG. Scientific evidence suggests these compounds provide significant antioxidant support and may help support metabolic health. While generally considered safe in moderate dietary amounts, extremely high doses in supplement form have been studied for potential impacts on liver health. It is not specifically categorized as a primary driver for testosterone or fertility modulation.
+
+Regulatory bodies like the FDA and EFSA recognize green tea extract as a common food ingredient. In the context of food and supplements, usage levels are typically well-established. However, because it is a potent bioactive substance, consumers should follow recommended serving sizes to avoid excessive intake.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -724,6 +979,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/31836908/',
+    description: `Oxybenzone is a common chemical UV filter used in many sunscreens and daily grooming products to protect skin from sunburn. It is widely found in lotions, sprays, and facial moisturizers designed for sun protection.
+
+Research suggests oxybenzone may act as an endocrine disruptor, meaning it can interfere with the body's natural hormone signaling. For men, this is particularly relevant as some studies indicate potential anti-androgenic effects, which could impact testosterone levels and overall male reproductive health. While human evidence is ongoing, its ability to enter the bloodstream after even a single application is a noted concern.
+
+Regulatory bodies like the FDA and various international health agencies have reviewed its safety, often focusing on its potential for skin irritation and environmental impact on marine life. Because it is frequently used in leave-on products like daily facial creams, it has higher systemic absorption compared to rinse-off products. Consumers may want to look for mineral-based alternatives to minimize exposure.`,
   },
   {
     normalized: 'octinoxate',
@@ -737,6 +997,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28959646/',
+    description: `Octinoxate is a common chemical UV filter used in many sunscreens, lotions, and daily grooming products to protect the skin from UVB rays. It is widely found in leave-on products like facial moisturizers and body lotions designed to prevent sunburn.
+
+Research suggests that octinoxate may act as an endocrine disruptor by mimicking estrogen in the body. This activity is a concern for male reproductive health, as it may interfere with hormone signaling, potentially impacting testosterone levels and overall fertility. While evidence in humans is ongoing, studies in animal models have shown potential for hormonal disruption.
+
+Regulatory bodies like the FDA and various international agencies monitor its use. In grooming products, its safety profile often depends on whether it is a rinse-off or leave-on product, as prolonged skin absorption is a key factor. Because of its potential to disrupt thyroid and reproductive hormones, it is frequently flagged for closer scrutiny in men's wellness products.`,
   },
   {
     normalized: 'methylparaben',
@@ -750,6 +1015,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/14745841/',
+    description: `Methylparaben is a common preservative used in a wide variety of grooming products, including lotions, shampoos, and shaving creams. It is part of the paraben family, which is widely utilized in the personal care industry to prevent the growth of bacteria and mold in water-based formulas.
+
+Research indicates that methylparaben can exhibit weak estrogenic activity, meaning it may mimic the hormone estrogen in the body. Because of this potential to interfere with the endocrine system, there are concerns regarding its impact on male reproductive health, specifically its potential to influence testosterone levels and overall hormonal balance. While evidence is ongoing, some studies have detected parabens in human tissues, leading to discussions about their long-term effects on endocrine function.
+
+Regulatory bodies like the FDA and CIR generally recognize methylparaben as safe when used within specific concentration limits. In grooming products, its safety profile can vary depending on whether it is a rinse-off product, like soap, or a leave-on product, like moisturizer. Some consumers choose to avoid it due to its potential as a skin irritant or allergen.`,
   },
   {
     normalized: 'propylparaben',
@@ -763,6 +1033,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25667831/',
+    description: `Propylparaben is a synthetic preservative used to prevent the growth of bacteria and mold in personal care products. It is commonly found in various grooming items, including lotions, shampoos, and shaving creams, to extend shelf life.
+
+Research suggests that propylparaben may act as an endocrine disruptor due to its estrogenic activity. Because it can mimic hormones, there are concerns regarding its impact on male reproductive health, specifically its potential to interfere with testosterone levels and fertility. While evidence in humans is ongoing, its ability to interact with hormonal pathways makes it a point of interest for men's health.
+
+Regulatory bodies like the EU have implemented restrictions on certain parabens, particularly in products intended for children. In grooming, its safety profile often depends on whether it is a rinse-off product like soap or a leave-on product like moisturizer. It is also recognized as a potential skin allergen and irritant.`,
   },
   {
     normalized: 'butylparaben',
@@ -776,6 +1051,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28433408/',
+    description: `Butylparaben is a type of preservative used to prevent the growth of bacteria and mold in personal care products. It is commonly found in various grooming items, including lotions, shaving creams, and deodorants, to extend their shelf life.
+
+This ingredient is classified as an endocrine disruptor because it can mimic estrogen in the body. Research suggests it may interfere with hormonal balance, which is particularly relevant to male reproductive health. Specifically, studies have linked butylparaben exposure to potential reductions in sperm quality and disruptions to testosterone levels.
+
+Regulatory bodies like the SCCS and FDA monitor parabens closely due to these hormonal concerns. While many parabens are permitted in low concentrations, butylparaben is often flagged because it is one of the most potent estrogenic versions. In grooming products, its impact can vary depending on whether it is a rinse-off product like soap or a leave-on product like moisturizer.`,
   },
   {
     normalized: 'ethylparaben',
@@ -789,6 +1069,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25667831/',
+    description: `Ethylparaben is a preservative used to prevent the growth of bacteria and mold in personal care products. It is commonly found in various grooming items, including lotions, shaving creams, and hair care products, to extend their shelf life.
+
+Research suggests that ethylparaben may act as an endocrine disruptor by mimicking estrogen in the body. Because it can interfere with hormonal signaling, there are concerns regarding its impact on male reproductive health, specifically its potential to influence testosterone levels and overall fertility. Some individuals may also experience skin irritation or allergic reactions upon contact.
+
+Regulatory bodies like the FDA and CIR monitor parabens, generally allowing them in low concentrations. However, due to the potential for hormonal interference, many manufacturers are moving away from them. In grooming products, the risk level can vary depending on whether the item is a rinse-off product, like soap, or a leave-on product, like moisturizer, which stays on the skin longer.`,
   },
   {
     normalized: 'diethyl phthalate',
@@ -802,6 +1087,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://www.niehs.nih.gov/health/topics/agents/endocrine',
+    description: `Diethyl phthalate is a chemical compound used primarily as a solvent and fixative to help scents last longer on the skin. In the grooming industry, it is frequently found in colognes, aftershaves, and scented body washes, though it is often hidden under the generic label of fragrance.
+
+Research suggests that this ingredient may act as an endocrine disruptor, meaning it can interfere with the body's natural hormone signaling. For men, this is particularly relevant because some studies indicate that phthalates may have anti-androgenic effects, potentially impacting testosterone levels and male reproductive health. While evidence is ongoing, it is classified as a substance of concern regarding hormonal balance.
+
+Regulatory bodies like the FDA and various international agencies monitor phthalates closely. In grooming products, the risk level can vary depending on whether the product is a rinse-off soap or a leave-on cologne that stays on the skin for extended periods. Because it can act as a skin irritant or allergen, consumers with sensitive skin should exercise caution when using heavily scented products containing this ingredient.`,
   },
   {
     normalized: 'dibutyl phthalate',
@@ -815,6 +1105,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://www.niehs.nih.gov/health/topics/agents/endocrine',
+    description: `Dibutyl phthalate, often referred to as DBP, is a chemical compound used primarily as a plasticizer to make materials more flexible. In the grooming industry, it has historically been used in nail polishes, hair sprays, and various fragrance components to help scents last longer or to improve product texture.
+
+Scientific evidence identifies DBP as an endocrine disruptor, meaning it can interfere with the body's natural hormone signaling. For men, this is particularly concerning because it is linked to reproductive toxicity. Studies suggest that exposure may negatively impact male reproductive health, including potential disruptions to testosterone production and sperm quality.
+
+Due to these risks, regulatory bodies have taken significant action. It is banned in cosmetics within the European Union and faces strict limitations globally. While some regions may still allow trace amounts in specific applications, health experts advise caution, especially with leave-on grooming products that allow for prolonged skin absorption.`,
   },
   {
     normalized: 'triclosan',
@@ -828,6 +1123,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://www.fda.gov/consumers/consumer-updates/antibacterial-soap-you-can-skip-it-use-plain-soap-and-water',
+    description: `Triclosan is a synthetic antimicrobial agent used to kill or inhibit the growth of bacteria. It has historically been found in a wide range of consumer products, including antibacterial soaps, toothpastes, deodorants, and various grooming items.
+
+Research suggests that triclosan may act as an endocrine disruptor, meaning it can interfere with the body's natural hormone signaling. Specifically, studies have raised concerns regarding its potential to disrupt thyroid function and impact testosterone levels, which are critical for male reproductive health and vitality. Because of these potential hormonal effects, it is a significant concern for men's wellness.
+
+Due to these safety concerns, the FDA has banned triclosan from use in consumer antiseptic hand washes, citing a lack of evidence that it is more effective than plain soap. While it may still appear in certain leave-on grooming products or rinse-off items depending on regional regulations, many health experts recommend avoiding it to minimize hormonal exposure and environmental impact.`,
   },
   {
     normalized: 'dmdm hydantoin',
@@ -841,6 +1141,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `DMDM hydantoin is a synthetic preservative used to prevent the growth of bacteria and mold in personal care products. It is commonly found in various grooming items, such as shampoos, shaving creams, and body washes, to extend their shelf life.
+
+This ingredient belongs to a group known as formaldehyde releasers. While effective at killing microbes, it slowly releases small amounts of formaldehyde over time. This process can cause skin irritation and allergic contact dermatitis in many users. Because of the formaldehyde release, it is classified as a potential carcinogen, though the risk level depends heavily on the amount of exposure.
+
+Regulatory bodies like the CIR monitor its use, generally allowing it in rinse-off products like soaps where contact time is brief. However, because it is a known skin sensitizer, it is often avoided in leave-on products like lotions or hair styling creams. If you have sensitive skin, you may want to avoid products containing this ingredient to prevent irritation.`,
   },
   {
     normalized: 'quaternium-15',
@@ -854,6 +1159,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Quaternium-15 is a preservative used in various grooming products to prevent the growth of bacteria and mold. It is most commonly found in hair conditioners, shampoos, and certain skin lotions to extend shelf life.
+
+This ingredient is classified as a formaldehyde releaser, meaning it slowly releases small amounts of formaldehyde over time. While it helps keep products clean, it is a known skin sensitizer and contact allergen that can cause redness, itching, or irritation in many users. Some studies also suggest potential risks regarding reproductive toxicity, though more research is needed to confirm these effects in humans.
+
+Regulatory bodies monitor its use due to these irritation risks. In grooming applications, its impact depends on whether it is a rinse-off product like shampoo or a leave-on product like hair cream. Because it can trigger allergic reactions, many manufacturers are moving away from using it in favor of safer alternatives.`,
   },
   {
     normalized: 'imidazolidinyl urea',
@@ -867,6 +1177,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Imidazolidinyl urea is a synthetic preservative used to prevent the growth of bacteria and mold in personal care products. It is commonly found in various grooming items, such as shaving creams, lotions, and hair styling products, to extend their shelf life.
+
+This ingredient belongs to a group known as formaldehyde releasers, meaning it slowly releases small amounts of formaldehyde to maintain sterility. While it is effective at preventing microbial contamination, it is a known contact allergen. Some individuals may experience skin irritation, redness, or allergic contact dermatitis upon exposure. There is currently no significant evidence linking it to changes in male reproductive health or testosterone levels.
+
+Regulatory bodies like the CIR monitor its use in cosmetics. In grooming products, its impact often depends on whether the item is a rinse-off product, like soap, or a leave-on product, like moisturizer. Because it can trigger sensitivities, users with known skin allergies should exercise caution and monitor for any signs of irritation.`,
   },
   {
     normalized: 'diazolidinyl urea',
@@ -880,6 +1195,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Diazolidinyl urea is a preservative used in various grooming products to prevent the growth of bacteria, yeast, and mold. It is commonly found in shampoos, shaving creams, lotions, and other leave-on or rinse-off personal care items to extend shelf life and ensure product safety.
+
+This ingredient is classified as a formaldehyde releaser, meaning it slowly releases small amounts of formaldehyde to maintain antimicrobial activity. While effective at preventing spoilage, it is a known skin sensitizer. Evidence shows it can cause allergic contact dermatitis or skin irritation in sensitive individuals. It is not specifically linked to changes in male reproductive health or testosterone levels.
+
+Regulatory bodies like the CIR monitor its use, generally recognizing it as safe when used at low concentrations. However, because it can trigger allergic reactions, its presence is a concern for those with sensitive skin. In grooming products, the risk level can vary depending on whether the product is rinsed off quickly or left on the skin.`,
   },
   {
     normalized: 'benzophenone',
@@ -893,6 +1213,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/31836908/',
+    description: `Benzophenone is a chemical compound primarily used as a UV absorber to prevent products from fading or degrading due to sunlight exposure. You will commonly find it in various men's grooming products, such as sunscreens, hair styling gels, and certain lotions, where it helps stabilize the formula against UV radiation.
+
+Scientific research, particularly in laboratory settings, has raised concerns regarding its impact on the endocrine system. Some studies suggest benzophenone may exhibit estrogenic and anti-androgenic activity. For men, this is particularly relevant as these hormonal shifts can potentially interfere with testosterone levels and overall reproductive health.
+
+Regulatory bodies monitor benzophenone due to its potential as an endocrine disruptor and its classification in various safety databases. While its use is permitted in many cosmetic applications, the level of concern often depends on whether the product is a rinse-off item like soap or a leave-on product like moisturizer. Because it can be absorbed through the skin, its concentration and frequency of use are key safety considerations.`,
   },
   {
     normalized: 'coal tar',
@@ -905,6 +1230,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://monographs.iarc.who.int/list-of-classifications/',
+    description: `Coal tar is a dark, thick liquid derived from the distillation of coal. In the grooming industry, it is most commonly found in medicated shampoos and scalp treatments designed to manage conditions like severe dandruff, psoriasis, or seborrheic dermatitis.
+
+Regarding health effects, the International Agency for Research on Cancer (IARC) classifies coal tar as a Group 1 carcinogen, meaning there is sufficient evidence that it can cause cancer in humans through direct skin contact. While it is effective at reducing skin cell buildup and itching, the potential risk of skin cancer means it should be used with caution. It is not specifically linked to changes in male reproductive health or testosterone levels.
+
+Regulatory bodies monitor coal tar closely due to these cancer risks. While it is permitted in certain over-the-counter medicated products, usage is strictly regulated regarding concentration levels. For grooming products, it is typically used in rinse-off applications like shampoos to minimize prolonged skin absorption, but users should always follow product instructions and avoid use on broken or irritated skin.`,
   },
   {
     normalized: 'formaldehyde',
@@ -918,6 +1248,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://monographs.iarc.who.int/list-of-classifications/',
+    description: `Formaldehyde is a colorless, strong-smelling gas used widely in industrial manufacturing. In the grooming industry, it is rarely added directly; instead, it is often found via formaldehyde releasers, which are specific ingredients that slowly release formaldehyde into a product to act as a preservative.
+
+Regarding health, formaldehyde is classified by the IARC as a Group 1 carcinogen, meaning there is sufficient evidence that it can cause cancer in humans. It is also a well-known skin irritant and a common allergen that can cause contact dermatitis. While it is not specifically linked to testosterone or fertility, its potential for systemic toxicity and skin sensitization makes it a significant concern for regular users.
+
+Regulatory bodies have taken strict action against this substance. In the European Union, formaldehyde is banned in cosmetics above very low trace levels. In the United States, the FDA regulates its use, but many manufacturers avoid it due to safety concerns. When checking labels, be cautious of ingredients labeled as formaldehyde releasers in leave-on products like hair styling creams.`,
   },
   {
     normalized: 'methylisothiazolinone',
@@ -931,6 +1266,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25188413/',
+    description: `Methylisothiazolinone is a synthetic preservative used to prevent the growth of bacteria, yeast, and mold in personal care products. It is most commonly found in liquid grooming items like shampoos, conditioners, and body washes.
+
+This ingredient is a potent contact allergen known to cause skin irritation and allergic contact dermatitis in many individuals. While it does not directly impact testosterone or male fertility, its ability to trigger skin sensitivities makes it a significant concern for those with reactive skin.
+
+Regulatory bodies have taken strict action due to these allergy risks. In the European Union, it is banned in leave-on products like lotions and is strictly limited to rinse-off products like soaps. In the United States, the FDA monitors its use, but consumers should remain cautious of its presence in products that stay on the skin for extended periods.`,
   },
   {
     normalized: 'methylchloroisothiazolinone',
@@ -944,6 +1284,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25188413/',
+    description: `Methylchloroisothiazolinone is a potent antimicrobial preservative used to prevent the growth of bacteria, yeast, and mold in personal care products. It is most commonly found in rinse-off grooming items like shampoos, conditioners, and body washes.
+
+This ingredient is a well-documented skin sensitizer and a common cause of contact dermatitis. While it is highly effective at protecting products from spoilage, it can cause significant irritation or allergic reactions in many individuals. Evidence shows it is a strong allergen, meaning repeated exposure can lead to permanent skin sensitivity.
+
+Due to its high potential for irritation, regulatory bodies like the EU have banned its use in leave-on products like lotions or face creams. In rinse-off products, its use is strictly controlled and limited to very low concentrations to minimize risk. Always check if a product stays on your skin, as this increases the likelihood of a reaction.`,
   },
   {
     normalized: 'toluene',
@@ -957,6 +1302,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://www.niehs.nih.gov/health/topics/agents/endocrine',
+    description: `Toluene is a chemical solvent often used in the fragrance industry to help dissolve and blend aromatic compounds. In grooming products, it is typically found in small amounts within perfumes, colognes, or scented hair products to ensure the scent is evenly distributed.
+
+Regarding health, toluene is classified as a potential reproductive toxicant. High levels of chronic exposure have been linked to adverse effects on male reproductive health, including potential impacts on fertility and testosterone levels. It is also known to affect the central nervous system and can cause irritation to the skin and respiratory tract.
+
+Regulatory bodies monitor toluene due to these risks. While it is permitted in certain cosmetic applications, its use is strictly controlled to prevent excessive exposure. For grooming products, the risk is generally lower in rinse-off items compared to leave-on fragrances, but consumers should remain mindful of cumulative exposure from multiple scented products.`,
   },
   {
     normalized: 'resorcinol',
@@ -970,6 +1320,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/24075024/',
+    description: `Resorcinol is a chemical compound often used as a preservative and a key ingredient in hair coloring products. It is commonly found in permanent hair dyes, certain soaps, and some topical skin treatments to help stabilize formulas or alter hair pigment.
+
+Regarding health effects, resorcinol is recognized as a skin irritant and a potential allergen that can cause contact dermatitis. More significantly, evidence suggests it may act as an endocrine disruptor by affecting thyroid function. While it is not directly linked to testosterone or fertility issues, its ability to interfere with hormonal balance makes it a substance of concern for overall metabolic health.
+
+Regulatory bodies have taken action due to these risks. In the European Union, its use is strictly restricted in hair dye products to limit systemic exposure. While it remains used in various grooming applications, users should be aware that high concentrations or frequent use can increase the risk of irritation and hormonal interference.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -988,6 +1343,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/33227462/',
+    description: `Octocrylene is a chemical UV filter commonly used in sunscreens, after-sun lotions, and some men's grooming products like hair sprays or tinted moisturizers to protect skin from UVB rays. It helps stabilize other sunscreen ingredients, ensuring the product remains effective under sunlight.
+
+Research suggests that octocrylene can degrade into benzophenone over time, a substance that has raised concerns regarding endocrine disruption. While evidence in humans is still evolving, some studies indicate potential impacts on hormonal balance, which may be relevant to male reproductive health and overall endocrine function. Because of these potential effects, it is often flagged for cautious use.
+
+Regulatory bodies like the FDA and SCCS monitor its safety, generally allowing its use in specific concentrations. In grooming products, its impact can vary depending on whether it is a rinse-off product, like a body wash, or a leave-on product, like a daily moisturizer. Consumers should be mindful of cumulative exposure when using multiple products containing this ingredient.`,
   },
   {
     normalized: 'homosalate',
@@ -1001,6 +1361,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://health.ec.europa.eu/scientific-committees/scientific-committee-consumer-safety-sccs_en',
+    description: `Homosalate is a chemical UV filter commonly used in sunscreens, lotions, and various grooming products to protect the skin from UVB rays. It helps prevent sunburn and protects against skin damage caused by sun exposure.
+
+Regarding health effects, some laboratory studies have shown that homosalate may exhibit endocrine-disrupting activity. This means it could potentially interfere with hormonal systems. Because of these findings, there is ongoing research into its relevance to male reproductive health and fertility. While evidence in humans is not yet definitive, the potential for hormonal interference warrants a cautious approach.
+
+Regulatory bodies are currently monitoring this ingredient. The SCCS is reviewing appropriate dose limits to ensure consumer safety. In grooming products, the risk level often depends on whether the product is a rinse-off item like soap or a leave-on product like daily moisturizer, as leave-on products allow for higher absorption through the skin.`,
   },
   {
     normalized: 'sodium laureth sulfate',
@@ -1014,6 +1379,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Sodium laureth sulfate, often abbreviated as SLES, is a common surfactant used to create the rich, bubbly lather found in many shampoos, body washes, and facial cleansers. It is widely used in the grooming industry because it is highly effective at removing oils, dirt, and sebum from the skin and hair.
+
+In terms of health effects, SLES is primarily known as a skin and eye irritant. For some users, especially those with sensitive skin, it can strip away natural oils, leading to dryness, redness, or itching. While it is not linked to changes in testosterone or fertility, the potential for irritation is well-documented. Some versions of this ingredient may also contain trace amounts of 1,4-dioxane, a byproduct of the manufacturing process, which is why quality control is important.
+
+Regulatory bodies like the FDA and CIR consider SLES safe for use in rinse-off grooming products when formulated correctly. Because it is a rinse-off ingredient, it typically stays on the skin for a very short time, reducing the risk of systemic absorption. However, if you have a history of eczema or very dry skin, you may want to look for milder, sulfate-free alternatives.`,
   },
   {
     normalized: 'sodium lauryl sulfate',
@@ -1027,6 +1397,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Sodium lauryl sulfate, often abbreviated as SLS, is a common surfactant used to create a rich, foamy lather. You will frequently find it in men's grooming products like body washes, shampoos, and shaving creams to help lift dirt and oil from the skin and hair.
+
+In terms of health effects, SLS is primarily recognized as a skin and eye irritant. While it is not linked to changes in testosterone or male fertility, high concentrations can strip the skin of its natural oils, leading to dryness, redness, or itching. Most irritation occurs when the ingredient stays in contact with the skin for extended periods.
+
+Regulatory bodies like the FDA and CIR consider SLS safe for use in cosmetics when formulated correctly. In grooming products, its impact often depends on whether it is a rinse-off product, such as soap, or a leave-on product. For those with sensitive skin, using products with lower concentrations or milder alternatives may help prevent irritation.`,
   },
   {
     normalized: 'fragrance',
@@ -1039,6 +1414,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/15975171/',
+    description: `Fragrance, often listed simply as perfume on product labels, is a complex mixture of natural and synthetic chemicals used to give grooming products like soaps, lotions, and colognes a pleasant scent. Because it is considered a trade secret, companies are not required to disclose the specific individual components that make up the scent profile.
+
+While fragrance provides a sensory benefit, it can pose health risks for some users. Many undisclosed mixtures contain phthalates or synthetic musks, which are flagged as potential endocrine disruptors. For men, exposure to certain endocrine-disrupting chemicals is a concern because they may interfere with hormonal signaling, which is relevant to reproductive health and fertility. Additionally, fragrance is a common source of skin irritation and allergic reactions.
+
+Regulatory bodies like the FDA do not require full disclosure of fragrance ingredients, though the Cosmetic Ingredient Review (CIR) monitors their safety. In grooming products, the risk level can vary depending on whether the product is a rinse-off item, like body wash, or a leave-on product, such as moisturizer, which keeps the chemicals in contact with the skin for longer periods.`,
   },
   {
     normalized: 'propylene glycol',
@@ -1052,6 +1432,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Propylene glycol is a versatile liquid ingredient used widely in both skincare and food products. In grooming items like lotions, creams, and shaving gels, it acts as a humectant, meaning it helps the skin retain moisture by drawing water into the surface layers.
+
+Regarding health effects, propylene glycol is generally considered safe for most people when used in standard cosmetic amounts. However, it is recognized as a potential mild irritant and can cause skin sensitization or allergic contact dermatitis in some individuals. While it is not linked to changes in testosterone or male fertility, those with sensitive skin should monitor for redness or itching.
+
+Regulatory bodies like the FDA and CIR consider it safe for use in cosmetics within specific concentration limits. In grooming products, its impact often depends on whether it is a rinse-off product, like soap, or a leave-on product, like moisturizer. Because it can penetrate the skin, manufacturers typically keep levels controlled to minimize the risk of irritation.`,
   },
   {
     normalized: 'mineral oil',
@@ -1065,6 +1450,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Mineral oil is a clear, odorless liquid derived from petroleum. In the grooming industry, it is widely used as an emollient to soften skin and lock in moisture. You will frequently find it in lotions, beard oils, shaving creams, and hair conditioners.
+
+This ingredient is considered safe for topical use and does not pose known risks to testosterone or male reproductive health. Its primary effect is occlusive, meaning it creates a protective barrier on the skin surface to prevent water loss. While generally harmless, it can be comedogenic, which means it may clog pores and lead to breakouts or acne in men with oily or acne-prone skin.
+
+Regulatory bodies like the FDA and CIR recognize cosmetic-grade mineral oil as safe for skin application. Because it is highly stable and does not spoil easily, it is a common choice for both rinse-off products like body wash and leave-on products like moisturizers. When using mineral oil-based products, men prone to congestion should look for non-comedogenic formulations.`,
   },
   {
     normalized: 'dimethicone',
@@ -1077,6 +1467,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Dimethicone is a type of silicone polymer widely used in men's grooming products like hair styling gels, moisturizers, and beard oils. It is prized for its ability to create a smooth, silky texture and provide a protective barrier on the skin or hair.
+
+In terms of health, dimethicone is considered non-toxic and is generally safe for topical use. It does not interfere with hormone levels or reproductive health. However, because it forms a film on the surface, it can lead to product buildup. For men with oily or acne-prone skin, this can potentially clog pores and lead to breakouts if not washed away properly.
+
+Regulatory bodies like the Cosmetic Ingredient Review (CIR) consider dimethicone safe for use in cosmetics. There are no specific concentration limits for general safety, but its effect depends on the product type. In leave-on products like facial creams, buildup is more likely, whereas in rinse-off products like shampoos, the risk of pore clogging is significantly lower.`,
   },
   {
     normalized: 'cyclomethicone',
@@ -1090,6 +1485,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22858927/',
+    description: `Cyclomethicone is a type of volatile silicone often used in men's grooming products like hair styling creams, skin lotions, and deodorants. It is valued for its ability to spread easily across the skin and evaporate quickly, leaving a smooth, non-greasy finish without a heavy residue.
+
+Regarding health effects, there is currently no strong evidence linking topical use of cyclomethicone to direct harm to male reproductive health or testosterone levels. However, it is flagged in some discussions due to potential endocrine concerns, though scientific consensus on human risk from skin application remains limited. The primary concern is its environmental impact, as it can persist in ecosystems after being washed away.
+
+Regulatory bodies like the European Commission have placed restrictions on certain cyclic silicones due to their environmental persistence. In grooming products, its safety profile often depends on whether it is a rinse-off product or a leave-on product. While generally considered safe for topical use in controlled amounts, users should be aware of the growing regulatory focus on its long-term environmental footprint.`,
   },
   {
     normalized: 'aluminum chlorohydrate',
@@ -1103,6 +1503,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/24249565/',
+    description: `Aluminum chlorohydrate is a common active ingredient used in antiperspirants to manage body odor and excessive sweating. It is most frequently found in roll-ons, sprays, and stick deodorants designed to reduce moisture by temporarily plugging sweat ducts.
+
+This ingredient works by forming a gel-like plug in the sweat glands, which effectively reduces perspiration. While it is highly effective for moisture control, some consumers express concern regarding the potential for aluminum accumulation in the body. However, current scientific evidence does not conclusively link topical aluminum use to significant systemic health issues or changes in male reproductive health.
+
+Regulatory bodies like the FDA and various international cosmetic committees consider aluminum chlorohydrate safe for use in topical grooming products when applied as directed. In most antiperspirants, it is used in specific concentrations designed for skin absorption limits. Because it is a rinse-off or leave-on topical agent, the amount reaching the bloodstream is generally considered minimal under standard usage.`,
   },
   {
     normalized: 'polyethylene glycol',
@@ -1116,6 +1521,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/26091904/',
+    description: `Polyethylene glycol, often abbreviated as PEG, is a versatile synthetic ingredient used widely in men's grooming products. It acts as an emulsifier to help oil and water mix smoothly and is frequently found in lotions, shaving creams, and cleansers to improve texture and spreadability.
+
+While PEG itself is generally considered safe for topical use, it can act as a penetration enhancer, meaning it helps other ingredients soak deeper into your skin. The primary safety concern involves potential impurities like 1,4-dioxane and ethylene oxide, which are byproducts of the manufacturing process. These contaminants are linked to more serious health risks, including potential organ toxicity and reproductive concerns, if present in high amounts.
+
+Regulatory bodies like the FDA and CIR monitor its use, but safety depends heavily on the manufacturing purity and the concentration used. In grooming products, the risk level often shifts depending on whether the product is a rinse-off cleanser or a leave-on moisturizer. Because it can drive other substances into the bloodstream, choosing high-quality formulations is important for minimizing exposure to impurities.`,
   },
   {
     normalized: 'triethanolamine',
@@ -1129,6 +1539,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Triethanolamine is a versatile chemical compound frequently used in men's grooming products like shaving creams, soaps, and hair styling gels. It primarily serves as a pH adjuster to ensure products are skin-compatible and can also act as an emulsifier to help oil and water mix smoothly.
+
+In terms of health effects, triethanolamine is classified as an irritant that can cause skin, eye, or respiratory discomfort in some users. While it is not directly linked to changes in testosterone or fertility, the main safety concern involves its potential to react with other ingredients. If combined with certain nitrosating agents, it can form nitrosamines, which are substances recognized as potential carcinogens.
+
+Regulatory bodies like the CIR monitor its use, generally considering it safe in cosmetic applications when formulated correctly to prevent nitrosamine formation. For grooming products, its safety often depends on whether it is a rinse-off product, like soap, or a leave-on product, like hair cream. Consumers should look for formulations that avoid mixing it with ingredients that could trigger these harmful reactions.`,
   },
   {
     normalized: 'phenoxyethanol',
@@ -1142,6 +1557,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Phenoxyethanol is a common synthetic preservative used to prevent the growth of bacteria and fungi in personal care products. You will frequently find it in men's grooming items like face washes, shaving creams, and moisturizers to ensure the product remains shelf-stable and safe for use.
+
+Regarding health effects, it is widely considered safe at low concentrations, but it is known to be a potential skin and eye irritant. Some studies suggest caution regarding reproductive toxicity at very high doses, though it is not specifically linked to testosterone or fertility changes in standard grooming applications. For most men, the primary concern is localized skin sensitivity or redness.
+
+Regulatory bodies like the FDA and CIR generally recognize it as safe when used within specific limits, typically up to 1 percent in cosmetic formulations. Because it is often used in rinse-off products like soaps, the actual absorption into the body is minimal. However, if you have highly sensitive skin, you may want to monitor for irritation when using leave-on products containing this ingredient.`,
   },
   {
     normalized: 'avobenzone',
@@ -1155,6 +1575,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/31836908/',
+    description: `Avobenzone is a common chemical UV filter used extensively in sunscreens and daily grooming products like moisturizers and aftershaves. It is primarily used to protect the skin from UVA rays, which are responsible for premature aging and long-term skin damage.
+
+In terms of health effects, avobenzone is generally considered safe for topical use when applied as directed. While some studies have investigated its potential for endocrine disruption, current scientific evidence does not strongly support a link to hormonal or reproductive issues in men. It is mostly known for being photounstable, meaning it can break down when exposed to sunlight, which is why it is often paired with other stabilizers in skincare formulas.
+
+Regulatory bodies like the FDA and various international cosmetic committees permit its use in topical products. In grooming applications, its safety profile is well-established for both leave-on lotions and rinse-off products. Users should follow product instructions to ensure adequate sun protection and avoid excessive skin irritation.`,
   },
   {
     normalized: 'isopropyl alcohol',
@@ -1168,6 +1593,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Isopropyl alcohol is a common solvent and antiseptic used widely in men's grooming products like aftershaves, toners, and hand sanitizers. It is frequently used to help ingredients dry quickly on the skin or to dissolve other components in a formula.
+
+While effective at killing bacteria, it is a known skin irritant. At high concentrations, it can strip the skin of its natural protective oils, leading to dryness, redness, or irritation. While it is not directly linked to testosterone or fertility issues, its primary impact is on the skin barrier and localized irritation.
+
+Regulatory bodies like the FDA and CIR recognize its use in topical products, but concentration is key. In rinse-off products, the risk is minimal, but in leave-on products like aftershaves, it can cause cumulative dryness. Users with sensitive skin should monitor for irritation and avoid excessive use on broken or highly sensitive areas.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1198,6 +1628,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/drugs/understanding-over-counter-medicines/sunscreen-how-help-protect-your-skin-sun',
+    description: `Zinc oxide is a naturally occurring mineral frequently used in men's skincare and sun protection products. It is a popular physical UV filter found in sunscreens, moisturizers, and daily grooming lotions to shield the skin from harmful ultraviolet radiation.
+
+This ingredient is highly effective at providing broad-spectrum protection against both UVA and UVB rays. While some high-level laboratory studies have raised questions regarding potential reproductive toxicity at extremely high doses, current consumer-grade applications in topical grooming products are widely considered safe for skin use. It is a preferred choice for men with sensitive skin because it sits on top of the skin rather than being absorbed into the bloodstream.
+
+Regulatory bodies like the FDA and various international health agencies recognize zinc oxide as safe for use in topical sunscreens. In grooming products, it is typically used in concentrations that provide effective sun protection without systemic absorption. It is also valued in the industry as a reef-friendly alternative to chemical UV filters, making it a more environmentally conscious choice for outdoor enthusiasts.`,
   },
   {
     normalized: 'shea butter',
@@ -1210,6 +1645,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/20002242/',
+    description: `Shea butter is a natural fat extracted from the nuts of the shea tree, which is native to parts of Africa. In the grooming industry, it is widely used as a moisturizing agent in lotions, beard oils, and body butters due to its rich, creamy texture.
+
+This ingredient is highly regarded for its skin-soothing properties. It is rich in vitamins A and E, which provide antioxidant benefits and help reduce skin inflammation. While it is not linked to changes in testosterone or male fertility, its ability to protect the skin barrier makes it a staple for maintaining healthy skin during grooming routines.
+
+From a regulatory standpoint, shea butter is considered safe for topical use by major health authorities. It is commonly found in both rinse-off products like soaps and leave-on products like moisturizers. Because it is a natural plant derivative, it is generally recognized as a low-risk emollient for daily personal care.`,
   },
   {
     normalized: 'jojoba oil',
@@ -1222,6 +1662,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22171736/',
+    description: `Jojoba oil is a liquid wax ester derived from the seeds of the Simmondsia chinensis plant. Unlike many other botanical oils, it is technically a wax, which allows it to behave very similarly to the natural oils produced by human skin. It is widely used in men's grooming products like beard oils, moisturizers, and cleansers.
+
+In terms of health effects, jojoba oil is considered highly safe and non-irritating. It is prized for its ability to mimic skin sebum, making it excellent for moisturizing without clogging pores. Research suggests it has anti-inflammatory properties that can soothe skin irritation. It does not have known negative impacts on male reproductive health or testosterone levels.
+
+From a regulatory standpoint, jojoba oil is widely recognized as safe for cosmetic use by major global authorities. Because it is a natural emollient, it is commonly found in both rinse-off products like soaps and leave-on products like facial oils. It is a stable ingredient that is generally well-tolerated by most skin types.`,
   },
   {
     normalized: 'aloe vera',
@@ -1234,6 +1679,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/18093364/',
+    description: `Aloe vera is a succulent plant extract derived from the fleshy leaves of the Aloe barbadensis Miller plant. It is widely used in men's grooming products, such as aftershave balms, moisturizers, and soothing gels, to provide hydration and calm the skin.
+
+The ingredient is well-known for its soothing and anti-inflammatory properties. Scientific evidence suggests it can help accelerate wound healing and reduce skin irritation caused by shaving or environmental stressors. It is considered safe for topical use and does not have known negative impacts on male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA and various international cosmetic councils recognize aloe vera as a safe ingredient for topical applications. In grooming products, it is commonly used in both rinse-off items like body washes and leave-on products like lotions. It is generally regarded as a low-risk ingredient when used in standard cosmetic concentrations.`,
   },
   {
     normalized: 'tocopherol',
@@ -1247,6 +1697,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22156980/',
+    description: `Tocopherol is a group of fat-soluble compounds commonly known as Vitamin E. It is a natural antioxidant found in various plant oils, such as sunflower, almond, and wheat germ oils, and is frequently used in both nutritional supplements and skincare products.
+
+In the context of health, tocopherol acts as a powerful antioxidant that helps protect cells from oxidative stress caused by free radicals. While it is highly beneficial for skin health by supporting the moisture barrier and protecting against environmental damage, there is no significant evidence suggesting it negatively impacts male reproductive health or testosterone levels. It is generally considered safe for topical and oral use.
+
+Regulatory bodies like the FDA and CIR recognize tocopherol as safe for use in cosmetics and food. In grooming products, it is often included in leave-on moisturizers or oils to prevent the product itself from oxidizing. It is widely regarded as a stable and beneficial ingredient for maintaining skin integrity.`,
   },
   {
     normalized: 'niacinamide',
@@ -1260,6 +1715,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/15665385/',
+    description: `Niacinamide, also known as vitamin B3, is a water-soluble vitamin widely used in skincare and dietary supplements. It is naturally found in many foods like poultry, fish, and vegetables, but in grooming products, it is a popular active ingredient used to enhance skin health.
+
+This ingredient is highly regarded for its ability to strengthen the skin barrier, reduce redness, and improve texture. Scientific evidence supports its effectiveness in managing inflammation and regulating oil production. While it is not directly linked to changes in testosterone or male fertility, its ability to soothe skin makes it a staple for men dealing with irritation or acne.
+
+Niacinamide is considered safe for topical use by major regulatory bodies. In grooming products, it is commonly found in both leave-on moisturizers and rinse-off cleansers. While it is generally well-tolerated, very high concentrations may cause mild irritation in sensitive individuals. It is widely recognized as a stable and beneficial component in modern men's skincare routines.`,
   },
   {
     normalized: 'hyaluronic acid',
@@ -1273,6 +1733,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22052267/',
+    description: `Hyaluronic acid is a naturally occurring sugar molecule found throughout the human body, particularly in the skin, connective tissues, and eyes. In grooming products, it is used as a powerful humectant, meaning it acts like a sponge to attract and hold moisture within the skin.
+
+This ingredient is widely recognized for its ability to improve skin hydration and maintain a plump, healthy appearance. Scientific evidence consistently supports its effectiveness in soothing dry skin and strengthening the skin barrier. It is considered very safe for topical use and does not impact male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA and CIR consider hyaluronic acid safe for use in cosmetics. In men's grooming, you will find it in various forms, from lightweight face serums to thicker moisturizers. Because it is highly effective at retaining water, it is a staple ingredient for maintaining skin elasticity and preventing dryness caused by shaving or environmental exposure.`,
   },
   {
     normalized: 'glycerin',
@@ -1286,6 +1751,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Glycerin is a naturally occurring sugar alcohol that acts as a powerful humectant. It is commonly found in a wide variety of personal care products, including moisturizers, shampoos, and soaps, as well as in many food items to maintain texture and moisture.
+
+In terms of health effects, glycerin is widely recognized for its ability to draw water into the skin, helping to hydrate and soothe dryness. It is considered very safe and is well-tolerated by most individuals. There is no significant evidence linking glycerin to negative impacts on male reproductive health, testosterone levels, or fertility.
+
+Regulatory bodies such as the FDA and CIR consider glycerin safe for use in cosmetics and topical applications. Because it is a fundamental moisturizing agent, it is used in both rinse-off products like body wash and leave-on products like facial creams. It is generally regarded as a non-irritating ingredient when used at standard concentrations in grooming products.`,
   },
   {
     normalized: 'squalane',
@@ -1299,6 +1769,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/19473586/',
+    description: `Squalane is a highly stable, moisturizing oil used widely in skincare and grooming products. It is a hydrogenated version of squalene, a substance naturally produced by the human body to keep skin hydrated. You will commonly find it in facial oils, moisturizers, and shaving creams.
+
+This ingredient is widely regarded as safe and is prized for its ability to mimic the skin's natural lipids. It provides deep hydration and improves skin elasticity without being greasy or clogging pores. Because it is chemically stable, it does not oxidize easily on the skin, making it an excellent choice for maintaining a healthy skin barrier. There is no evidence linking squalane to negative effects on male reproductive health or testosterone levels.
+
+From a regulatory standpoint, squalane is considered safe for topical use by major cosmetic authorities. It is frequently used in both rinse-off products like cleansers and leave-on products like lotions. Because it is non-comedogenic, it is a preferred emollient for men who want effective hydration without the risk of breakouts.`,
   },
   {
     normalized: 'ceramides',
@@ -1312,6 +1787,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/24831048/',
+    description: `Ceramides are a type of lipid, or fat molecule, that occur naturally within the skin's outermost layer. They are essential components of the skin barrier, acting like the mortar between skin cells to lock in moisture and keep irritants out. You will commonly find them in high-quality moisturizers, facial cleansers, and specialized grooming lotions.
+
+In terms of health effects, ceramides are considered highly beneficial and safe for topical use. They work by restoring the skin's natural moisture barrier, which helps prevent dryness, irritation, and sensitivity. Because they are identical to the lipids already present in your skin, they are exceptionally well-tolerated and do not pose risks to male reproductive health or hormone levels.
+
+From a regulatory standpoint, ceramides are widely recognized as safe by global health authorities for use in cosmetics. They are frequently used in both rinse-off products like body washes and leave-on products like face creams. There are no significant safety restrictions regarding their concentration, making them a gold standard ingredient for maintaining healthy, hydrated skin.`,
   },
   {
     normalized: 'panthenol',
@@ -1325,6 +1805,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/12113650/',
+    description: `Panthenol, also known as provitamin B5, is a water-soluble ingredient widely used in men's grooming products. You will frequently find it in moisturizers, hair styling creams, and aftershave balms because of its ability to attract and hold moisture.
+
+This ingredient is highly regarded for its soothing and hydrating properties. It acts as a humectant, helping to repair the skin barrier and promote wound healing for irritated skin. In hair care, it penetrates the hair shaft to provide strength and shine. There is strong evidence supporting its safety and effectiveness for topical use, and it does not pose risks to male reproductive health or testosterone levels.
+
+Regulatory bodies like the Cosmetic Ingredient Review (CIR) consider panthenol safe for use in cosmetics. It is commonly used in both rinse-off products like shampoos and leave-on products like lotions. Because it is non-irritating and well-tolerated, it is a staple ingredient for men looking to maintain healthy skin and hair without harsh side effects.`,
   },
   {
     normalized: 'allantoin',
@@ -1338,6 +1823,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Allantoin is a naturally occurring compound found in many plants, such as comfrey and aloe vera. In the grooming industry, it is frequently added to lotions, shaving creams, and aftershave products to help soothe the skin.
+
+This ingredient is widely recognized for its ability to promote cell regeneration and protect the skin barrier. It acts as a skin protectant by soothing irritation and helping to calm redness or dryness. While it is highly effective for topical skin health, it is not considered relevant to male reproductive health or testosterone levels.
+
+Regulatory bodies like the Cosmetic Ingredient Review (CIR) consider allantoin safe for use in topical cosmetic products. It is commonly used in both rinse-off products like soaps and leave-on products like moisturizers. Because it is well-tolerated by the skin, it is a standard ingredient used to improve the comfort and texture of grooming formulations.`,
   },
   {
     normalized: 'argan oil',
@@ -1350,6 +1840,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25209788/',
+    description: `Argan oil is a natural oil extracted from the kernels of the argan tree, which is native to Morocco. In the grooming industry, it is widely used in hair oils, beard balms, and facial moisturizers due to its ability to soften skin and hair without leaving a heavy, greasy residue.
+
+This ingredient is highly regarded for its high concentration of vitamin E and essential fatty acids. These nutrients provide antioxidant benefits that help protect the skin from environmental stressors and support moisture retention. There is no evidence suggesting that argan oil negatively impacts male reproductive health or hormone levels, making it a safe choice for daily grooming routines.
+
+From a regulatory standpoint, argan oil is considered safe for topical use by major cosmetic bodies. It is commonly used in both rinse-off products like shampoos and leave-on products like beard oils. Because it is a natural emollient, it is generally well-tolerated by most skin types, though individuals with specific nut allergies should exercise standard caution.`,
   },
   {
     normalized: 'tea tree oil',
@@ -1362,6 +1857,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/16418522/',
+    description: `Tea tree oil is a natural essential oil extracted from the leaves of the Melaleuca alternifolia plant, native to Australia. In men's grooming, it is a popular ingredient found in face washes, beard oils, and anti-dandruff shampoos due to its potent botanical properties.
+
+This ingredient is widely recognized for its antimicrobial and anti-inflammatory effects. Scientific evidence supports its ability to help manage skin conditions like acne and scalp irritation by reducing bacteria and soothing redness. While it is highly effective for topical skin health, it does not have documented impacts on male reproductive health or testosterone levels.
+
+Regulatory bodies generally recognize tea tree oil as safe for topical use when properly diluted. In grooming products, it is commonly used in both rinse-off products like soaps and leave-on products like moisturizers. Users should be aware that highly concentrated tea tree oil can cause skin irritation or allergic reactions in some individuals, so it is best used as part of a formulated product rather than applied neat.`,
   },
   {
     normalized: 'salicylic acid',
@@ -1375,6 +1875,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25607907/',
+    description: `Salicylic acid is a beta hydroxy acid (BHA) widely used in skincare to exfoliate the skin. It is naturally found in willow bark and is a staple ingredient in many facial cleansers, toners, and acne treatments designed to unclog pores and reduce oiliness.
+
+This ingredient is highly effective at penetrating deep into pores to dissolve dead skin cells and reduce inflammation. While it is well-studied and generally considered safe for topical use, some studies suggest potential risks regarding reproductive health if absorbed in very high amounts. For most men using standard grooming products, the risk is minimal, but it is best used as directed.
+
+Regulatory bodies like the FDA and CIR monitor its use in cosmetics. In grooming products, it is typically used in low concentrations. It is common in both rinse-off products like face washes and leave-on products like spot treatments. Because it can cause skin irritation or dryness, it is important to use it moderately and avoid over-exfoliating.`,
   },
   {
     normalized: 'centella asiatica',
@@ -1388,6 +1893,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/24399761/',
+    description: `Centella asiatica, often referred to as gotu kola, is a perennial herb native to the wetlands of Asia. It is widely used in skincare products due to its high concentration of bioactive compounds like asiaticoside. You will frequently find it in soothing lotions, serums, and aftershave balms designed to calm the skin.
+
+This botanical extract is well-regarded for its ability to promote collagen synthesis and accelerate wound healing. Scientific evidence suggests it has potent anti-inflammatory properties that help reduce redness and irritation. While it is highly beneficial for skin repair and soothing minor abrasions, it does not have documented significant impacts on male reproductive health or testosterone levels.
+
+From a regulatory standpoint, centella asiatica is considered safe for topical use in grooming products. It is commonly used in both leave-on moisturizers and rinse-off products like cleansers. There are no major safety restrictions from bodies like the FDA or SCCS regarding its application in standard cosmetic formulations, making it a reliable choice for sensitive skin.`,
   },
   {
     normalized: 'witch hazel',
@@ -1400,6 +1910,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/12426053/',
+    description: `Witch hazel is a natural plant extract derived from the bark, leaves, and twigs of the Hamamelis virginiana shrub. It is widely used in men's grooming products, such as aftershaves, toners, and facial cleansers, due to its ability to act as a mild astringent.
+
+The ingredient is well-regarded for its soothing properties. It contains tannins that help reduce skin inflammation, calm redness, and tighten pores after shaving. Scientific evidence generally supports its effectiveness for topical skin soothing, and it is not considered a risk to male reproductive health or testosterone levels.
+
+Regulatory bodies generally recognize witch hazel as safe for topical use in cosmetics. In grooming products, it is frequently used in both rinse-off cleansers and leave-on toners. Because it is a natural botanical, its concentration is typically kept at levels that provide skin benefits without causing excessive dryness or irritation.`,
   },
   {
     normalized: 'colloidal oatmeal',
@@ -1412,6 +1927,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22421643/',
+    description: `Colloidal oatmeal is a finely ground form of whole oat kernels that has been processed to create a powder that can be easily suspended in liquids. It is widely used in skincare products, ranging from soothing body washes and shampoos to moisturizing lotions and creams.
+
+This ingredient is highly regarded for its ability to soothe skin irritation, redness, and itching. Scientific evidence supports its effectiveness as a skin protectant, making it a go-to for individuals with sensitive or dry skin. While it is excellent for topical skin health, it does not have any known direct impact on male reproductive health or testosterone levels.
+
+The FDA recognizes colloidal oatmeal as a safe and effective skin protectant. It is commonly found in both rinse-off products like soaps and leave-on products like moisturizers. Because it is a natural plant derivative, it is generally considered very safe for regular use in daily grooming routines.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1430,6 +1950,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/21154195/',
+    description: `Vitamin D3, also known as cholecalciferol, is a fat-soluble vitamin that your body can produce naturally when skin is exposed to sunlight. It is most commonly found in dietary supplements, fatty fish, and fortified foods like milk or cereal.
+
+This vitamin plays a critical role in maintaining bone density and supporting a healthy immune system. For men, Vitamin D3 is highly relevant to reproductive health, as research suggests it plays a key role in supporting healthy testosterone production and overall sperm quality. While essential, it is important to follow recommended dosages to avoid excessive buildup in the body.
+
+Regulatory bodies like the FDA and EFSA recognize Vitamin D3 as a safe and necessary nutrient for human health. In the context of supplements, it is strictly regulated regarding daily upper limits to prevent toxicity. Always consult a healthcare professional to determine the appropriate amount for your specific nutritional needs.`,
   },
   {
     normalized: 'zinc',
@@ -1443,6 +1968,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/8875519/',
+    description: `Zinc is an essential trace mineral found naturally in many foods, including oysters, red meat, poultry, beans, and nuts. Because the human body cannot produce or store zinc, it must be obtained regularly through diet or dietary supplements to maintain vital biological processes.
+
+This mineral plays a critical role in male reproductive health. Scientific evidence shows that zinc is necessary for healthy testosterone synthesis and sperm production, making it highly relevant for fertility and hormonal balance. Beyond reproductive health, zinc is well-documented for supporting immune function, protein synthesis, and efficient wound healing.
+
+Regulatory bodies like the FDA and EFSA recognize zinc as safe when consumed within established Tolerable Upper Intake Levels. While it is a vital nutrient, excessive intake through over-supplementation can interfere with copper absorption. When used in supplements, it is important to follow recommended dosages to avoid toxicity while reaping its metabolic benefits.`,
   },
   {
     normalized: 'magnesium',
@@ -1456,6 +1986,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/20352370/',
+    description: `Magnesium is an essential mineral found naturally in many foods, including leafy greens, nuts, seeds, and whole grains. It is a fundamental building block for the body and is frequently included in dietary supplements to help maintain optimal levels.
+
+This mineral plays a critical role in over 300 biochemical reactions in the body, supporting muscle function, energy production, and sleep quality. For men, magnesium is highly relevant to reproductive health, as it plays a key role in supporting healthy testosterone levels and overall sperm quality. Scientific evidence generally supports its benefits for metabolic and hormonal balance.
+
+Magnesium is widely recognized as safe by major regulatory bodies like the FDA and EFSA when consumed within recommended daily allowances. While it is a vital nutrient, excessive intake through supplements can cause digestive upset. In grooming products, it is often used to support skin health, though it is most commonly encountered by consumers in food and supplement forms.`,
   },
   {
     normalized: 'omega-3 fatty acids',
@@ -1469,6 +2004,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22317966/',
+    description: `Omega-3 fatty acids are essential fats that the body cannot produce on its own, meaning they must be obtained through diet or supplements. They are most commonly found in fatty fish like salmon and mackerel, as well as in plant sources like flaxseeds, chia seeds, and walnuts.
+
+These fats are widely recognized for their ability to reduce inflammation and support cardiovascular and brain health. Regarding male reproductive health, research suggests that adequate omega-3 intake can improve sperm quality and overall fertility. While evidence for these benefits is strong, individual results can vary based on total dietary patterns.
+
+Regulatory bodies like the FDA and EFSA recognize omega-3s as safe and beneficial for human consumption when used in standard supplemental doses. Because they are an essential nutrient, they are widely used in men's health supplements to support long-term wellness. There are no specific concentration restrictions for dietary supplements, but it is always best to follow recommended daily allowances.`,
   },
   {
     normalized: 'ashwagandha',
@@ -1482,6 +2022,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/23439798/',
+    description: `Ashwagandha is a natural herb derived from the Withania somnifera plant, which has been used for centuries in traditional Ayurvedic medicine. It is most commonly consumed in supplement form, such as powders, capsules, or extracts, to support overall wellness.
+
+As an adaptogen, ashwagandha is widely studied for its ability to help the body manage stress by lowering cortisol levels. For men, research suggests it may play a significant role in reproductive health by potentially improving sperm quality and supporting healthy testosterone levels. While many studies show positive outcomes, evidence levels vary depending on the specific extract used.
+
+In the United States, ashwagandha is regulated as a dietary supplement under the FDA, meaning it is not evaluated for medicinal efficacy in the same way as prescription drugs. It is generally considered safe when used in recommended doses, though some individuals may experience mild irritation. Always consult a healthcare professional before adding new supplements to your routine.`,
   },
   {
     normalized: 'tongkat ali',
@@ -1494,6 +2039,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/23243445/',
+    description: `Tongkat ali, also known as Eurycoma longifolia, is a botanical extract derived from the roots of a flowering plant native to Southeast Asia. It is most commonly consumed as a dietary supplement in capsule or powder form, often categorized as an adaptogen to help the body manage stress.
+
+Clinical research suggests that tongkat ali may play a significant role in male reproductive health. Evidence indicates it can help support healthy testosterone levels and may improve sperm quality and motility, which are key factors in male fertility. While many studies show positive correlations with libido and vitality, more large-scale human trials are needed to fully confirm these effects.
+
+From a regulatory standpoint, tongkat ali is widely sold as a dietary supplement and is not classified as a prohibited substance by major food safety agencies like the FDA. Because it is an ingestible supplement rather than a topical grooming product, dosage is the primary concern. Users should follow recommended serving sizes to avoid potential side effects and ensure safe consumption.`,
   },
   {
     normalized: 'fenugreek',
@@ -1506,6 +2056,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/21116018/',
+    description: `Fenugreek is a plant-based ingredient derived from the seeds of Trigonella foenum-graecum, a legume commonly used in culinary spices and traditional herbal medicine. It is frequently found in dietary supplements marketed for energy and hormonal support.
+
+Research suggests that fenugreek may play a role in male reproductive health. Some studies indicate it may help support testosterone levels by inhibiting aromatase, an enzyme that converts testosterone into estrogen. It is also commonly used to help improve libido and sexual desire. While evidence is promising, more large-scale human clinical trials are needed to confirm these specific hormonal effects.
+
+In the context of dietary supplements, fenugreek is generally recognized as safe by regulatory bodies like the FDA when used in standard amounts. Because it can influence hormone levels and blood sugar, it is important to use it as directed. Men taking medication for diabetes or blood clotting should consult a healthcare professional before adding fenugreek to their routine.`,
   },
   {
     normalized: 'vitamin c',
@@ -1519,6 +2074,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/29099763/',
+    description: `Vitamin C, also known as ascorbic acid, is a water-soluble vitamin found naturally in many fruits and vegetables like citrus, strawberries, and bell peppers. In the context of grooming and wellness, it is frequently added to skincare products and dietary supplements to provide antioxidant benefits.
+
+This ingredient is a well-studied antioxidant that helps protect cells from oxidative stress and supports a healthy immune system. It plays a vital role in collagen synthesis, which is essential for maintaining skin elasticity and structural integrity. While it is highly beneficial for general wellness and skin health, there is no significant evidence linking it to changes in male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA and EFSA recognize Vitamin C as safe for consumption and topical use. In grooming products, its effectiveness can depend on the formulation; for example, in leave-on serums, it is used to brighten skin, whereas in rinse-off products, its contact time is much shorter. It is widely considered a safe and effective ingredient across various concentrations.`,
   },
   {
     normalized: 'vitamin b12',
@@ -1532,6 +2092,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/18709885/',
+    description: `Vitamin B12, also known as cobalamin, is an essential water-soluble vitamin. It is naturally found in animal-based foods such as meat, fish, eggs, and dairy products. Because it is not readily available in plant foods, many people rely on fortified cereals or dietary supplements to meet their daily requirements.
+
+This vitamin plays a critical role in several vital bodily processes, including DNA synthesis, red blood cell formation, and maintaining a healthy nervous system. Scientific evidence strongly supports its necessity for preventing megaloblastic anemia and neurological issues. While it is not directly linked to testosterone production or fertility, maintaining adequate B12 levels is essential for overall energy metabolism and cognitive health.
+
+Regulatory bodies like the FDA and EFSA recognize Vitamin B12 as safe and essential for human nutrition. It has a very low potential for toxicity because the body typically excretes excess amounts through urine. In the context of supplements, it is widely used and considered safe when consumed within established tolerable upper intake levels.`,
   },
   {
     normalized: 'vitamin b6',
@@ -1545,6 +2110,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/27029320/',
+    description: `Vitamin B6, also known as pyridoxine, is a water-soluble essential nutrient found naturally in many foods. Common dietary sources include chickpeas, fish, poultry, potatoes, and fortified cereals. Because it is water-soluble, the body does not store large amounts, making regular intake through food or supplements important for daily function.
+
+This vitamin plays a critical role in over 100 enzymatic reactions within the body, primarily supporting brain health, energy metabolism, and immune function. It is particularly important for the production of neurotransmitters like serotonin and dopamine. While it is vital for general wellness and hormone regulation, current scientific evidence does not categorize it as a primary driver for testosterone production or direct fertility enhancement.
+
+Regulatory bodies like the FDA recognize Vitamin B6 as safe when consumed within established Tolerable Upper Intake Levels. In the context of supplements, it is widely used to support metabolic health. While it is highly safe at standard doses, excessive intake through high-dose supplementation should be avoided to prevent nerve-related side effects.`,
   },
   {
     normalized: 'folate',
@@ -1558,6 +2128,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22915120/',
+    description: `Folate, also known as vitamin B9, is a water-soluble essential nutrient found naturally in leafy green vegetables, legumes, and fortified grains. In the supplement industry, it is often provided in synthetic forms like folic acid to ensure consistent intake for maintaining bodily functions.
+
+This vitamin plays a critical role in DNA synthesis and healthy cell division. For men, folate is highly relevant to reproductive health, as it supports sperm quality and helps prevent chromosomal abnormalities during the production of healthy sperm. While evidence strongly supports its necessity for cellular repair, it is best used as part of a balanced nutritional approach rather than a standalone cure for fertility issues.
+
+Regulatory bodies like the FDA and EFSA recognize folate as a safe and essential nutrient for human consumption. There are no strict concentration limits for dietary supplements, but it is important to stay within the recommended daily allowance to avoid masking other vitamin deficiencies. It is widely used in both daily multivitamins and specialized men's health formulations.`,
   },
   {
     normalized: 'vitamin k2',
@@ -1571,6 +2146,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22170610/',
+    description: `Vitamin K2 is a fat-soluble vitamin that plays a critical role in how your body manages minerals. While Vitamin K1 is primarily found in leafy green vegetables, K2 is often sourced from fermented foods like natto or certain cheeses and is a common addition to men's health supplements.
+
+This nutrient is highly regarded for its ability to direct calcium into the bones and teeth rather than allowing it to build up in the arteries, supporting both skeletal and cardiovascular health. It works synergistically with Vitamin D3 to optimize mineral absorption. While not directly linked to fertility, some emerging research suggests that maintaining optimal vitamin levels is part of a healthy hormonal environment, which can indirectly support overall testosterone health and metabolic function.
+
+The FDA regulates Vitamin K2 as a dietary supplement. It is generally recognized as safe when consumed in standard nutritional amounts. Because it is fat-soluble, it is best absorbed when taken with a meal containing healthy fats. Always consult a professional if you are taking blood-thinning medications, as Vitamin K can influence blood clotting.`,
   },
   {
     normalized: 'selenium',
@@ -1584,6 +2164,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/21955027/',
+    description: `Selenium is an essential trace mineral found naturally in the soil and absorbed by plants. Men can typically find it in dietary sources like Brazil nuts, seafood, organ meats, and whole grains. Because the body cannot produce it, it must be obtained through food or dietary supplements.
+
+This mineral plays a vital role in antioxidant defense and supporting healthy thyroid function. For men, selenium is particularly important for reproductive health, as it is a key component in sperm production and motility. While beneficial in appropriate amounts, excessive intake can lead to toxicity, so it is important to stick to recommended daily allowances.
+
+Regulatory bodies like the FDA and EFSA recognize selenium as an essential nutrient but emphasize the importance of avoiding megadoses. In the context of supplements, dosage is critical because the margin between a healthy amount and a toxic amount is relatively narrow. Always follow label instructions to ensure you are supporting your health without overconsuming this mineral.`,
   },
   {
     normalized: 'boron',
@@ -1597,6 +2182,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/21129941/',
+    description: `Boron is a naturally occurring trace mineral found in various whole foods, including nuts, legumes, fruits, and vegetables. While the body only requires very small amounts to function properly, it plays a role in several essential biological processes.
+
+Research suggests that boron may support bone density and metabolic health. For men, boron is particularly notable for its potential relevance to reproductive health, as some studies indicate it may help increase levels of free testosterone in the bloodstream. However, most evidence is based on limited human studies, so it should be viewed as a supportive element rather than a primary hormonal driver.
+
+Regulatory bodies like the FDA recognize boron as a necessary micronutrient, though there is no established Tolerable Upper Intake Level for all populations. In supplements, it is typically used in very small, controlled doses to avoid irritation or toxicity. Always follow recommended dosage guidelines to ensure safety.`,
   },
   {
     normalized: 'creatine',
@@ -1610,6 +2200,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28615996/',
+    description: `Creatine is a naturally occurring compound found in small amounts in red meat and seafood. It is also produced by your own body, primarily in the liver and kidneys. In the supplement industry, it is one of the most widely used ingredients for improving physical performance.
+
+Extensive scientific research shows that creatine is highly effective at enhancing strength, power, and muscle recovery during high-intensity exercise. It works by helping your muscles produce energy more efficiently during heavy lifting or sprinting. While it is one of the most studied supplements available, it is not directly linked to changes in testosterone or male reproductive health.
+
+From a regulatory standpoint, creatine is widely recognized as safe for consumption when used at recommended dosages. It is commonly sold as a dietary supplement and is not restricted by the FDA or EFSA for healthy adults. While some high concentrations might cause mild digestive discomfort in sensitive individuals, it is generally considered a gold standard for fitness-focused nutrition.`,
   },
   {
     normalized: 'l-citrulline',
@@ -1623,6 +2218,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/20386132/',
+    description: `L-citrulline is a naturally occurring amino acid found in various foods, most notably in watermelon. It is frequently used as a dietary supplement to support physical performance and metabolic health.
+
+This ingredient works by increasing nitric oxide production in the body, which helps relax blood vessels and improve circulation. Because it enhances blood flow, it is often studied for its potential benefits regarding male reproductive health and erectile function. Evidence suggests it can support exercise endurance and cardiovascular efficiency, though individual results may vary.
+
+L-citrulline is widely recognized as safe for consumption when used in standard supplemental doses. It is not currently subject to restrictive regulatory bans by agencies like the FDA or EFSA for food use. While generally well-tolerated, high concentrations may cause mild gastrointestinal discomfort in some users. Always follow recommended dosage guidelines found on supplement labels.`,
   },
   {
     normalized: 'l-theanine',
@@ -1636,6 +2236,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/18296328/',
+    description: `L-theanine is a naturally occurring amino acid primarily found in green and black tea leaves. It is also present in small amounts in certain types of mushrooms. Because it is easily extracted from tea, it is a very common ingredient in dietary supplements designed for mental wellness.
+
+Research suggests that L-theanine promotes relaxation and helps reduce stress and anxiety without causing significant drowsiness. This makes it popular for improving focus and calm. While it is generally considered safe for most people, some individuals may experience mild allergic reactions. It does not have a direct, proven impact on testosterone levels or male reproductive health.
+
+The FDA classifies L-theanine as a dietary ingredient, and it is widely used in the supplement industry under various dosage guidelines. There are currently no major restrictive bans from bodies like the EFSA or SCCS regarding its use in food or supplements. As with any supplement, it is best to use it as part of a balanced diet and consult a professional if you have specific health concerns.`,
   },
   {
     normalized: 'taurine',
@@ -1649,6 +2254,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/23170060/',
+    description: `Taurine is a naturally occurring amino acid found in various foods, particularly in animal products like meat, fish, and dairy. While your body produces it internally, it is frequently added to energy drinks, sports supplements, and dietary capsules to enhance physical performance.
+
+Research suggests taurine acts as a powerful antioxidant that supports cardiovascular health and improves exercise capacity by aiding muscle function. Regarding male reproductive health, some studies indicate it may support sperm motility and overall fertility, though more human clinical trials are needed to confirm these benefits definitively. It is generally considered safe when consumed in standard supplemental amounts.
+
+Regulatory bodies like the FDA recognize taurine as a common dietary ingredient. In the context of supplements, it is widely used to support metabolic and physical wellness. While highly concentrated forms can be mild skin or eye irritants in raw powder form, it is considered safe for human consumption within established daily limits.`,
   },
   {
     normalized: 'coenzyme q10',
@@ -1662,6 +2272,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/19588344/',
+    description: `Coenzyme Q10, often called CoQ10, is a naturally occurring antioxidant found in almost every cell of the human body. It is commonly consumed through dietary supplements or found in foods like organ meats, fatty fish, and whole grains.
+
+This ingredient plays a vital role in cellular energy production within the mitochondria. Scientific evidence suggests it helps protect cells from oxidative stress, which supports heart health and overall vitality. For men, CoQ10 is particularly relevant to reproductive health, as studies indicate it may improve sperm quality, motility, and concentration by reducing oxidative damage in the reproductive tract.
+
+Regulatory bodies like the FDA recognize CoQ10 as a safe dietary ingredient when used appropriately. It is widely used in both nutritional supplements and certain skincare products. While generally considered safe, the effectiveness of oral supplements can depend on the specific form used, such as ubiquinol, which may be easier for the body to absorb.`,
   },
   {
     normalized: 'saw palmetto',
@@ -1674,6 +2289,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22672828/',
+    description: `Saw palmetto is a natural extract derived from the berries of the Serenoa repens plant, a small palm tree native to the southeastern United States. It is most commonly consumed as a dietary supplement in capsule or tincture form to support various wellness goals.
+
+This ingredient is widely studied for its potential to support prostate health. Research suggests it may help manage symptoms of an enlarged prostate by inhibiting the enzyme 5-alpha reductase, which converts testosterone into dihydrotestosterone (DHT). Because DHT plays a significant role in male hormonal balance, saw palmetto is frequently used by men looking to manage testosterone-related pathways. While many users report benefits, clinical evidence remains mixed regarding its overall effectiveness.
+
+In the United States, saw palmetto is regulated as a dietary supplement under FDA guidelines rather than as a drug. This means it is not evaluated for curing specific diseases. There are no strict legal limits on dosage for general consumption, but it is important to follow label instructions. Always consult a healthcare provider before adding it to your routine, especially if you are already managing hormonal health.`,
   },
   {
     normalized: 'maca',
@@ -1686,6 +2306,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/19781622/',
+    description: `Maca is a root vegetable native to the high Andes mountains of Peru. It is most commonly consumed in dried, powdered form and is widely used in health supplements, energy drinks, and functional foods.
+
+As an adaptogen, maca is studied for its ability to help the body manage stress. There is evidence suggesting it may support male reproductive health by improving libido and enhancing sperm quality, such as motility and concentration. While it is often used to boost energy levels, research into its direct impact on testosterone levels remains inconclusive.
+
+Maca is generally recognized as safe for consumption when used in standard dietary amounts. It is regulated as a food supplement rather than a drug, meaning it does not require the same pre-market approval process as pharmaceuticals. Because it is primarily ingested, there are no specific rinse-off or leave-on cosmetic usage restrictions to consider.`,
   },
   {
     normalized: 'probiotics',
@@ -1698,6 +2323,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/24912386/',
+    description: `Probiotics are live microorganisms, often referred to as beneficial bacteria, that are commonly found in fermented foods like yogurt, kefir, and sauerkraut. In the supplement industry, they are frequently added to capsules, powders, and functional beverages to help maintain a healthy internal environment.
+
+These microorganisms play a vital role in supporting gut health, strengthening the immune system, and improving nutrient absorption. Scientific evidence generally supports their ability to balance the gut microbiome and reduce digestive discomfort. While they are not directly linked to testosterone or fertility, a healthy gut is essential for overall metabolic health and systemic wellness.
+
+Regulatory bodies like the FDA and EFSA recognize probiotics as generally safe for consumption when used appropriately. Because they are living organisms, their effectiveness often depends on the specific strains used and their ability to survive digestion. When choosing supplements, look for products that ensure strain stability to maximize the health benefits.`,
   },
   {
     normalized: 'vitamin a',
@@ -1711,6 +2341,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: true,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22254107/',
+    description: `Vitamin A is an essential fat-soluble nutrient found naturally in animal products like liver and eggs, as well as in plant-based sources such as carrots and sweet potatoes. It is a fundamental component of many dietary supplements designed to support overall wellness.
+
+This vitamin plays a critical role in maintaining healthy vision, immune system function, and skin integrity. For men, Vitamin A is highly relevant to reproductive health, as it is necessary for normal sperm development and general fertility. While vital in moderate amounts, excessive intake can lead to toxicity, so it is important to stick to recommended daily allowances.
+
+Regulatory bodies like the FDA and EFSA recognize Vitamin A as an essential nutrient but set strict upper limits to prevent toxicity. In supplements, dosage is carefully controlled to ensure safety. Because it is fat-soluble, the body stores excess amounts in the liver rather than flushing it out, making mindful consumption key to maintaining a healthy balance.`,
   },
   {
     normalized: 'iron',
@@ -1724,6 +2359,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/24219683/',
+    description: `Iron is an essential mineral found naturally in many foods, such as red meat, leafy greens, and fortified cereals. In the context of dietary supplements, it is added to help maintain healthy blood levels and support overall bodily functions.
+
+This mineral plays a critical role in transporting oxygen throughout the body via hemoglobin in red blood cells. Maintaining adequate iron levels is vital for sustaining energy levels and supporting cognitive function. While deficiency can lead to fatigue and impaired focus, it is important to consume iron within recommended daily limits, as excessive intake can be harmful.
+
+Regulatory bodies like the FDA and EFSA recognize iron as a necessary nutrient for human health. In supplement form, dosage is strictly regulated to prevent toxicity. While iron is safe when used as directed, high concentrations can act as an irritant to the digestive system or mucous membranes. Always follow the specific serving suggestions on your supplement label.`,
   },
   {
     normalized: 'calcium',
@@ -1737,6 +2377,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22153059/',
+    description: `Calcium is an essential mineral found naturally in many foods, most notably in dairy products like milk and cheese, as well as in leafy greens, fortified cereals, and certain nuts. In the context of supplements, it is often added to ensure daily nutritional requirements are met.
+
+This mineral plays a critical role in maintaining strong bones and teeth, supporting muscle contractions, and ensuring proper nerve signaling throughout the body. While it is vital for overall physical function, it is not specifically categorized as a primary driver for testosterone production or male fertility. Most evidence supports its necessity for long-term skeletal health.
+
+Regulatory bodies like the FDA recognize calcium as a safe and necessary nutrient for human consumption. When taken as a supplement, it is important to follow recommended dosages, as excessive intake can sometimes interfere with the absorption of other minerals. In grooming products, calcium salts are occasionally used for skin conditioning, where they are generally considered safe for topical application.`,
   },
   {
     normalized: 'biotin',
@@ -1750,6 +2395,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28879195/',
+    description: `Biotin, also known as vitamin B7 or vitamin H, is a water-soluble B vitamin that plays a vital role in the body's metabolic processes. It is naturally found in many common foods, including eggs, nuts, seeds, legumes, and organ meats.
+
+This nutrient is essential for converting food into usable energy and is widely recognized for supporting the health of hair, skin, and nails. Scientific evidence strongly supports its role in energy metabolism, though its effects on hair growth are most notable in individuals with a pre-existing deficiency. While it is a fundamental part of daily nutrition, it is not specifically linked to changes in male reproductive health or testosterone levels.
+
+Biotin is classified as a safe dietary supplement by regulatory bodies like the FDA. Because it is water-soluble, the body typically excretes excess amounts through urine, making it low risk for toxicity. However, high doses in supplements can sometimes interfere with certain laboratory blood tests, so it is helpful to inform healthcare providers of your intake.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1767,6 +2417,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/25822914/',
+    description: `A proprietary blend is not a single ingredient, but rather a marketing term used by supplement manufacturers to group multiple substances together under one label. You will commonly find these blends in multivitamins, pre-workout powders, and various men's wellness supplements.
+
+Because the specific amounts of each component are hidden, it is impossible to know if any single ingredient is present at a dose high enough to be effective. While the individual ingredients may be safe, the lack of transparency makes it difficult for consumers to verify if they are receiving a therapeutic dose or if they are consuming excessive amounts of certain substances.
+
+Regulatory bodies like the FDA require that all ingredients in a supplement be listed, but they do not require companies to disclose the exact milligram amount of each item within a blend. This lack of disclosure means users cannot accurately assess the potency or safety profile of the product, which is why many health experts advise caution when choosing supplements that rely heavily on these undisclosed mixtures.`,
   },
   {
     normalized: 'artificial colors',
@@ -1779,6 +2434,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/2818',
+    description: `Artificial colors are synthetic dyes used to enhance the visual appeal of products. In the supplement industry, these additives are often used to make capsules or powders look more vibrant or consistent in color, even though they serve no nutritional purpose.
+
+While most approved synthetic dyes are considered safe for general consumption at regulated levels, some studies suggest a potential link between certain dyes and sensitivities in certain individuals. Because these colors do not provide any health benefits, their presence in a supplement is often viewed by experts as an unnecessary additive that does not contribute to the product's efficacy.
+
+Regulatory bodies like the FDA and EFSA oversee the safety and labeling of these dyes. In supplements, the use of artificial colors is permitted but often discouraged by health-conscious consumers. Choosing products without these dyes can be a way to ensure a cleaner, more focused formulation that prioritizes active ingredients over aesthetic appearance.`,
   },
   {
     normalized: 'magnesium stearate',
@@ -1792,6 +2452,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28433408/',
+    description: `Magnesium stearate is a common food and supplement additive used as a flow agent. It is a salt formed from magnesium and stearic acid, which is a fatty acid found in many plant and animal fats. In the supplement industry, it is primarily used to prevent powders from sticking to manufacturing machinery, ensuring that each capsule or tablet contains a consistent amount of the active ingredients.
+
+Regarding health effects, magnesium stearate is generally recognized as safe for most consumers. While it is not linked to hormonal or reproductive health issues, some evidence suggests that extremely high concentrations might slightly interfere with how well your body absorbs certain nutrients. However, the amounts typically found in standard dietary supplements are considered negligible for the average person.
+
+Regulatory bodies like the FDA and EFSA classify magnesium stearate as safe for use in food and supplements. It is a standard industry ingredient used to maintain product quality and stability. While it is not a primary health concern, it is categorized as a filler rather than a functional nutrient.`,
   },
   {
     normalized: 'silicon dioxide',
@@ -1805,6 +2470,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/front/front/front/front/5088',
+    description: `Silicon dioxide is a naturally occurring mineral found in many substances, including sand and quartz. In the supplement industry, it is most commonly used as an anti-caking agent to prevent powders from clumping together, ensuring that capsules or powders flow easily during manufacturing and consumption.
+
+Regarding health effects, silicon dioxide is generally recognized as safe for ingestion in the small amounts typically found in dietary supplements. While high-level inhalation of crystalline silica dust is linked to serious respiratory issues and lung damage, the form used in food and supplements is processed to minimize these risks. There is no significant evidence linking standard dietary intake to changes in male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA and EFSA permit its use as a food additive. However, its presence is often viewed as a marker of a highly processed formulation rather than a whole-food ingredient. While safe in controlled doses, consumers should be aware that it serves a functional purpose in maintaining product stability rather than providing nutritional value.`,
   },
   {
     normalized: 'carnauba wax',
@@ -1817,6 +2487,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/efsajournal/pub/front/4880',
+    description: `Carnauba wax is a natural substance derived from the leaves of the Brazilian palm tree. In the supplement industry, it is most commonly used as a coating agent to create a smooth, shiny finish on tablets and capsules, making them easier to swallow.
+
+This ingredient is considered non-nutritional, meaning it provides no vitamins, minerals, or health benefits to the body. While it is generally recognized as safe for consumption, it serves purely a functional purpose as a filler or coating. There is no evidence suggesting it impacts male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA recognize carnauba wax as safe for use in food and dietary supplements. Because it is used in very small amounts as a processing aid, it does not pose a significant health risk for most consumers. It is primarily used to improve the stability and appearance of the supplement rather than for its biological effects.`,
   },
   {
     normalized: 'yohimbine',
@@ -1830,6 +2505,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: true,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/20722720/',
+    description: `Yohimbine is a natural alkaloid derived from the bark of the African Yohimbe tree. It is most commonly found in dietary supplements marketed for weight management, energy enhancement, and athletic performance.
+
+This ingredient acts as a potent stimulant that affects the central nervous system. While some use it to boost focus, it is known to cause side effects like anxiety, rapid heart rate, and high blood pressure. Regarding male health, yohimbine is often studied for its potential impact on testosterone levels and blood flow, though users should be cautious of its intense physiological effects.
+
+Regulatory oversight for yohimbine varies by region, but it is generally permitted in dietary supplements under specific guidelines. Because it can significantly impact cardiovascular health, it is important to monitor dosage closely. Always consult a healthcare professional before adding this stimulant to your routine, especially if you have underlying heart conditions or sensitivity to stimulants.`,
   },
   {
     normalized: 'caffeine anhydrous',
@@ -1843,6 +2523,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/20164566/',
+    description: `Caffeine anhydrous is a highly concentrated, powdered form of caffeine, which is a natural stimulant found in coffee beans, tea leaves, and cacao plants. In the supplement industry, it is used to provide a quick and potent energy boost.
+
+This ingredient is widely recognized for enhancing physical performance and mental alertness. However, because it is a potent stimulant, high doses can lead to side effects like jitteriness, anxiety, and sleep disruption. While it is not directly linked to testosterone or fertility, some research suggests that excessive consumption may impact overall metabolic health or stress levels.
+
+Regulatory bodies like the FDA recognize caffeine as safe when consumed in moderation, but caution is advised regarding high-dose supplements. Because anhydrous caffeine is much more concentrated than what you find in a cup of coffee, it is important to monitor your total daily intake to avoid overstimulation.`,
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1861,6 +2546,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.cir-safety.org/ingredients',
+    description: `Water is the most common ingredient in almost all personal care products, including lotions, shampoos, and supplements. It serves as a universal solvent and the primary base used to dissolve and carry other active ingredients throughout a formula.
+
+In terms of health effects, water is considered entirely safe and non-toxic. There is no evidence linking water in topical or oral products to adverse health outcomes. It does not impact male reproductive health, testosterone levels, or fertility, making it a neutral component in men's grooming and wellness routines.
+
+From a regulatory standpoint, water is recognized as safe by major global bodies including the FDA and EFSA. Because it is biologically essential, it is not subject to strict concentration limits in cosmetics or food. It is used in both rinse-off products like body wash and leave-on products like moisturizers to ensure the right consistency and absorption.`,
   },
   {
     normalized: 'citric acid',
@@ -1874,6 +2564,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/topics/topic/food-additives',
+    description: `Citric acid is a naturally occurring organic acid found abundantly in citrus fruits like lemons, limes, and oranges. In the personal care and supplement industries, it is widely used as a pH adjuster to balance product acidity and as a mild preservative to help maintain stability and prevent microbial growth.
+
+Regarding health effects, citric acid is considered safe for general use. While it can act as a mild skin or eye irritant in high concentrations, it does not pose known risks to male reproductive health, testosterone levels, or fertility. Most consumers experience no adverse effects when using products containing this ingredient.
+
+Regulatory bodies such as the FDA and CIR recognize citric acid as safe for use in cosmetics and food. In grooming products, its impact depends on the concentration and application; while it is generally non-irritating in rinse-off products like soaps, highly concentrated forms may cause temporary sensitivity on the skin.`,
   },
   {
     normalized: 'sodium chloride',
@@ -1887,6 +2582,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.who.int/news-room/fact-sheets/detail/salt-reduction',
+    description: `Sodium chloride, commonly known as table salt, is a fundamental mineral found throughout nature. In the context of personal care, it is frequently used in grooming products like body scrubs and shampoos to act as a thickening agent or a gentle physical exfoliant.
+
+This mineral is essential for maintaining proper fluid balance and nerve function in the body. While it is not directly linked to testosterone or fertility, excessive dietary intake is a well-documented risk factor for hypertension and cardiovascular issues. In topical applications, it is generally considered safe, though highly concentrated solutions may cause mild irritation to sensitive skin or eyes.
+
+Regulatory bodies like the FDA and EFSA recognize sodium chloride as safe for use in food and cosmetics. In grooming products, its impact depends on the formulation; as a rinse-off exfoliant, it is widely used to remove dead skin cells, but users with extremely dry or broken skin should use it with caution to avoid irritation.`,
   },
   {
     normalized: 'lactic acid',
@@ -1900,6 +2600,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/8634827/',
+    description: `Lactic acid is a naturally occurring alpha hydroxy acid (AHA) often derived from fermented carbohydrates like corn or sugar. It is widely used in both skincare products and food items to provide gentle exfoliation or to act as a preservative and pH adjuster.
+
+In personal care, it helps remove dead skin cells to improve texture and hydration. While it is generally considered safe and well-tolerated, highly concentrated forms can cause skin irritation or redness. It does not have any known direct impact on male reproductive health, testosterone levels, or fertility.
+
+Regulatory bodies like the FDA and CIR recognize lactic acid as safe for topical use in cosmetics. In grooming products, its effect depends on the concentration and whether it is a rinse-off product, such as a cleanser, or a leave-on product, like a moisturizer. When used in appropriate amounts, it is a standard, effective ingredient for maintaining skin health.`,
   },
   {
     normalized: 'xanthan gum',
@@ -1913,6 +2618,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/topics/topic/food-additives',
+    description: `Xanthan gum is a natural polysaccharide produced through the fermentation of sugar by a specific bacterium. It is widely used across many industries, appearing frequently as a stabilizer in processed foods and as a thickening agent in personal care products like shampoos, gels, and lotions.
+
+In terms of health effects, xanthan gum is considered a well-tolerated prebiotic fiber. While it is generally safe for consumption, very high amounts in food may cause mild digestive effects like bloating in sensitive individuals. There is no scientific evidence linking xanthan gum to negative impacts on male reproductive health, testosterone levels, or fertility.
+
+Regulatory bodies such as the FDA and EFSA recognize xanthan gum as safe for use. In grooming products, it serves a functional role to improve texture and consistency. Because it is used in both rinse-off and leave-on topical applications, it is considered a low-risk ingredient for skin contact.`,
   },
   {
     normalized: 'pectin',
@@ -1926,6 +2636,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/22254107/',
+    description: `Pectin is a natural, soluble fiber found primarily in the cell walls of fruits, most notably in apples, citrus peels, and berries. In the food industry, it is widely used as a thickening agent to create textures in jams, jellies, and various processed foods.
+
+This ingredient is well-regarded for its positive impact on digestive health by promoting regular bowel movements. Scientific evidence suggests that pectin can also assist in lowering cholesterol levels by binding to fats in the digestive tract. It is considered a safe, dietary component with no known negative impacts on male reproductive health or testosterone levels.
+
+Regulatory bodies like the FDA recognize pectin as safe for consumption, often classifying it as GRAS (Generally Recognized as Safe). Because it is a food-grade substance, it is commonly used in both dietary supplements and food products without significant concentration restrictions. It is a stable, non-toxic ingredient used to improve food consistency and nutritional fiber content.`,
   },
   {
     normalized: 'gelatin',
@@ -1938,6 +2653,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://pubmed.ncbi.nlm.nih.gov/28174772/',
+    description: `Gelatin is a protein derived from animal collagen, typically sourced from the skin, bones, and connective tissues of cows or pigs. It is widely used in the food industry to create texture and is most commonly encountered in supplements as the structural material for capsules.
+
+As a protein, gelatin is generally considered safe for consumption and is easily digested by the body. While it is a popular source of amino acids used in skin and joint health, there is no significant evidence suggesting it negatively impacts male reproductive health, testosterone levels, or fertility. It is primarily viewed as a nutritional building block rather than a bioactive compound.
+
+From a regulatory standpoint, gelatin is classified as a food additive and is recognized as safe by agencies like the FDA. In the context of grooming products, it may occasionally appear as a thickening agent in hair or skin treatments. Because it is a natural protein, it is widely accepted in both dietary supplements and topical applications.`,
   },
   {
     normalized: 'cellulose',
@@ -1950,6 +2670,11 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.efsa.europa.eu/en/topics/topic/food-additives',
+    description: `Cellulose is a natural, plant-derived fiber found in the cell walls of all green plants. In the context of men's health products, it is most commonly used as a filler or binding agent in dietary supplement tablets and capsules, or as a thickening agent in grooming products like lotions and gels.
+
+This ingredient is considered biologically inert, meaning it does not react with the body or trigger significant physiological changes. Because it is not absorbed by the digestive tract, it poses no known risks to hormonal balance, testosterone levels, or male reproductive health. It is widely recognized as a safe excipient for daily consumption.
+
+Regulatory bodies such as the FDA recognize cellulose as generally recognized as safe (GRAS) for use in food and supplements. In topical grooming products, it is used in various concentrations to improve texture and is considered safe for both rinse-off and leave-on applications. It is a stable, non-toxic component used extensively across the wellness industry.`,
   },
   {
     normalized: 'rice flour',
@@ -1962,5 +2687,10 @@ export const SEED_ENTRIES: DictionaryEntry[] = [
     fertility_relevant: false,
     testosterone_relevant: false,
     evidence_url: 'https://www.fda.gov/food/food-ingredients-packaging/overview-food-ingredients-additives-colors',
+    description: `Rice flour is a finely ground powder made from milled rice grains. It is a natural substance widely used in both the food industry and the supplement market. You will commonly find it as a filler in dietary capsules or as a thickening agent in various food products.
+
+In terms of health effects, rice flour is considered safe for consumption and is generally recognized as non-toxic. There is no significant evidence suggesting it negatively impacts male reproductive health, testosterone levels, or fertility. It is primarily used as a neutral carrier to help deliver active ingredients in a stable form.
+
+Regulatory bodies like the FDA recognize rice flour as safe for use in food and supplements. Because it is a natural plant-based ingredient, it is widely accepted as a low-risk additive. In grooming products, it may also appear as a gentle exfoliant or absorbent, where it is considered safe for topical application.`,
   },
 ];
