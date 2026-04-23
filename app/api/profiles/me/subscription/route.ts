@@ -1,39 +1,64 @@
 import { NextResponse } from 'next/server';
+import { eq, sql } from 'drizzle-orm';
+
 import { requireUser } from '@/lib/auth';
+import { getDb } from '@/db/client';
+import { profiles } from '@/db/schema';
 import type { SubscriptionStatus, SubscriptionTier } from '@/types/guardscan';
 
 /**
  * GET /api/profiles/me/subscription
  *
- * Returns the authenticated user's current subscription status.
- * Stub — always returns 'free' until RevenueCat server-side validation
- * is wired up (post-MVP).
+ * Returns the authenticated user's current subscription tier from the DB.
+ * subscription_tier is kept current by the RevenueCat webhook
+ * (POST /api/webhooks/revenuecat) — not by this endpoint.
  */
 export async function GET(request: Request) {
   const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
-  const status: SubscriptionStatus = {
-    tier: 'free',
-    expires_at: null,
-  };
+  const userId = auth.userId;
+  if (!userId) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  }
 
-  return NextResponse.json(status);
+  try {
+    const db = getDb();
+    const [row] = await db
+      .select({ subscriptionTier: profiles.subscriptionTier })
+      .from(profiles)
+      .where(eq(profiles.userId, userId))
+      .limit(1);
+
+    const status: SubscriptionStatus = {
+      tier: (row?.subscriptionTier ?? 'free') as SubscriptionTier,
+      expires_at: null,
+    };
+
+    return NextResponse.json(status);
+  } catch (err) {
+    return NextResponse.json(
+      { error: 'internal_error', detail: String(err) },
+      { status: 500 },
+    );
+  }
 }
 
 /**
  * POST /api/profiles/me/subscription
  *
- * Accepts a tier update from the client after a successful RevenueCat
- * purchase. Body: { tier: 'free' | 'pro' }
- *
- * Stub — echoes the requested tier back without persisting or verifying
- * the purchase receipt. Full implementation requires RevenueCat server-side
- * webhook or receipt validation (post-MVP).
+ * Optimistic client-side tier update after a RevenueCat purchase.
+ * The RC webhook will later confirm or correct this value.
+ * Body: { tier: 'free' | 'pro' }
  */
 export async function POST(request: Request) {
   const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
+
+  const userId = auth.userId;
+  if (!userId) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  }
 
   let body: { tier?: SubscriptionTier } = {};
   try {
@@ -42,13 +67,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'invalid_json' }, { status: 400 });
   }
 
-  const tier: SubscriptionTier =
-    body.tier === 'pro' ? 'pro' : 'free';
+  const tier: SubscriptionTier = body.tier === 'pro' ? 'pro' : 'free';
 
-  const status: SubscriptionStatus = {
-    tier,
-    expires_at: null,
-  };
+  try {
+    const db = getDb();
+    await db
+      .insert(profiles)
+      .values({ userId, subscriptionTier: tier })
+      .onConflictDoUpdate({
+        target: profiles.userId,
+        set: { subscriptionTier: tier, updatedAt: sql`now()` },
+      });
 
-  return NextResponse.json(status);
+    const status: SubscriptionStatus = { tier, expires_at: null };
+    return NextResponse.json(status);
+  } catch (err) {
+    return NextResponse.json(
+      { error: 'internal_error', detail: String(err) },
+      { status: 500 },
+    );
+  }
 }

@@ -94,6 +94,23 @@ export const ingredientDictionary = pgTable('ingredient_dictionary', {
   healthRiskTags: text('health_risk_tags').array().notNull().default([]),
 });
 
+// ── profiles ─────────────────────────────────────────────────────────────────
+
+export const profiles = pgTable('profiles', {
+  userId: text('user_id').primaryKey(),
+  age: smallint('age'),
+  lifeStage: text('life_stage').notNull().default('general_wellness'),
+  tryingToConceive: boolean('trying_to_conceive').notNull().default(false),
+  allergens: text('allergens').array().notNull().default([]),
+  dietaryApproach: text('dietary_approach').notNull().default('standard'),
+  subscriptionTier: text('subscription_tier').notNull().default('free'),
+  revenuecatCustomerId: text('revenuecat_customer_id'),
+  scanCount: integer('scan_count').notNull().default(0),
+  onboardingComplete: boolean('onboarding_complete').notNull().default(false),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
 // ── user_submissions ────────────────────────────────────────────────────────
 
 export const userSubmissions = pgTable('user_submissions', {
