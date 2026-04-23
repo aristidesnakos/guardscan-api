@@ -1,0 +1,3136 @@
+{
+  "summary": {
+    "timestamp": "2026-04-16T19:07:44.412Z",
+    "total_entries": 148,
+    "processed": 148,
+    "cids_resolved": 102,
+    "cids_failed": 46,
+    "with_discrepancies": 51,
+    "discrepancy_breakdown": {
+      "missing_tag": 94,
+      "extra_tag": 22
+    }
+  },
+  "results": [
+    {
+      "normalized": "high fructose corn syrup",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Sugars & Sweeteners",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "partially hydrogenated oil",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Seed Oils",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "potassium bromate",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Preservatives",
+      "cid": 23673461,
+      "cid_resolved_via": "potassium bromate",
+      "h_codes": [
+        "H350",
+        "H302",
+        "H335",
+        "H370",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "carcinogen",
+        "organ_toxicant",
+        "irritant"
+      ],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "butylated hydroxyanisole",
+      "flag": "negative",
+      "category": "both",
+      "ingredient_group": "Antioxidants (Synthetic)",
+      "cid": 8456,
+      "cid_resolved_via": "bha",
+      "h_codes": [
+        "H302",
+        "H315",
+        "H319",
+        "H335",
+        "H361",
+        "H411",
+        "H317"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "reproductive_toxin",
+        "environmental",
+        "allergen"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor",
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "sodium nitrite",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Preservatives",
+      "cid": 23668193,
+      "cid_resolved_via": "sodium nitrite",
+      "h_codes": [
+        "H400",
+        "H319",
+        "H361",
+        "H370",
+        "H410"
+      ],
+      "pubchem_tags": [
+        "environmental",
+        "irritant",
+        "reproductive_toxin",
+        "organ_toxicant"
+      ],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "sodium nitrate",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Preservatives",
+      "cid": 24268,
+      "cid_resolved_via": "sodium nitrate",
+      "h_codes": [
+        "H302",
+        "H319",
+        "H370",
+        "H372",
+        "H315"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant"
+      ],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "red 40",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": 33258,
+      "cid_resolved_via": "red 40",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "allergen",
+          "detail": "Manual tag \"allergen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "yellow 5",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": 164825,
+      "cid_resolved_via": "yellow 5",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "allergen",
+          "detail": "Manual tag \"allergen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "yellow 6",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": 17730,
+      "cid_resolved_via": "yellow 6",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "allergen",
+          "detail": "Manual tag \"allergen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "blue 1",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": 19700,
+      "cid_resolved_via": "brilliant blue",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "brominated vegetable oil",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Seed Oils",
+      "cid": 145997863,
+      "cid_resolved_via": "bvo",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "organ_toxicant"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "organ_toxicant",
+          "detail": "Manual tag \"organ_toxicant\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "aspartame",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Artificial Sweeteners",
+      "cid": 134601,
+      "cid_resolved_via": "aspartame",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "red 3",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": 166534,
+      "cid_resolved_via": "red 3",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "blue 2",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": 2723854,
+      "cid_resolved_via": "indigotine",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "green 3",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": 122319,
+      "cid_resolved_via": "fast green",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "acesulfame potassium",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Artificial Sweeteners",
+      "cid": 11074431,
+      "cid_resolved_via": "acesulfame potassium",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "gut_disruptor"
+      ],
+      "discrepancies": []
+    },
+    {
+      "normalized": "tertiary butylhydroquinone",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Antioxidants (Synthetic)",
+      "cid": 16043,
+      "cid_resolved_via": "tertiary butylhydroquinone",
+      "h_codes": [
+        "H302",
+        "H315",
+        "H317",
+        "H319",
+        "H400",
+        "H410",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "allergen",
+        "environmental"
+      ],
+      "manual_tags": [],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "titanium dioxide",
+      "flag": "negative",
+      "category": "food",
+      "ingredient_group": "Preservatives",
+      "cid": 26042,
+      "cid_resolved_via": "titanium dioxide",
+      "h_codes": [
+        "H372",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant"
+      ],
+      "manual_tags": [
+        "gut_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "palm oil",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Seed Oils",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "environmental"
+      ],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "sugar",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Sugars & Sweeteners",
+      "cid": 5988,
+      "cid_resolved_via": "sugar",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "sucralose",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Artificial Sweeteners",
+      "cid": 71485,
+      "cid_resolved_via": "sucralose",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "gut_disruptor"
+      ],
+      "discrepancies": []
+    },
+    {
+      "normalized": "sodium benzoate",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Preservatives",
+      "cid": 517055,
+      "cid_resolved_via": "sodium benzoate",
+      "h_codes": [
+        "H319"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "carrageenan",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Thickeners & Gums",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "gut_disruptor"
+      ],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "natural flavors",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Fragrance",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "monosodium glutamate",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Preservatives",
+      "cid": 23689119,
+      "cid_resolved_via": "monosodium glutamate",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "maltodextrin",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Sugars & Sweeteners",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "butylated hydroxytoluene",
+      "flag": "caution",
+      "category": "both",
+      "ingredient_group": "Antioxidants (Synthetic)",
+      "cid": 31404,
+      "cid_resolved_via": "bht",
+      "h_codes": [
+        "H400",
+        "H410",
+        "H361",
+        "H370",
+        "H302",
+        "H317"
+      ],
+      "pubchem_tags": [
+        "environmental",
+        "reproductive_toxin",
+        "organ_toxicant",
+        "allergen"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "soybean oil",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Seed Oils",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "canola oil",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Seed Oils",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "corn oil",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Seed Oils",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "sunflower oil",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Seed Oils",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "polysorbate 80",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Emulsifiers",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "gut_disruptor"
+      ],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "carboxymethylcellulose",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Emulsifiers",
+      "cid": 23706213,
+      "cid_resolved_via": "e466",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "gut_disruptor"
+      ],
+      "discrepancies": [],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "artificial flavor",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Fragrance",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "dextrose",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Sugars & Sweeteners",
+      "cid": 5793,
+      "cid_resolved_via": "dextrose",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "corn syrup",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Sugars & Sweeteners",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "modified corn starch",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Thickeners & Gums",
+      "cid": 58986478,
+      "cid_resolved_via": "e1412",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "sodium phosphate",
+      "flag": "caution",
+      "category": "food",
+      "ingredient_group": "Phosphates",
+      "cid": 21225609,
+      "cid_resolved_via": "sodium phosphate",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "organ_toxicant"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "organ_toxicant",
+          "detail": "Manual tag \"organ_toxicant\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "olive oil",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "avocado oil",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "oats",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "flax seed",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Omega Fatty Acids",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "turmeric",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": 969516,
+      "cid_resolved_via": "curcuma",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "cocoa",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "hazelnuts",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "almonds",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "walnuts",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Omega Fatty Acids",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "coconut oil",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "chia seeds",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Omega Fatty Acids",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "honey",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "whey protein",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Proteins",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "green tea extract",
+      "flag": "positive",
+      "category": "food",
+      "ingredient_group": "Plant Extracts",
+      "cid": 65064,
+      "cid_resolved_via": "egcg",
+      "h_codes": [
+        "H302",
+        "H317",
+        "H319",
+        "H411"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "allergen",
+        "irritant",
+        "environmental"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "oxybenzone",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Chemical)",
+      "cid": 4632,
+      "cid_resolved_via": "oxybenzone",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335",
+        "H400",
+        "H411",
+        "H361",
+        "H410",
+        "H317"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "environmental",
+        "reproductive_toxin",
+        "allergen"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor",
+        "environmental"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "octinoxate",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Chemical)",
+      "cid": 5355130,
+      "cid_resolved_via": "octinoxate",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335",
+        "H411"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "environmental"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "methylparaben",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Parabens",
+      "cid": 7456,
+      "cid_resolved_via": "methylparaben",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335",
+        "H411"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "environmental"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor",
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "allergen",
+          "detail": "Manual tag \"allergen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "propylparaben",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Parabens",
+      "cid": 7175,
+      "cid_resolved_via": "propylparaben",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335",
+        "H302",
+        "H317",
+        "H370"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "organ_toxicant",
+        "allergen"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "butylparaben",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Parabens",
+      "cid": 7184,
+      "cid_resolved_via": "butylparaben",
+      "h_codes": [
+        "H315",
+        "H318",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor",
+        "reproductive_toxin"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "reproductive_toxin",
+          "detail": "Manual tag \"reproductive_toxin\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "ethylparaben",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Parabens",
+      "cid": 8434,
+      "cid_resolved_via": "ethylparaben",
+      "h_codes": [
+        "H315",
+        "H317",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "allergen"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "diethyl phthalate",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Phthalates",
+      "cid": 6781,
+      "cid_resolved_via": "diethyl phthalate",
+      "h_codes": [
+        "H315",
+        "H317",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "allergen"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor",
+        "reproductive_toxin"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "reproductive_toxin",
+          "detail": "Manual tag \"reproductive_toxin\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "dibutyl phthalate",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Phthalates",
+      "cid": 3026,
+      "cid_resolved_via": "dibutyl phthalate",
+      "h_codes": [
+        "H360",
+        "H400",
+        "H411",
+        "H317",
+        "H335",
+        "H372",
+        "H370",
+        "H361"
+      ],
+      "pubchem_tags": [
+        "reproductive_toxin",
+        "environmental",
+        "allergen",
+        "irritant",
+        "organ_toxicant"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor",
+        "reproductive_toxin"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "triclosan",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 5564,
+      "cid_resolved_via": "triclosan",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H400",
+        "H410",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "environmental"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "dmdm hydantoin",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Formaldehyde Releasers",
+      "cid": 22947,
+      "cid_resolved_via": "dmdm hydantoin",
+      "h_codes": [
+        "H302",
+        "H315",
+        "H317",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "allergen"
+      ],
+      "manual_tags": [
+        "carcinogen",
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "quaternium-15",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Formaldehyde Releasers",
+      "cid": 20011,
+      "cid_resolved_via": "quaternium-15",
+      "h_codes": [
+        "H302",
+        "H311",
+        "H315",
+        "H317",
+        "H319",
+        "H361"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "allergen",
+        "reproductive_toxin"
+      ],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "imidazolidinyl urea",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Formaldehyde Releasers",
+      "cid": 38258,
+      "cid_resolved_via": "imidazolidinyl urea",
+      "h_codes": [
+        "H317",
+        "H315",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "allergen",
+        "irritant"
+      ],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "diazolidinyl urea",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Formaldehyde Releasers",
+      "cid": 62277,
+      "cid_resolved_via": "diazolidinyl urea",
+      "h_codes": [
+        "H317",
+        "H319",
+        "H315"
+      ],
+      "pubchem_tags": [
+        "allergen",
+        "irritant"
+      ],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "benzophenone",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Chemical)",
+      "cid": 3102,
+      "cid_resolved_via": "benzophenone",
+      "h_codes": [
+        "H350",
+        "H411",
+        "H302",
+        "H400",
+        "H410"
+      ],
+      "pubchem_tags": [
+        "carcinogen",
+        "environmental",
+        "organ_toxicant"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "carcinogen",
+          "detail": "PubChem H-codes suggest \"carcinogen\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "coal tar",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "formaldehyde",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Formaldehyde Releasers",
+      "cid": 712,
+      "cid_resolved_via": "formaldehyde",
+      "h_codes": [
+        "H302",
+        "H317",
+        "H350",
+        "H311",
+        "H318",
+        "H315",
+        "H319",
+        "H370",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "allergen",
+        "carcinogen",
+        "irritant"
+      ],
+      "manual_tags": [
+        "carcinogen",
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "methylisothiazolinone",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 39800,
+      "cid_resolved_via": "methylisothiazolinone",
+      "h_codes": [
+        "H311",
+        "H317",
+        "H318",
+        "H400",
+        "H410",
+        "H302",
+        "H335",
+        "H370"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "allergen",
+        "irritant",
+        "environmental"
+      ],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "methylchloroisothiazolinone",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 33344,
+      "cid_resolved_via": "methylchloroisothiazolinone",
+      "h_codes": [
+        "H311",
+        "H317",
+        "H318",
+        "H335",
+        "H400",
+        "H410"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "allergen",
+        "irritant",
+        "environmental"
+      ],
+      "manual_tags": [
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "toluene",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Fragrance",
+      "cid": 1140,
+      "cid_resolved_via": "toluene",
+      "h_codes": [
+        "H315",
+        "H361",
+        "H335",
+        "H360",
+        "H370",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "reproductive_toxin",
+        "organ_toxicant"
+      ],
+      "manual_tags": [
+        "organ_toxicant",
+        "reproductive_toxin"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "resorcinol",
+      "flag": "negative",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 5054,
+      "cid_resolved_via": "resorcinol",
+      "h_codes": [
+        "H302",
+        "H315",
+        "H317",
+        "H319",
+        "H370",
+        "H400",
+        "H318",
+        "H372",
+        "H410"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "allergen",
+        "environmental"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "octocrylene",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Chemical)",
+      "cid": 22571,
+      "cid_resolved_via": "octocrylene",
+      "h_codes": [
+        "H410"
+      ],
+      "pubchem_tags": [
+        "environmental"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "homosalate",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Chemical)",
+      "cid": 8362,
+      "cid_resolved_via": "homosalate",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335",
+        "H361",
+        "H410"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "reproductive_toxin",
+        "environmental"
+      ],
+      "manual_tags": [
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "sodium laureth sulfate",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Sulfates",
+      "cid": 23665884,
+      "cid_resolved_via": "sodium laureth sulfate",
+      "h_codes": [
+        "H302",
+        "H315",
+        "H318",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant"
+      ],
+      "manual_tags": [
+        "irritant"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "sodium lauryl sulfate",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Sulfates",
+      "cid": 3423265,
+      "cid_resolved_via": "sodium lauryl sulfate",
+      "h_codes": [
+        "H302",
+        "H315",
+        "H318",
+        "H319",
+        "H335",
+        "H370",
+        "H400",
+        "H311"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "environmental"
+      ],
+      "manual_tags": [
+        "irritant"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "fragrance",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Fragrance",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "allergen",
+        "endocrine_disruptor"
+      ],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "propylene glycol",
+      "flag": "caution",
+      "category": "both",
+      "ingredient_group": "Humectants",
+      "cid": 1030,
+      "cid_resolved_via": "propylene glycol",
+      "h_codes": [
+        "H370",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant"
+      ],
+      "manual_tags": [
+        "irritant",
+        "allergen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "irritant",
+          "detail": "Manual tag \"irritant\" not supported by PubChem H-codes (may be valid from other sources)"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "allergen",
+          "detail": "Manual tag \"allergen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "mineral oil",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Emollients",
+      "cid": 16015,
+      "cid_resolved_via": "white mineral oil",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "dimethicone",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Silicones",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "cyclomethicone",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Silicones",
+      "cid": 10913,
+      "cid_resolved_via": "cyclopentasiloxane",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [
+        "environmental"
+      ],
+      "discrepancies": [
+        {
+          "type": "extra_tag",
+          "tag": "environmental",
+          "detail": "Manual tag \"environmental\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "aluminum chlorohydrate",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 71586946,
+      "cid_resolved_via": "aluminum chlorohydrate",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "polyethylene glycol",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Emulsifiers",
+      "cid": 174,
+      "cid_resolved_via": "peg",
+      "h_codes": [
+        "H302",
+        "H315",
+        "H335",
+        "H370",
+        "H360",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "reproductive_toxin"
+      ],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "triethanolamine",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 7618,
+      "cid_resolved_via": "triethanolamine",
+      "h_codes": [
+        "H319",
+        "H315",
+        "H317",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "allergen"
+      ],
+      "manual_tags": [
+        "carcinogen"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "allergen",
+          "detail": "PubChem H-codes suggest \"allergen\" but not in manual tags"
+        },
+        {
+          "type": "extra_tag",
+          "tag": "carcinogen",
+          "detail": "Manual tag \"carcinogen\" not supported by PubChem H-codes (may be valid from other sources)"
+        }
+      ]
+    },
+    {
+      "normalized": "phenoxyethanol",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 31236,
+      "cid_resolved_via": "phenoxyethanol",
+      "h_codes": [
+        "H302",
+        "H318",
+        "H335",
+        "H319",
+        "H361"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "reproductive_toxin"
+      ],
+      "manual_tags": [
+        "irritant"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "avobenzone",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Chemical)",
+      "cid": 51040,
+      "cid_resolved_via": "avobenzone",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "isopropyl alcohol",
+      "flag": "caution",
+      "category": "grooming",
+      "ingredient_group": "Preservatives",
+      "cid": 3776,
+      "cid_resolved_via": "isopropyl alcohol",
+      "h_codes": [
+        "H319",
+        "H318",
+        "H400",
+        "H410",
+        "H335",
+        "H361",
+        "H370",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "environmental",
+        "reproductive_toxin",
+        "organ_toxicant"
+      ],
+      "manual_tags": [
+        "irritant"
+      ],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "environmental",
+          "detail": "PubChem H-codes suggest \"environmental\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "titanium dioxide",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Mineral)",
+      "cid": 26042,
+      "cid_resolved_via": "titanium dioxide",
+      "h_codes": [
+        "H372",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "zinc oxide",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "UV Filters (Mineral)",
+      "cid": 3007857,
+      "cid_resolved_via": "zinc oxide",
+      "h_codes": [
+        "H400",
+        "H410",
+        "H361",
+        "H370",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "environmental",
+        "reproductive_toxin",
+        "organ_toxicant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "shea butter",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Emollients",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "jojoba oil",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Emollients",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "aloe vera",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "tocopherol",
+      "flag": "positive",
+      "category": "both",
+      "ingredient_group": "Plant Extracts",
+      "cid": 14986,
+      "cid_resolved_via": "tocopherol",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "niacinamide",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "B Vitamins",
+      "cid": 936,
+      "cid_resolved_via": "niacinamide",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "hyaluronic acid",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Humectants",
+      "cid": 3084049,
+      "cid_resolved_via": "ha",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "glycerin",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Humectants",
+      "cid": 753,
+      "cid_resolved_via": "glycerin",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "squalane",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Emollients",
+      "cid": 8089,
+      "cid_resolved_via": "squalane",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "ceramides",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Emollients",
+      "cid": 57378373,
+      "cid_resolved_via": "ceramide np",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "panthenol",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "B Vitamins",
+      "cid": 4678,
+      "cid_resolved_via": "panthenol",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "allantoin",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Plant Extracts",
+      "cid": 204,
+      "cid_resolved_via": "allantoin",
+      "h_codes": [
+        "H302"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "argan oil",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Emollients",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "tea tree oil",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "salicylic acid",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Plant Extracts",
+      "cid": 338,
+      "cid_resolved_via": "salicylic acid",
+      "h_codes": [
+        "H302",
+        "H318",
+        "H361",
+        "H319",
+        "H315",
+        "H317",
+        "H370",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant",
+        "reproductive_toxin",
+        "allergen"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "centella asiatica",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Plant Extracts",
+      "cid": 24825675,
+      "cid_resolved_via": "madecassoside",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "witch hazel",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "colloidal oatmeal",
+      "flag": "positive",
+      "category": "grooming",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "vitamin d3",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Vitamins",
+      "cid": 5280795,
+      "cid_resolved_via": "vitamin d3",
+      "h_codes": [
+        "H372",
+        "H311",
+        "H360"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "reproductive_toxin"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "zinc",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Minerals",
+      "cid": 23994,
+      "cid_resolved_via": "zinc",
+      "h_codes": [
+        "H400",
+        "H410"
+      ],
+      "pubchem_tags": [
+        "environmental"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "magnesium",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Minerals",
+      "cid": 5462224,
+      "cid_resolved_via": "magnesium",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "omega-3 fatty acids",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Omega Fatty Acids",
+      "cid": 446284,
+      "cid_resolved_via": "epa",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "ashwagandha",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Adaptogens",
+      "cid": 161671,
+      "cid_resolved_via": "withania somnifera",
+      "h_codes": [
+        "H315",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "tongkat ali",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Adaptogens",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "fenugreek",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Adaptogens",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "vitamin c",
+      "flag": "positive",
+      "category": "both",
+      "ingredient_group": "Vitamins",
+      "cid": 54670067,
+      "cid_resolved_via": "vitamin c",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "vitamin b12",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "B Vitamins",
+      "cid": 165339223,
+      "cid_resolved_via": "vitamin b12",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "vitamin b6",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "B Vitamins",
+      "cid": 104817,
+      "cid_resolved_via": "vitamin b6",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "folate",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "B Vitamins",
+      "cid": 135405876,
+      "cid_resolved_via": "folate",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "vitamin k2",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Vitamins",
+      "cid": 5282367,
+      "cid_resolved_via": "vitamin k2",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "selenium",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Minerals",
+      "cid": 6326970,
+      "cid_resolved_via": "selenium",
+      "h_codes": [
+        "H370",
+        "H372",
+        "H361"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "reproductive_toxin"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "boron",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Minerals",
+      "cid": 5462311,
+      "cid_resolved_via": "boron",
+      "h_codes": [
+        "H302",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "creatine",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Proteins",
+      "cid": 586,
+      "cid_resolved_via": "creatine",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "l-citrulline",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Proteins",
+      "cid": 9750,
+      "cid_resolved_via": "l-citrulline",
+      "h_codes": [
+        "H315",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "l-theanine",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Plant Extracts",
+      "cid": 439378,
+      "cid_resolved_via": "l-theanine",
+      "h_codes": [
+        "H317"
+      ],
+      "pubchem_tags": [
+        "allergen"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "taurine",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Proteins",
+      "cid": 1123,
+      "cid_resolved_via": "taurine",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "coenzyme q10",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Plant Extracts",
+      "cid": 5281915,
+      "cid_resolved_via": "coenzyme q10",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "saw palmetto",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Adaptogens",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "maca",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Adaptogens",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "probiotics",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "vitamin a",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Vitamins",
+      "cid": 445354,
+      "cid_resolved_via": "vitamin a",
+      "h_codes": [
+        "H302",
+        "H317",
+        "H319",
+        "H360"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "allergen",
+        "irritant",
+        "reproductive_toxin"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "iron",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Minerals",
+      "cid": 23925,
+      "cid_resolved_via": "iron",
+      "h_codes": [
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "calcium",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "Minerals",
+      "cid": 5460341,
+      "cid_resolved_via": "calcium",
+      "h_codes": [
+        "H318"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "biotin",
+      "flag": "positive",
+      "category": "supplement",
+      "ingredient_group": "B Vitamins",
+      "cid": 171548,
+      "cid_resolved_via": "biotin",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "proprietary blend",
+      "flag": "caution",
+      "category": "supplement",
+      "ingredient_group": "Blends & Fillers",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "artificial colors",
+      "flag": "caution",
+      "category": "supplement",
+      "ingredient_group": "Synthetic Dyes",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "magnesium stearate",
+      "flag": "caution",
+      "category": "supplement",
+      "ingredient_group": "Blends & Fillers",
+      "cid": 11177,
+      "cid_resolved_via": "magnesium stearate",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "silicon dioxide",
+      "flag": "caution",
+      "category": "supplement",
+      "ingredient_group": "Blends & Fillers",
+      "cid": 24261,
+      "cid_resolved_via": "silicon dioxide",
+      "h_codes": [
+        "H315",
+        "H319",
+        "H335",
+        "H350",
+        "H372"
+      ],
+      "pubchem_tags": [
+        "irritant",
+        "carcinogen",
+        "organ_toxicant"
+      ],
+      "manual_tags": [],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "irritant",
+          "detail": "PubChem H-codes suggest \"irritant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "carcinogen",
+          "detail": "PubChem H-codes suggest \"carcinogen\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "carnauba wax",
+      "flag": "caution",
+      "category": "supplement",
+      "ingredient_group": "Blends & Fillers",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "yohimbine",
+      "flag": "caution",
+      "category": "supplement",
+      "ingredient_group": "Adaptogens",
+      "cid": 8969,
+      "cid_resolved_via": "yohimbine",
+      "h_codes": [
+        "H311"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant"
+      ],
+      "manual_tags": [],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "caffeine anhydrous",
+      "flag": "caution",
+      "category": "supplement",
+      "ingredient_group": "Plant Extracts",
+      "cid": 2519,
+      "cid_resolved_via": "caffeine anhydrous",
+      "h_codes": [
+        "H302",
+        "H360"
+      ],
+      "pubchem_tags": [
+        "organ_toxicant",
+        "reproductive_toxin"
+      ],
+      "manual_tags": [],
+      "discrepancies": [
+        {
+          "type": "missing_tag",
+          "tag": "organ_toxicant",
+          "detail": "PubChem H-codes suggest \"organ_toxicant\" but not in manual tags"
+        },
+        {
+          "type": "missing_tag",
+          "tag": "reproductive_toxin",
+          "detail": "PubChem H-codes suggest \"reproductive_toxin\" but not in manual tags"
+        }
+      ]
+    },
+    {
+      "normalized": "water",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Humectants",
+      "cid": 962,
+      "cid_resolved_via": "water",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "citric acid",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Preservatives",
+      "cid": 311,
+      "cid_resolved_via": "citric acid",
+      "h_codes": [
+        "H319",
+        "H335",
+        "H315"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "sodium chloride",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Minerals",
+      "cid": 5234,
+      "cid_resolved_via": "sodium chloride",
+      "h_codes": [
+        "H318",
+        "H319"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "lactic acid",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Preservatives",
+      "cid": 612,
+      "cid_resolved_via": "lactic acid",
+      "h_codes": [
+        "H315",
+        "H318"
+      ],
+      "pubchem_tags": [
+        "irritant"
+      ],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "xanthan gum",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Thickeners & Gums",
+      "cid": 131750926,
+      "cid_resolved_via": "e415",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "GHS fetch HTTP 404"
+    },
+    {
+      "normalized": "pectin",
+      "flag": "neutral",
+      "category": "food",
+      "ingredient_group": "Thickeners & Gums",
+      "cid": 441476,
+      "cid_resolved_via": "pectin",
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": []
+    },
+    {
+      "normalized": "gelatin",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Proteins",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "cellulose",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Thickeners & Gums",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    },
+    {
+      "normalized": "rice flour",
+      "flag": "neutral",
+      "category": "both",
+      "ingredient_group": "Plant Extracts",
+      "cid": null,
+      "cid_resolved_via": null,
+      "h_codes": [],
+      "pubchem_tags": [],
+      "manual_tags": [],
+      "discrepancies": [],
+      "error": "CID resolution failed for all names"
+    }
+  ]
+}

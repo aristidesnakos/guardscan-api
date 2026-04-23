@@ -36,8 +36,8 @@ import { SEED_ENTRIES, type DictionaryEntry } from '../lib/dictionary/seed';
 
 const MODEL = 'google/gemma-4-26b-a4b-it';
 const BASE_URL = process.env.OPENROUTER_BASE_URL ?? 'https://openrouter.ai/api/v1';
-const BATCH_SIZE = 5;
-const BATCH_DELAY_MS = 500;
+const BATCH_SIZE = 3;
+const BATCH_DELAY_MS = 1500;
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -176,7 +176,7 @@ async function generateDescription(
           { role: 'user', content: buildPrompt(entry, pubchem) },
         ],
       }),
-      signal: AbortSignal.timeout(30_000),
+      signal: AbortSignal.timeout(60_000),
     });
 
     if (!res.ok) {
@@ -230,6 +230,7 @@ function parseArgs() {
   const args = process.argv.slice(2);
   const dry = args.includes('--dry');
   const onlyFlagged = args.includes('--only-flagged');
+  const missing = args.includes('--missing');
 
   let category: string | null = null;
   const catIdx = args.indexOf('--category');
@@ -237,7 +238,21 @@ function parseArgs() {
     category = args[catIdx + 1];
   }
 
-  return { dry, onlyFlagged, category };
+  return { dry, onlyFlagged, missing, category };
+}
+
+// Load normalized names that already have a description in existing report
+function loadExistingDescriptions(): Set<string> {
+  const reportPath = resolve(__dirname, 'output', 'descriptions.json');
+  if (!existsSync(reportPath)) return new Set();
+  const report = JSON.parse(readFileSync(reportPath, 'utf-8')) as {
+    results: Array<{ normalized: string; description: string | null }>;
+  };
+  const done = new Set<string>();
+  for (const r of report.results) {
+    if (r.description !== null) done.add(r.normalized);
+  }
+  return done;
 }
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -249,7 +264,7 @@ function delay(ms: number): Promise<void> {
 // ── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-  const { dry, onlyFlagged, category } = parseArgs();
+  const { dry, onlyFlagged, missing, category } = parseArgs();
   const pubchemMap = loadPubChemData();
 
   console.log('[gen] Phase 3 — Ingredient Description Generation');
@@ -265,6 +280,11 @@ async function main() {
   if (category) {
     entries = entries.filter((e) => e.category === category);
     console.log(`[gen] Filter: --category ${category} → ${entries.length} entries`);
+  }
+  if (missing) {
+    const already = loadExistingDescriptions();
+    entries = entries.filter((e) => !already.has(e.normalized));
+    console.log(`[gen] Filter: --missing → ${entries.length} entries without descriptions`);
   }
   console.log(`[gen] Processing ${entries.length} of ${SEED_ENTRIES.length} total entries\n`);
 
@@ -334,17 +354,34 @@ async function main() {
     }
   }
 
+  // Merge with existing results when running --missing
+  let allResults = results;
+  if (missing) {
+    const reportPath = resolve(__dirname, 'output', 'descriptions.json');
+    if (existsSync(reportPath)) {
+      const existing = JSON.parse(readFileSync(reportPath, 'utf-8')) as Report;
+      const existingSuccesses = existing.results.filter((r) => r.description !== null);
+      // New results override old ones for same normalized name; existing successes fill the rest
+      const newNames = new Set(results.map((r) => r.normalized));
+      const kept = existingSuccesses.filter((r) => !newNames.has(r.normalized));
+      allResults = [...kept, ...results];
+    }
+  }
+
+  const totalGenerated = allResults.filter((r) => r.description !== null).length;
+  const totalFailed = allResults.filter((r) => r.description === null).length;
+
   // Write report
   const report: Report = {
     summary: {
       timestamp: new Date().toISOString(),
       model: MODEL,
-      total: entries.length,
-      generated,
-      failed,
-      skipped: SEED_ENTRIES.length - entries.length,
+      total: allResults.length,
+      generated: totalGenerated,
+      failed: totalFailed,
+      skipped: SEED_ENTRIES.length - allResults.length,
     },
-    results,
+    results: allResults,
   };
 
   const outputDir = resolve(__dirname, 'output');

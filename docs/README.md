@@ -11,6 +11,7 @@ Authoritative entry points:
 | Doc | Purpose |
 |---|---|
 | [api/endpoints.md](./api/endpoints.md) | All shipped HTTP routes + their handlers |
+| [architecture/image-storage-cdn.md](./architecture/image-storage-cdn.md) | Image storage CDN fix — public bucket proposal |
 | [architecture/scoring.md](./architecture/scoring.md) | Scoring methodology v1.2.0 (subtract-only) |
 | [architecture/scoring-v1.2-subtract-only-report.md](./architecture/scoring-v1.2-subtract-only-report.md) | v1.2.0 investigation report |
 | [architecture/scoring-calibration-protocol.md](./architecture/scoring-calibration-protocol.md) | Score calibration protocol |
