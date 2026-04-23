@@ -18,6 +18,8 @@ CREATE TABLE public.ingredient_dictionary (
   notes text,
   fertility_relevant boolean NOT NULL DEFAULT false,
   testosterone_relevant boolean NOT NULL DEFAULT false,
+  ingredient_group text,
+  health_risk_tags ARRAY DEFAULT '{}'::text[],
   CONSTRAINT ingredient_dictionary_pkey PRIMARY KEY (normalized)
 );
 CREATE TABLE public.product_ingredients (
@@ -49,6 +51,21 @@ CREATE TABLE public.products (
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   CONSTRAINT products_pkey PRIMARY KEY (id)
 );
+CREATE TABLE public.profiles (
+  user_id text NOT NULL,
+  age smallint,
+  life_stage text NOT NULL DEFAULT 'general_wellness'::text,
+  trying_to_conceive boolean NOT NULL DEFAULT false,
+  allergens ARRAY NOT NULL DEFAULT '{}'::text[],
+  dietary_approach text NOT NULL DEFAULT 'standard'::text,
+  subscription_tier text NOT NULL DEFAULT 'free'::text,
+  revenuecat_customer_id text,
+  scan_count integer NOT NULL DEFAULT 0,
+  onboarding_complete boolean NOT NULL DEFAULT false,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT profiles_pkey PRIMARY KEY (user_id)
+);
 CREATE TABLE public.scan_events (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id text NOT NULL,
@@ -59,11 +76,12 @@ CREATE TABLE public.scan_events (
 );
 CREATE TABLE public.user_submissions (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
+  user_id text NOT NULL,
   barcode text NOT NULL,
   photos jsonb NOT NULL,
   ocr_text text,
   status text NOT NULL DEFAULT 'pending'::text,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
+  reviewed_by text,
   CONSTRAINT user_submissions_pkey PRIMARY KEY (id)
 );
