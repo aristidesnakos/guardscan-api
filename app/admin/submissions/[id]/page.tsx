@@ -254,8 +254,10 @@ export default function AdminSubmissionDetailPage() {
 
       {/* Duplicate warning */}
       {submission.duplicate.exists && (
-        <div style={{ padding: 12, background: '#fff3cd', color: '#856404', borderRadius: 6, marginBottom: 16, fontSize: 14 }}>
-          Barcode already exists in catalog: {submission.duplicate.productName} ({submission.duplicate.productId})
+        <div style={{ padding: 12, background: submission.status === 'published' ? '#d4edda' : '#fff3cd', color: submission.status === 'published' ? '#155724' : '#856404', borderRadius: 6, marginBottom: 16, fontSize: 14 }}>
+          {submission.status === 'published'
+            ? `Existing product updated: ${submission.duplicate.productName} (${submission.duplicate.productId})`
+            : `Publishing will update the existing product: ${submission.duplicate.productName} (${submission.duplicate.productId})`}
         </div>
       )}
 
