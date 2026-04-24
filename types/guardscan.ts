@@ -22,6 +22,8 @@ export type Ingredient = {
   reason: string;
   fertility_relevant: boolean;
   testosterone_relevant: boolean;
+  /** true iff the ingredient was found in the dictionary; false = no data. */
+  assessed: boolean;
 };
 
 export type Product = {
@@ -56,6 +58,12 @@ export type ScoreDimension = {
   description: string;
 };
 
+export type AssessmentCoverage = {
+  total: number;     // ingredients.length
+  assessed: number;  // ingredients with assessed: true
+  percentage: number; // 0 when total === 0 (no NaN)
+};
+
 export type ScoreBreakdown = {
   overall_score: number;
   rating: RatingLabel;
@@ -64,6 +72,7 @@ export type ScoreBreakdown = {
   personalized: boolean;
   dimensions: ScoreDimension[];
   flagged_ingredients: FlaggedIngredient[];
+  assessment_coverage: AssessmentCoverage;
 };
 
 export type ScanResult = {

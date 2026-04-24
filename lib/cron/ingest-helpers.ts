@@ -13,6 +13,7 @@ import type { Database } from '@/db/client';
 import { products, productIngredients, cronState } from '@/db/schema';
 import { log } from '@/lib/logger';
 import { inferSubcategoryHybrid } from '@/lib/llm/classifier';
+import { normalizeIngredientName } from '@/lib/dictionary/resolve';
 
 // ── Product upsert ──────────────────────────────────────────────────────────
 
@@ -80,7 +81,7 @@ export async function upsertProduct(
           productId: row.id,
           position: ing.position,
           name: ing.name,
-          normalized: ing.name.toLowerCase().trim(),
+          normalized: normalizeIngredientName(ing.name),
           flag: ing.flag,
           reason: ing.reason || null,
         })),

@@ -107,6 +107,8 @@ export async function GET(
         reason: ing.reason ?? '',
         fertility_relevant: false,
         testosterone_relevant: false,
+        // DB records pre-date the assessed field; derive from reason presence.
+        assessed: Boolean(ing.reason),
       })),
       created_at: row.createdAt.toISOString(),
       updated_at: row.lastSyncedAt.toISOString(),

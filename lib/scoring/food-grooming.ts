@@ -16,6 +16,7 @@
  */
 
 import type {
+  AssessmentCoverage,
   FlaggedIngredient,
   Ingredient,
   LifeStage,
@@ -123,6 +124,14 @@ export function scoreFoodGrooming({
   overallScore = Math.max(0, Math.min(100, overallScore));
   const { label } = getRating(overallScore);
 
+  const total = ingredients.length;
+  const assessedCount = ingredients.filter((i) => i.assessed).length;
+  const assessment_coverage: AssessmentCoverage = {
+    total,
+    assessed: assessedCount,
+    percentage: total === 0 ? 0 : Math.round((assessedCount / total) * 100),
+  };
+
   return {
     overall_score: overallScore,
     rating: label,
@@ -131,6 +140,7 @@ export function scoreFoodGrooming({
     personalized,
     dimensions,
     flagged_ingredients: flagged,
+    assessment_coverage,
   };
 }
 

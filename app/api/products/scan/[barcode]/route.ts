@@ -23,6 +23,7 @@ import { fetchObfProduct, ObfFetchError } from '@/lib/sources/openbeautyfacts';
 import { normalizeOffProduct, normalizeObfProduct } from '@/lib/normalize';
 import { scoreProduct } from '@/lib/scoring';
 import { MIN_SCORE_DELTA, getRating } from '@/lib/scoring/constants';
+import { normalizeIngredientName } from '@/lib/dictionary/resolve';
 import { inferSubcategory } from '@/lib/subcategory';
 import { resolveImageUrl } from '@/lib/storage/supabase';
 import { getDb, isDatabaseConfigured } from '@/db/client';
@@ -168,6 +169,7 @@ export async function GET(
                 reason: ing.reason ?? '',
                 fertility_relevant: false,
                 testosterone_relevant: false,
+                assessed: Boolean(ing.reason),
               })),
               created_at: row.createdAt.toISOString(),
               updated_at: row.lastSyncedAt.toISOString(),
@@ -299,6 +301,13 @@ export async function GET(
   // ── 3. Score ────────────────────────────────────────────────────────────
   if (product.ingredients.length === 0) {
     logCacheMiss(barcode, 'no_ingredients');
+    log.info('product_no_ingredients', {
+      barcode,
+      source,
+      has_ingredients_text: !!(source === 'off' ? offData?.ingredients_text : obfData?.ingredients_text),
+      has_ingredients_text_en: !!(source === 'off' ? offData?.ingredients_text_en : undefined),
+      category: product.category,
+    });
   }
 
   // Infer subcategory before scoring — pass raw category tags for better matching
@@ -402,7 +411,7 @@ export async function GET(
               productId: row.id,
               position: ing.position,
               name: ing.name,
-              normalized: ing.name.toLowerCase().trim(),
+              normalized: normalizeIngredientName(ing.name),
               flag: ing.flag,
               reason: ing.reason || null,
             })),

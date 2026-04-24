@@ -163,6 +163,7 @@ export async function POST(request: Request) {
         reason: ing.reason ?? '',
         fertility_relevant: false,
         testosterone_relevant: false,
+        assessed: Boolean(ing.reason),
       })),
       created_at: row.createdAt.toISOString(),
       updated_at: row.lastSyncedAt.toISOString(),

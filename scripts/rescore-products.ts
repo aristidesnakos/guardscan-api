@@ -81,6 +81,7 @@ function reconstructProduct(row: ProductRow, ings: IngredientRow[]): Product {
         // to scoreProduct. We never pass one here, so these flags are inert.
         fertility_relevant: false,
         testosterone_relevant: false,
+        assessed: Boolean(ing.reason),
       })),
     created_at: row.createdAt.toISOString(),
     updated_at: row.lastSyncedAt.toISOString(),

@@ -12,60 +12,45 @@
 import type {
   DataCompleteness,
   Ingredient,
-  IngredientFlag,
   Product,
   ProductCategory,
 } from '@/types/guardscan';
 import type { OffProduct } from './sources/openfoodfacts';
 import type { ObfProduct } from './sources/openbeautyfacts';
 import type { DsldLabel } from './sources/dsld';
-import { lookupIngredient } from './dictionary/lookup';
+import {
+  resolveIngredient,
+  type IngredientResolveSource,
+} from './dictionary/resolve';
+
+// Re-export so existing callers (tests, scripts) keep working.
+export { normalizeIngredientName } from './dictionary/resolve';
 
 // ── Shared helpers ──────────────────────────────────────────────────────────
 
-export function normalizeIngredientName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/^\s*_+|_+\s*$/g, '') // OFF/OBF prefix structured names with underscores
-    .replace(/[*†‡]+/g, '')        // organic markers, footnote symbols
-    .replace(/\s*\d+(\.\d+)?%/g, '') // percentage amounts ("sugar 35%")
-    .replace(/\(.*?\)/g, '')        // parenthetical sub-details
-    .replace(/\s+/g, ' ')
-    .trim();
+/**
+ * Derive an English lookup key from an OFF/OBF ingredient `id` field.
+ * Returns null when the id is non-English or absent.
+ *
+ * Format rules:
+ * - "en:<slug>"  → canonical English: strip prefix, replace hyphens with spaces
+ * - "<slug>"     → no colon means INCI / additive code: replace hyphens
+ * - "fr:<slug>"  → non-English locale: cannot use, return null
+ */
+function offIdToLookupKey(id: string | undefined): string | null {
+  if (!id) return null;
+  if (id.startsWith('en:')) return id.slice(3).replace(/-/g, ' ');
+  if (!id.includes(':')) return id.replace(/-/g, ' ');
+  return null;
 }
 
-function lookupIngredientFlag(normalized: string): {
-  flag: IngredientFlag;
-  reason: string;
-  fertilityRelevant: boolean;
-  testosteroneRelevant: boolean;
-} {
-  const entry = lookupIngredient(normalized);
-  if (!entry) {
-    return { flag: 'neutral', reason: '', fertilityRelevant: false, testosteroneRelevant: false };
-  }
-  return {
-    flag: entry.flag,
-    reason: entry.reason,
-    fertilityRelevant: entry.fertility_relevant,
-    testosteroneRelevant: entry.testosterone_relevant,
-  };
-}
-
-function flagIngredients(raw: { name: string; position: number }[]): Ingredient[] {
-  return raw.map((r) => {
-    const normalized = normalizeIngredientName(r.name);
-    const { flag, reason, fertilityRelevant, testosteroneRelevant } =
-      lookupIngredientFlag(normalized);
-    return {
-      name: r.name,
-      position: r.position,
-      flag,
-      reason,
-      fertility_relevant: fertilityRelevant,
-      testosterone_relevant: testosteroneRelevant,
-    };
-  });
+function flagIngredients(
+  raw: { name: string; lookupHint?: string; position: number }[],
+  source: IngredientResolveSource,
+): Ingredient[] {
+  return raw.map((r) =>
+    resolveIngredient(r.name, r.position, source, r.lookupHint),
+  );
 }
 
 function determineCompleteness(
@@ -96,11 +81,12 @@ function isHeaderNoise(name: string): boolean {
  */
 function parseOpenIngredients(
   product: OffProduct | ObfProduct,
-): { name: string; position: number }[] {
+): { name: string; lookupHint?: string; position: number }[] {
   if (product.ingredients && product.ingredients.length > 0) {
     return product.ingredients
       .map((ing, idx) => ({
         name: (ing.text ?? ing.id ?? '').trim(),
+        lookupHint: offIdToLookupKey(ing.id) ?? undefined,
         position: ing.rank && ing.rank > 0 ? ing.rank : idx + 1,
       }))
       .filter((ing) => ing.name.length > 0 && !isHeaderNoise(ing.name));
@@ -169,7 +155,7 @@ export function normalizeOffProduct(off: OffProduct, barcode: string): Product {
     off.product_name?.trim() ??
     '';
   const brand = off.brands?.split(',')[0]?.trim() ?? '';
-  const ingredients = flagIngredients(parseOpenIngredients(off));
+  const ingredients = flagIngredients(parseOpenIngredients(off), 'off');
   const now = new Date().toISOString();
 
   return {
@@ -196,7 +182,7 @@ export function normalizeObfProduct(obf: ObfProduct, barcode: string): Product {
     obf.product_name?.trim() ??
     '';
   const brand = obf.brands?.split(',')[0]?.trim() ?? '';
-  const ingredients = flagIngredients(parseOpenIngredients(obf));
+  const ingredients = flagIngredients(parseOpenIngredients(obf), 'obf');
   const now = new Date().toISOString();
 
   return {
@@ -261,7 +247,7 @@ function parseDsldIngredients(label: DsldLabel): { name: string; position: numbe
 export function normalizeDsldLabel(label: DsldLabel, barcode: string): Product {
   const name = label.fullName?.trim() ?? '';
   const brand = label.brandName?.trim() ?? '';
-  const ingredients = flagIngredients(parseDsldIngredients(label));
+  const ingredients = flagIngredients(parseDsldIngredients(label), 'dsld');
   const now = new Date().toISOString();
 
   return {

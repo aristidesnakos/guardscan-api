@@ -25,7 +25,7 @@ import { eq } from 'drizzle-orm';
 import type { Ingredient, Product, ProductCategory } from '@/types/guardscan';
 import { getDb } from '@/db/client';
 import { userSubmissions } from '@/db/schema';
-import { lookupIngredient } from '@/lib/dictionary/lookup';
+import { resolveIngredient } from '@/lib/dictionary/resolve';
 import { scoreProduct } from '@/lib/scoring';
 import { inferSubcategory } from '@/lib/subcategory';
 import { upsertProduct } from '@/lib/cron/ingest-helpers';
@@ -49,25 +49,8 @@ export type AutoPublishResult =
     }
   | { kind: 'failed'; error: string };
 
-/**
- * Build the canonical `Ingredient[]` from raw ingredient strings by
- * looking each one up in the in-memory dictionary. Unknown ingredients
- * resolve to `{ flag: 'neutral', reason: '' }` per the charter's
- * "unknown = neutral" requirement.
- */
 function resolveIngredients(rawIngredients: string[]): Ingredient[] {
-  return rawIngredients.map((name, i) => {
-    const normalized = name.toLowerCase().trim();
-    const entry = lookupIngredient(normalized);
-    return {
-      name,
-      position: i + 1,
-      flag: entry?.flag ?? 'neutral',
-      reason: entry?.reason ?? '',
-      fertility_relevant: entry?.fertility_relevant ?? false,
-      testosterone_relevant: entry?.testosterone_relevant ?? false,
-    };
-  });
+  return rawIngredients.map((name, i) => resolveIngredient(name, i + 1, 'submission'));
 }
 
 /**
