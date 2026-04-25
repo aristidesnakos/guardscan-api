@@ -200,180 +200,327 @@ In the worst case it costs one extra `Map.get()` — negligible.
 
 ---
 
-## P2 — Live dictionary re-lookup for `assessed` at DB hydration
+## P2 — Single hydration helper (`assessed` + cached `assessment_coverage`)
 
-**Priority:** Medium — eliminates a future-proofing failure mode; low urgency today.
-**Effort:** ~20 minutes.
+**Priority:** Medium — fixes two real cache contract issues at once.
+**Effort:** ~45 minutes.
 **Requires:** P0 deployed + backfill run.
 
 ### Problem
 
-Three DB hydration paths reconstruct `assessed` using a proxy:
+Two related cache contract bugs land in the same hydration paths.
 
-```ts
-// app/api/products/scan/[barcode]/route.ts  line 171
-// app/api/products/[id]/route.ts  line 103
-// scripts/rescore-products.ts  line 84
-assessed: Boolean(ing.reason),
+**a) `assessed` is reconstructed via `Boolean(ing.reason)` in seven sites — not three.**
+Audit (2026-04-25) found the proxy in every read path that hydrates ingredients from
+`product_ingredients`:
+
+```
+app/api/products/scan/[barcode]/route.ts:172
+app/api/products/search/route.ts:166
+app/api/products/[id]/route.ts:103
+app/api/products/[id]/alternatives/route.ts:111
+app/api/recommendations/route.ts:168
+app/api/recommendations/route.ts:191
+scripts/rescore-products.ts:84
 ```
 
-This works today because every seed entry has a non-empty `reason`. It silently fails
-after any dictionary expansion: a product scanned before a new dictionary entry was added
-will serve `assessed: false` for that ingredient indefinitely, even though the dictionary
-now covers it. No rescore pass will fix it — the proxy reads stale DB data, not the live
-dictionary.
+The original P2 only listed three. The proxy works today only because every seed entry
+has a non-empty `reason`; any future known-neutral entry breaks all seven sites silently
+and independently.
 
-### Correct approach
-
-Re-run the actual dictionary lookup at read time. It's a `Map.get()` — O(1), always
-reflects the current dictionary state.
+**b) Cached `ScoreBreakdown` rows can be missing `assessment_coverage`.**
+`b06ff6d` added the field as required on the shared type, but did not backfill
+`products.scoreBreakdown` JSON blobs. Two read paths cast the stored blob without
+synthesizing the field:
 
 ```ts
-import { lookupIngredient } from '@/lib/dictionary/lookup';
-
-// Replace in all three hydration sites:
-// before
-assessed: Boolean(ing.reason),
-// after
-assessed: lookupIngredient(ing.normalized) !== null,
+// app/api/products/scan/[barcode]/route.ts:181
+: row.scoreBreakdown as ScoreBreakdown;
+// app/api/products/[id]/route.ts:109
+const score = row.scoreBreakdown as ScoreBreakdown | null;
 ```
+
+Any client doing `score.assessment_coverage.percentage` on a pre-`b06ff6d` cached row
+throws.
+
+### Approach
+
+One small helper in `lib/dictionary/resolve.ts`, used by every hydration site. No new
+column, no migration, no rescore.
+
+```ts
+// lib/dictionary/resolve.ts
+import type { Ingredient, ScoreBreakdown, AssessmentCoverage } from '@/types/guardscan';
+import { lookupIngredient } from './lookup';
+
+type IngredientRow = {
+  name: string; position: number; normalized: string;
+  flag: string | null; reason: string | null;
+};
+
+export function hydrateIngredient(row: IngredientRow): Ingredient {
+  return {
+    name: row.name,
+    position: row.position,
+    flag: (row.flag ?? 'neutral') as Ingredient['flag'],
+    reason: row.reason ?? '',
+    fertility_relevant: false,      // not yet persisted; lookup-derived if needed later
+    testosterone_relevant: false,
+    assessed: lookupIngredient(row.normalized) !== null,
+  };
+}
+
+/**
+ * Backfill `assessment_coverage` on cached score blobs that predate b06ff6d.
+ * No-op for blobs that already have the field.
+ */
+export function withAssessmentCoverage(
+  score: ScoreBreakdown,
+  ingredients: Ingredient[],
+): ScoreBreakdown {
+  if (score.assessment_coverage) return score;
+  const total = ingredients.length;
+  const assessed = ingredients.filter((i) => i.assessed).length;
+  const coverage: AssessmentCoverage = {
+    total,
+    assessed,
+    percentage: total === 0 ? 0 : Math.round((assessed / total) * 100),
+  };
+  return { ...score, assessment_coverage: coverage };
+}
+```
+
+Each of the seven hydration sites collapses to:
+
+```ts
+ingredients: cachedIngredients.map(hydrateIngredient)
+```
+
+Each of the two score read sites wraps with:
+
+```ts
+const score = row.scoreBreakdown
+  ? withAssessmentCoverage(row.scoreBreakdown as ScoreBreakdown, product.ingredients)
+  : null;
+```
+
+### Why no schema changes
+
+Adding `assessed` as a column requires a migration plus a write-time policy plus a
+backfill, and goes stale on every dictionary expansion. The live `Map.get()` is O(1)
+and self-heals. Same logic for `assessment_coverage`: synthesize on read, never write.
+
+### What we are *not* doing
+
+- No backfill rescore over `products.scoreBreakdown` blobs. The synthesize-on-read path
+  is correct forever and avoids touching production data.
+- No new `assessed` column on `product_ingredients`.
+- No abstraction beyond two helper functions. Seven call sites is enough to justify
+  one helper; it is not enough to justify a "hydration layer."
 
 ### Why this is safe only after P0 + backfill
 
-`ing.normalized` in the DB is currently `name.toLowerCase().trim()` for most rows. That
-doesn't match dictionary keys. Until the backfill runs, `lookupIngredient(ing.normalized)`
-would return `null` for every ingredient — worse than the proxy.
-
-### No schema change needed
-
-This is the reason not to add an `assessed` boolean column to `product_ingredients`.
-A live lookup self-heals after every dictionary update at zero maintenance cost.
+`ing.normalized` in the DB is correct for new writes (P0) but stale for old rows until
+the backfill runs. Until then, `lookupIngredient(ing.normalized)` returns `null` for
+every legacy row — worse than the proxy.
 
 ### Success criteria
-1. Scan a product that was previously cached → `assessed` values match a fresh live scan.
-2. After adding a new dictionary entry, cached products automatically reflect the new coverage on next request without a rescore.
+1. Scan a product cached before `b06ff6d` → response includes `assessment_coverage` (synthesized) and `assessed` matches a fresh live scan.
+2. After adding a new dictionary entry, cached products auto-reflect new coverage on next request — no rescore needed.
+3. Grep confirms `Boolean(ing.reason)` no longer appears in `app/` or `scripts/`.
 
 ### Files touched
 | File | Change |
 |---|---|
-| `app/api/products/scan/[barcode]/route.ts` | 1 line × 1 site |
-| `app/api/products/[id]/route.ts` | 1 line |
-| `scripts/rescore-products.ts` | 1 line |
+| `lib/dictionary/resolve.ts` | Add `hydrateIngredient()` + `withAssessmentCoverage()` |
+| `app/api/products/scan/[barcode]/route.ts` | Use both helpers (2 sites) |
+| `app/api/products/[id]/route.ts` | Use both helpers |
+| `app/api/products/[id]/alternatives/route.ts` | Use `hydrateIngredient` |
+| `app/api/products/search/route.ts` | Use `hydrateIngredient` |
+| `app/api/recommendations/route.ts` | Use `hydrateIngredient` (2 sites) |
+| `scripts/rescore-products.ts` | Use `hydrateIngredient` |
 
 ---
 
-## P3 — Category-aware ingredient resolution
+## P3 — Category-aware lookup (Hotfix-tier: live silent overwrite)
 
-**Priority:** Medium — unblocks correct grooming scoring; the Stearic Acid case is a
-known live bug but it affects a small fraction of products.
-**Effort:** ~3 hours.
-**Requires:** P1 (clean resolution path to build on).
+**Priority:** **Hotfix** — promoted from Medium after 2026-04-25 audit. The seed has at
+least one duplicate-keyed entry whose flag is currently the *opposite* of what one of the
+two categories warrants. This is misrepresentation of regulatory status, not a polish issue.
+**Effort:** ~2 hours.
+**Requires:** P1 (already shipped).
 
-### Problem
+### Problem (the key finding)
 
-`lookupIngredient()` ignores `DictionaryEntry.category`. Every ingredient resolves to the
-same flag regardless of whether the product is food, grooming, or a supplement.
+`lib/dictionary/lookup.ts:14-22` builds the index with an unconditional
+`map.set(entry.normalized, entry)`. Duplicate `normalized` keys silently overwrite —
+**last seed entry wins for every consumer**, regardless of product category.
 
-Stearic Acid is the confirmed case: the seed entry flags it `caution` with a food-specific
-reason ("may slightly reduce mineral absorption"). In a grooming product (Gillette shave
-gel) it's a harmless emulsifier — `neutral`. The user sees a spurious caution flag.
+Confirmed live collision in `lib/dictionary/seed.ts`:
 
-There are likely 5–10 other ingredients in the seed with the same problem (food-biased
-entries used for grooming products).
+| Entry | Line | `category` | `flag` | `reason` |
+|---|---|---|---|---|
+| First | 354 | `food` | `negative` | "Banned as food additive in EU (2022). Nanoparticle concerns…" |
+| Second | 1608 | `grooming` | `positive` | "Mineral UV filter — broad-spectrum protection without endocrine activity." |
 
-### Design — three-tier composite key index
+The second entry overwrites the first. **Today, a food product listing "titanium dioxide"
+resolves to `positive` with a "no endocrine activity" reason** — the EU-banned status has
+been deleted for food. The `e171` alias still routes correctly (no collision on that key),
+so the bug only fires when the product label uses the full name.
 
-No seed restructuring needed. The index gets a new lookup strategy:
+This is severer than the stearic-acid case the original P3 anchored on:
+- The flag inverts (positive vs negative), not just shifts intensity
+- The replacement reason actively reassures users about an EFSA-flagged genotoxicity concern
+- It is an undetected silent failure mode, not a known limitation
+
+### Design — minimum viable category-aware index + permanent guard
+
+Two changes. Both small.
+
+**1. Build-time duplicate-key guard (ships first, prevents recurrence forever).**
 
 ```ts
 // lib/dictionary/lookup.ts
+function buildIndex(): Map<string, DictionaryEntry> {
+  const map = new Map<string, DictionaryEntry>();
+  const seen = new Map<string, DictionaryEntry>();
+  for (const entry of SEED_ENTRIES) {
+    const prior = seen.get(entry.normalized);
+    if (prior && prior.category !== entry.category) {
+      // Different categories: handled by composite-key path below.
+      // Same category: that's a true seed bug — fail loud.
+    } else if (prior) {
+      throw new Error(
+        `Duplicate seed entry for '${entry.normalized}' in category '${entry.category}'. ` +
+        `Same-category duplicates are never valid.`,
+      );
+    }
+    seen.set(entry.normalized, entry);
+    // ... composite-key insertion below
+  }
+  return map;
+}
+```
 
-const INDEX = buildIndex();
+This is the part that prevents *the next* titanium-dioxide-class bug from sneaking in.
+Module load throws if anyone adds a same-category dupe. Cross-category dupes route through
+the composite key.
 
+**2. Composite-key index, three-tier lookup.**
+
+```ts
 function buildIndex(): Map<string, DictionaryEntry> {
   const map = new Map<string, DictionaryEntry>();
   for (const entry of SEED_ENTRIES) {
-    // Legacy key (no category suffix) — for callers that don't pass category
-    if (!map.has(entry.normalized)) {
-      map.set(entry.normalized, entry);
-    }
-    // Category-qualified key
+    // Category-qualified key — always written, never overwritten by a different category
     map.set(`${entry.normalized}::${entry.category}`, entry);
+    for (const alias of entry.aliases) {
+      map.set(`${alias.toLowerCase()}::${entry.category}`, entry);
+    }
+    // Legacy unqualified key — first-write wins so the index is deterministic
+    if (!map.has(entry.normalized)) map.set(entry.normalized, entry);
     for (const alias of entry.aliases) {
       const a = alias.toLowerCase();
       if (!map.has(a)) map.set(a, entry);
-      map.set(`${a}::${entry.category}`, entry);
     }
   }
   return map;
 }
 
-/**
- * @param normalized  — lowercased, whitespace-collapsed ingredient name
- * @param category    — product category for context-aware resolution (optional)
- */
 export function lookupIngredient(
   normalized: string,
-  category?: 'food' | 'grooming' | 'supplement',
+  category?: ProductCategory,
 ): DictionaryEntry | null {
   if (category) {
-    // 1. Category-specific entry
     const specific = INDEX.get(`${normalized}::${category}`);
     if (specific) return specific;
-    // 2. 'both' entry
     const both = INDEX.get(`${normalized}::both`);
     if (both) return both;
   }
-  // 3. Legacy fallback (category omitted or no category-qualified key exists)
   return INDEX.get(normalized) ?? null;
 }
 ```
 
-Thread `productCategory` through the call chain:
+Thread `productCategory` through `resolveIngredient` → `lookupIngredient`. One optional
+param at each layer.
 
-```
-flagIngredients(raw, source, productCategory?)
-  → resolveIngredient(name, pos, source, lookupHint?, productCategory?)
-    → lookupIngredient(normalized, productCategory?)
-```
+**3. Seed change for the live collision.**
 
-**`lib/dictionary/seed.ts`** — add grooming-specific Stearic Acid entry and update the
-existing entry's category to `'food'`:
+The existing food entry at `seed.ts:354` already has `category: 'food'`; the grooming
+entry at `seed.ts:1608` already has `category: 'grooming'`. **No seed restructuring is
+required for titanium dioxide once the composite-key path is in place** — both entries
+are already correctly categorized. The bug is purely in the index.
 
-```ts
-// Update existing entry:
-{ normalized: 'stearic acid', category: 'food', flag: 'caution',
-  reason: 'At high dietary doses may slightly reduce mineral absorption.',
-  ... }
+### What we are *not* doing
 
-// Add new entry:
-{ normalized: 'stearic acid', category: 'grooming', flag: 'neutral',
-  reason: 'Common emulsifier and thickener. Well-tolerated on skin.',
-  category: 'grooming', ingredient_group: 'Fatty Acids',
-  health_risk_tags: [], fertility_relevant: false, testosterone_relevant: false,
-  evidence_url: 'https://www.cir-safety.org/sites/default/files/stearic.pdf',
-}
-```
+The original P3 proposed auditing 5–10 other entries and pre-emptively splitting them
+into food/grooming companions. **That is overengineering for this round.**
 
-### Audit step before shipping
+Reason: the build-time guard makes future collisions *impossible to ship silently*. We
+don't need to speculatively split entries we have no scan evidence of being mis-applied.
+The guard surfaces the next problem the moment it lands; we fix it then with one seed
+edit. Stearic acid stays in the backlog with one line: "split when a real grooming scan
+shows the bad flag in production."
 
-Before this lands, grep the seed for all entries with `category: 'food'` and
-`category: 'grooming'` to confirm there are no other incorrectly dual-applied entries.
-Any entry with `category: 'food'` that also appears as an INCI name (grooming) should get
-a `'both'` or `'grooming'`-specific companion.
+We are also *not*:
+- Adding a category-override UI
+- Splitting `'both'` entries into food + grooming clones
+- Building a category-detection heuristic for products without a known category
 
 ### Success criteria
-1. Scanning a Gillette product containing Stearic Acid returns `flag: 'neutral'` for that ingredient.
-2. Scanning a food product containing Stearic Acid still returns `flag: 'caution'`.
-3. Existing `both`-category entries (the majority of the seed) are unaffected.
+1. Module load throws if anyone adds a same-category duplicate to the seed.
+2. Food product containing "titanium dioxide" → `flag: 'negative'`, EU-banned reason.
+3. Grooming product containing "titanium dioxide" → `flag: 'positive'`, mineral UV filter reason.
+4. Existing `'both'`-category entries (the majority of the seed) are unaffected — no regression in scan output for any product whose ingredients route through `'both'`.
+5. `e171` lookup still resolves to the food entry (alias-level disambiguation preserved).
 
 ### Files touched
 | File | Change |
 |---|---|
-| `lib/dictionary/lookup.ts` | Category-qualified index + updated `lookupIngredient` signature |
-| `lib/dictionary/resolve.ts` | Thread `productCategory` param |
-| `lib/normalize.ts` | Pass `product.category` to `flagIngredients` |
-| `lib/dictionary/seed.ts` | Split Stearic Acid entry; audit other food-specific entries |
+| `lib/dictionary/lookup.ts` | Composite-key index + `category?` param + same-category dupe assertion |
+| `lib/dictionary/resolve.ts` | Thread `productCategory?` into `resolveIngredient` |
+| `lib/normalize.ts` | Pass `product.category` into `flagIngredients` |
+| `lib/dictionary/seed.ts` | **No change** — both titanium dioxide entries are already correctly categorized |
+
+---
+
+## P6 — Normalization leaks in admin/submission paths
+
+**Priority:** Low — bounded blast radius (admin-only and OCR preview), but recreates the
+exact regression P0 just fixed.
+**Effort:** ~10 minutes.
+**Requires:** Nothing.
+
+### Problem
+
+P0 centralized the write path on `normalizeIngredientName`. Audit found two read paths
+still using the ad-hoc `name.toLowerCase().trim()` recipe that omits parenthetical and
+percentage stripping:
+
+- `app/api/admin/submissions/[id]/route.ts:71` — OCR-extracted ingredient names go
+  through `name.toLowerCase().trim()` before `lookupIngredient`. OCR output frequently
+  contains percentages and parentheticals, so this guarantees misses for exactly the
+  inputs the normalizer was built to handle. Admin-only, but it makes the moderator
+  preview lie about coverage.
+- `scripts/admin-submissions.ts:271` — same pattern in the CLI tool.
+
+### Change
+
+Two-line edit per site:
+
+```ts
+import { normalizeIngredientName } from '@/lib/dictionary/resolve';
+// ...
+const entry = lookupIngredient(normalizeIngredientName(name));
+```
+
+### Out of scope
+
+`app/api/ingredients/[normalized]/route.ts:36` also uses `decodeURIComponent(raw).toLowerCase().trim()`,
+but its contract is different: the path param is *expected* to already be the canonical
+dictionary key (Expo passes `entry.normalized` from a prior scan). Running the full
+normalizer there would change behavior for slugs containing parentheses. Leave it alone;
+the contract is the right shape for that endpoint.
 
 ---
 
@@ -473,9 +620,19 @@ the backend data is in.
 |---|---|---|---|---|
 | P0 | `normalized` written wrong in DB writes | Hotfix (silent data corruption) | ✓ Shipped 2026-04-24 — **run backfill** | — |
 | P1 | OFF `id` field ignored; multilingual products miss dictionary | Feature (highest coverage impact) | ✓ Shipped 2026-04-24 | — |
-| P2 | `assessed` proxy breaks after dictionary updates | Correctness | Pending | P0 backfill |
-| P3 | No category-aware resolution (Stearic Acid) | Feature | Pending | P1 |
+| P2 | `assessed` proxy in 7 sites + cached `assessment_coverage` missing | Correctness (cache contract) | Pending | P0 backfill |
+| P3 | **Duplicate seed keys silently overwrite (titanium dioxide flips negative→positive for food)** | **Hotfix** (regulatory misrepresentation) | Pending | — |
 | P4 | Zero-ingredient products not instrumented | Observability | ✓ Shipped 2026-04-24 | — |
 | P5 | UI coverage thresholds need real data | Deferred | Waiting | P1 + 1 week logs |
+| P6 | Admin/script paths still use ad-hoc `toLowerCase().trim()` | Hygiene | Pending | — |
 
-P0, P1, and P4 can all ship in parallel. P2 gates on P0's backfill. P3 gates on P1.
+P3 is now the next thing to ship — the build-time guard alone closes the silent-overwrite
+class of bug forever and is one assertion. P2 and P6 can land in parallel with P3.
+
+### Findings audit log (2026-04-25)
+
+This pass widened P2 from 3 sites to 7, promoted P3 from Medium to Hotfix on evidence of
+a live silent overwrite, and added P6. It explicitly *narrowed* P3 by removing the
+"audit and split 5–10 other entries" workstream — the build-time guard makes that
+speculative work unnecessary. Stearic-acid-style splits will be done reactively when a
+real scan surfaces them, not pre-emptively.
