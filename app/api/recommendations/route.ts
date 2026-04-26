@@ -10,7 +10,7 @@
  */
 
 import { NextResponse } from 'next/server';
-import { sql } from 'drizzle-orm';
+import { sql, asc } from 'drizzle-orm';
 
 import type {
   Product,
@@ -18,6 +18,7 @@ import type {
   RecommendationPair,
   ProductAlternative,
 } from '@/types/guardscan';
+import { hydrateIngredient } from '@/lib/dictionary/resolve';
 import { requireUser } from '@/lib/auth';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { products, productIngredients, scanEvents } from '@/db/schema';
@@ -138,8 +139,8 @@ export async function GET(request: Request) {
 
       // Fetch ingredients for both products
       const [scannedIngs, altIngs] = await Promise.all([
-        db.select().from(productIngredients).where(eq(productIngredients.productId, r.product_id as string)),
-        db.select().from(productIngredients).where(eq(productIngredients.productId, r.alt_id as string)),
+        db.select().from(productIngredients).where(eq(productIngredients.productId, r.product_id as string)).orderBy(asc(productIngredients.position)),
+        db.select().from(productIngredients).where(eq(productIngredients.productId, r.alt_id as string)).orderBy(asc(productIngredients.position)),
       ]);
 
       const scannedScore = r.score as number;
@@ -158,15 +159,7 @@ export async function GET(request: Request) {
         image_url: resolveImageUrl((r.image_front as string) ?? null),
         data_completeness: 'full',
         ingredient_source: r.source === 'dsld' ? 'verified' : 'open_food_facts',
-        ingredients: scannedIngs.map((ing) => ({
-          name: ing.name,
-          position: ing.position,
-          flag: (ing.flag ?? 'neutral') as Product['ingredients'][number]['flag'],
-          reason: ing.reason ?? '',
-          fertility_relevant: false,
-          testosterone_relevant: false,
-          assessed: Boolean(ing.reason),
-        })),
+        ingredients: scannedIngs.map((ing) => hydrateIngredient(ing, r.category as ProductCategory)),
         created_at: String(r.created_at),
         updated_at: String(r.last_synced_at),
       };
@@ -181,15 +174,7 @@ export async function GET(request: Request) {
         image_url: resolveImageUrl((r.alt_image_front as string) ?? null),
         data_completeness: 'full',
         ingredient_source: r.alt_source === 'dsld' ? 'verified' : 'open_food_facts',
-        ingredients: altIngs.map((ing) => ({
-          name: ing.name,
-          position: ing.position,
-          flag: (ing.flag ?? 'neutral') as Product['ingredients'][number]['flag'],
-          reason: ing.reason ?? '',
-          fertility_relevant: false,
-          testosterone_relevant: false,
-          assessed: Boolean(ing.reason),
-        })),
+        ingredients: altIngs.map((ing) => hydrateIngredient(ing, r.alt_category as ProductCategory)),
         created_at: String(r.alt_created_at),
         updated_at: String(r.alt_last_synced_at),
       };

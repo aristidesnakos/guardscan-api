@@ -47,9 +47,10 @@ function offIdToLookupKey(id: string | undefined): string | null {
 function flagIngredients(
   raw: { name: string; lookupHint?: string; position: number }[],
   source: IngredientResolveSource,
+  productCategory?: ProductCategory,
 ): Ingredient[] {
   return raw.map((r) =>
-    resolveIngredient(r.name, r.position, source, r.lookupHint),
+    resolveIngredient(r.name, r.position, source, r.lookupHint, productCategory),
   );
 }
 
@@ -155,7 +156,8 @@ export function normalizeOffProduct(off: OffProduct, barcode: string): Product {
     off.product_name?.trim() ??
     '';
   const brand = off.brands?.split(',')[0]?.trim() ?? '';
-  const ingredients = flagIngredients(parseOpenIngredients(off), 'off');
+  const category = inferOffCategory(off);
+  const ingredients = flagIngredients(parseOpenIngredients(off), 'off', category);
   const now = new Date().toISOString();
 
   return {
@@ -163,7 +165,7 @@ export function normalizeOffProduct(off: OffProduct, barcode: string): Product {
     barcode,
     name,
     brand,
-    category: inferOffCategory(off),
+    category,
     subcategory: null, // Populated by inferSubcategory() at the call site
     image_url: off.image_front_url ?? null,
     data_completeness: determineCompleteness(name, ingredients),
@@ -182,7 +184,7 @@ export function normalizeObfProduct(obf: ObfProduct, barcode: string): Product {
     obf.product_name?.trim() ??
     '';
   const brand = obf.brands?.split(',')[0]?.trim() ?? '';
-  const ingredients = flagIngredients(parseOpenIngredients(obf), 'obf');
+  const ingredients = flagIngredients(parseOpenIngredients(obf), 'obf', 'grooming');
   const now = new Date().toISOString();
 
   return {
@@ -247,7 +249,7 @@ function parseDsldIngredients(label: DsldLabel): { name: string; position: numbe
 export function normalizeDsldLabel(label: DsldLabel, barcode: string): Product {
   const name = label.fullName?.trim() ?? '';
   const brand = label.brandName?.trim() ?? '';
-  const ingredients = flagIngredients(parseDsldIngredients(label), 'dsld');
+  const ingredients = flagIngredients(parseDsldIngredients(label), 'dsld', 'supplement');
   const now = new Date().toISOString();
 
   return {

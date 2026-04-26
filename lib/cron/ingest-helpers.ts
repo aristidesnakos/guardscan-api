@@ -1,8 +1,8 @@
 /**
  * Shared ingest utilities for cron jobs.
  *
- * Provides batch product upsert (product + ingredients in a transaction),
- * gzip JSONL fetch, and cron state tracking.
+ * Provides batch product upsert (product + ingredients atomically in a
+ * single DB transaction), gzip JSONL fetch, and cron state tracking.
  */
 
 import { eq } from 'drizzle-orm';
@@ -36,24 +36,11 @@ export async function upsertProduct(
         product.category,
       ));
 
-    const [row] = await db
-      .insert(products)
-      .values({
-        barcode: product.barcode,
-        name: product.name || '(unknown)',
-        brand: product.brand || null,
-        category: product.category,
-        subcategory: resolvedSubcategory,
-        imageFront: product.image_url,
-        rawIngredients: product.ingredients.map((i) => i.name).join(', '),
-        source,
-        sourceId: sourceId ?? product.id,
-        score: score?.overall_score ?? null,
-        scoreBreakdown: score ?? null,
-      })
-      .onConflictDoUpdate({
-        target: products.barcode,
-        set: {
+    return await db.transaction(async (tx) => {
+      const [row] = await tx
+        .insert(products)
+        .values({
+          barcode: product.barcode,
           name: product.name || '(unknown)',
           brand: product.brand || null,
           category: product.category,
@@ -61,34 +48,50 @@ export async function upsertProduct(
           imageFront: product.image_url,
           rawIngredients: product.ingredients.map((i) => i.name).join(', '),
           source,
+          sourceId: sourceId ?? product.id,
           score: score?.overall_score ?? null,
           scoreBreakdown: score ?? null,
-          lastSyncedAt: new Date(),
-        },
-      })
-      .returning({ id: products.id });
+        })
+        .onConflictDoUpdate({
+          target: products.barcode,
+          set: {
+            name: product.name || '(unknown)',
+            brand: product.brand || null,
+            category: product.category,
+            subcategory: resolvedSubcategory,
+            imageFront: product.image_url,
+            rawIngredients: product.ingredients.map((i) => i.name).join(', '),
+            source,
+            score: score?.overall_score ?? null,
+            scoreBreakdown: score ?? null,
+            lastSyncedAt: new Date(),
+          },
+        })
+        .returning({ id: products.id });
 
-    if (!row) return null;
+      if (!row) return null;
 
-    // Replace ingredients
-    if (product.ingredients.length > 0) {
-      await db
-        .delete(productIngredients)
-        .where(eq(productIngredients.productId, row.id));
+      // Replace ingredients atomically — if this insert fails, the product
+      // row above is also rolled back so no orphan can form.
+      if (product.ingredients.length > 0) {
+        await tx
+          .delete(productIngredients)
+          .where(eq(productIngredients.productId, row.id));
 
-      await db.insert(productIngredients).values(
-        product.ingredients.map((ing) => ({
-          productId: row.id,
-          position: ing.position,
-          name: ing.name,
-          normalized: normalizeIngredientName(ing.name),
-          flag: ing.flag,
-          reason: ing.reason || null,
-        })),
-      );
-    }
+        await tx.insert(productIngredients).values(
+          product.ingredients.map((ing) => ({
+            productId: row.id,
+            position: ing.position,
+            name: ing.name,
+            normalized: normalizeIngredientName(ing.name),
+            flag: ing.flag,
+            reason: ing.reason || null,
+          })),
+        );
+      }
 
-    return row.id;
+      return row.id;
+    });
   } catch (err) {
     log.warn('upsert_product_failed', {
       barcode: product.barcode,

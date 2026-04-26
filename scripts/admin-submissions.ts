@@ -16,6 +16,7 @@ import { getDb } from '@/db/client';
 import { userSubmissions, products } from '@/db/schema';
 import { resolveImageUrl } from '@/lib/storage/supabase';
 import { lookupIngredient } from '@/lib/dictionary/lookup';
+import { normalizeIngredientName } from '@/lib/dictionary/resolve';
 import type { ProductCategory } from '@/types/guardscan';
 import { publishExtracted } from '@/lib/submissions/auto-publish';
 
@@ -268,7 +269,7 @@ async function reviewOne(submissionId: string) {
   // operator a chance to bail before we touch the DB.
   console.log('\n─── Ingredient lookup preview ───────────────');
   ingredients.forEach((ingName, i) => {
-    const entry = lookupIngredient(ingName.toLowerCase().trim());
+    const entry = lookupIngredient(normalizeIngredientName(ingName));
     console.log(`  ${i + 1}. ${ingName} → ${entry?.flag ?? 'neutral'}`);
   });
 

@@ -10,9 +10,65 @@
  * the normalization and lookup logic in one place and avoid circular imports.
  */
 
-import type { Ingredient } from '@/types/guardscan';
+import type { AssessmentCoverage, Ingredient, ProductCategory, ScoreBreakdown } from '@/types/guardscan';
 import { lookupIngredient } from './lookup';
 import { log } from '@/lib/logger';
+
+// Minimal shape of a product_ingredients DB row needed by the hydration helper.
+type IngredientRow = {
+  name: string;
+  position: number;
+  normalized: string;
+  flag: string | null;
+  reason: string | null;
+};
+
+/**
+ * Hydrate a cached `product_ingredients` row back into a full `Ingredient`.
+ *
+ * Restores `assessed`, `fertility_relevant`, and `testosterone_relevant` from
+ * the live in-memory dictionary so that personalized scoring works correctly
+ * on cache reads. The DB row's `flag` and `reason` are preferred (they reflect
+ * the dictionary at write time); the live entry is the fallback.
+ *
+ * O(1) — hits the pre-built Map, no I/O.
+ */
+export function hydrateIngredient(
+  row: IngredientRow,
+  productCategory?: ProductCategory,
+): Ingredient {
+  const entry = lookupIngredient(row.normalized, productCategory);
+  return {
+    name: row.name,
+    position: row.position,
+    flag: (row.flag ?? entry?.flag ?? 'neutral') as Ingredient['flag'],
+    reason: row.reason ?? entry?.reason ?? '',
+    fertility_relevant: entry?.fertility_relevant ?? false,
+    testosterone_relevant: entry?.testosterone_relevant ?? false,
+    assessed: entry !== null,
+  };
+}
+
+/**
+ * Synthesize `assessment_coverage` for a cached `ScoreBreakdown` blob that
+ * pre-dates the `b06ff6d` commit which introduced the field.
+ *
+ * If the blob already has the field this is a no-op (returns the same object).
+ */
+export function withAssessmentCoverage(
+  score: ScoreBreakdown,
+  ingredients: Ingredient[],
+): ScoreBreakdown {
+  if (score.assessment_coverage) return score;
+  const total = ingredients.length;
+  const assessed = ingredients.filter((i) => i.assessed).length;
+  const coverage: AssessmentCoverage = {
+    total,
+    assessed,
+    percentage: total === 0 ? 0 : Math.round((assessed / total) * 100),
+  };
+  return { ...score, assessment_coverage: coverage };
+}
 
 export type IngredientResolveSource = 'off' | 'obf' | 'dsld' | 'submission';
 
@@ -46,6 +102,7 @@ export function resolveIngredient(
   position: number,
   source: IngredientResolveSource,
   lookupHint?: string,
+  productCategory?: ProductCategory,
 ): Ingredient {
   // Try the id-derived key first; if it misses, try text normalization.
   // This preserves full backwards compatibility for DSLD and submissions
@@ -54,11 +111,11 @@ export function resolveIngredient(
     ? lookupHint.toLowerCase().trim()
     : normalizeIngredientName(rawName);
 
-  let entry = lookupIngredient(primaryKey);
+  let entry = lookupIngredient(primaryKey, productCategory);
 
   if (!entry && lookupHint) {
     // id-derived key missed — try text normalization as fallback
-    entry = lookupIngredient(normalizeIngredientName(rawName));
+    entry = lookupIngredient(normalizeIngredientName(rawName), productCategory);
   }
 
   if (!entry) {

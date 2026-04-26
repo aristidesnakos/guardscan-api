@@ -13,9 +13,9 @@
  */
 
 import { NextResponse, after } from 'next/server';
-import { eq, and, ne, gte, isNotNull, desc } from 'drizzle-orm';
+import { eq, and, ne, gte, isNotNull, desc, asc } from 'drizzle-orm';
 
-import type { LifeStage, Product, ProductAlternative, ScanResult, ScoreBreakdown } from '@/types/guardscan';
+import type { LifeStage, Product, ProductAlternative, ProductCategory, ScanResult, ScoreBreakdown } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
 import { log, logCacheHit, logCacheMiss } from '@/lib/logger';
 import { fetchOffProduct, OffFetchError } from '@/lib/sources/openfoodfacts';
@@ -23,7 +23,7 @@ import { fetchObfProduct, ObfFetchError } from '@/lib/sources/openbeautyfacts';
 import { normalizeOffProduct, normalizeObfProduct } from '@/lib/normalize';
 import { scoreProduct } from '@/lib/scoring';
 import { MIN_SCORE_DELTA, getRating } from '@/lib/scoring/constants';
-import { normalizeIngredientName } from '@/lib/dictionary/resolve';
+import { hydrateIngredient, normalizeIngredientName, withAssessmentCoverage } from '@/lib/dictionary/resolve';
 import { inferSubcategory } from '@/lib/subcategory';
 import { resolveImageUrl } from '@/lib/storage/supabase';
 import { getDb, isDatabaseConfigured } from '@/db/client';
@@ -149,7 +149,8 @@ export async function GET(
         const cachedIngredients = await db
           .select()
           .from(productIngredients)
-          .where(eq(productIngredients.productId, row.id));
+          .where(eq(productIngredients.productId, row.id))
+          .orderBy(asc(productIngredients.position));
 
         if (cachedIngredients.length > 0) {
             const product: Product = {
@@ -162,23 +163,16 @@ export async function GET(
               image_url: resolveImageUrl(row.imageFront),
               data_completeness: 'full',
               ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
-              ingredients: cachedIngredients.map((ing) => ({
-                name: ing.name,
-                position: ing.position,
-                flag: (ing.flag ?? 'neutral') as Product['ingredients'][number]['flag'],
-                reason: ing.reason ?? '',
-                fertility_relevant: false,
-                testosterone_relevant: false,
-                assessed: Boolean(ing.reason),
-              })),
+              ingredients: cachedIngredients.map((ing) => hydrateIngredient(ing, row.category as ProductCategory)),
               created_at: row.createdAt.toISOString(),
               updated_at: row.lastSyncedAt.toISOString(),
             };
 
-            // Re-score with personalization if life_stage provided
+            // Re-score with personalization if life_stage provided; synthesize
+            // assessment_coverage for pre-b06ff6d blobs that lack the field.
             const score = lifeStage
               ? scoreProduct({ product, lifeStage })
-              : row.scoreBreakdown as ScoreBreakdown;
+              : withAssessmentCoverage(row.scoreBreakdown as ScoreBreakdown, product.ingredients);
 
             // Inline alternatives (top 3 in same subcategory)
             const alternatives = await fetchInlineAlternatives(
@@ -208,6 +202,7 @@ export async function GET(
 
             log.info('scan_ok_cached', {
               barcode,
+              cache_hit: true,
               duration_ms: Date.now() - startedAt,
               score: score?.overall_score ?? null,
               source: row.source,
@@ -232,10 +227,12 @@ export async function GET(
   let nutriscoreScore: number | undefined;
   let source: 'off' | 'obf' = 'off';
 
+  const upstreamStart = Date.now();
   const [offResult, obfResult] = await Promise.allSettled([
     fetchOffProduct(barcode),
     fetchObfProduct(barcode),
   ]);
+  const upstreamMs = Date.now() - upstreamStart;
 
   const offData = offResult.status === 'fulfilled' ? offResult.value : null;
   const obfData = obfResult.status === 'fulfilled' ? obfResult.value : null;
@@ -353,6 +350,8 @@ export async function GET(
 
   log.info('scan_ok', {
     barcode,
+    cache_hit: false,
+    upstream_ms: upstreamMs,
     duration_ms: Date.now() - startedAt,
     score: score?.overall_score ?? null,
     completeness: product.data_completeness,

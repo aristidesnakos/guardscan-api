@@ -9,10 +9,11 @@
  */
 
 import { NextResponse } from 'next/server';
-import { eq } from 'drizzle-orm';
+import { eq, asc } from 'drizzle-orm';
 
-import type { Product, ScoreBreakdown } from '@/types/guardscan';
+import type { Product, ProductCategory, ScoreBreakdown } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
+import { hydrateIngredient, withAssessmentCoverage } from '@/lib/dictionary/resolve';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { products, productIngredients } from '@/db/schema';
 import { log } from '@/lib/logger';
@@ -81,7 +82,8 @@ export async function GET(
     const ings = await db
       .select()
       .from(productIngredients)
-      .where(eq(productIngredients.productId, row.id));
+      .where(eq(productIngredients.productId, row.id))
+      .orderBy(asc(productIngredients.position));
 
     const product: Product = {
       id: row.id,
@@ -93,20 +95,14 @@ export async function GET(
       image_url: resolveImageUrl(row.imageFront),
       data_completeness: ings.length > 0 ? 'full' : 'partial',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
-      ingredients: ings.map((ing) => ({
-        name: ing.name,
-        position: ing.position,
-        flag: (ing.flag ?? 'neutral') as Product['ingredients'][number]['flag'],
-        reason: ing.reason ?? '',
-        fertility_relevant: false,
-        testosterone_relevant: false,
-        assessed: Boolean(ing.reason),
-      })),
+      ingredients: ings.map((ing) => hydrateIngredient(ing, row.category as ProductCategory)),
       created_at: row.createdAt.toISOString(),
       updated_at: row.lastSyncedAt.toISOString(),
     };
 
-    const score = row.scoreBreakdown as ScoreBreakdown | null;
+    const score = row.scoreBreakdown
+      ? withAssessmentCoverage(row.scoreBreakdown as ScoreBreakdown, product.ingredients)
+      : null;
 
     log.info('product_by_id', { id, product_id: row.id, barcode: row.barcode });
 

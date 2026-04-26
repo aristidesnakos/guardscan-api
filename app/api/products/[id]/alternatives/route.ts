@@ -7,10 +7,11 @@
  */
 
 import { NextResponse } from 'next/server';
-import { eq, and, ne, gte, isNotNull, desc } from 'drizzle-orm';
+import { eq, and, ne, gte, isNotNull, desc, asc } from 'drizzle-orm';
 
-import type { Product, ProductAlternative } from '@/types/guardscan';
+import type { Product, ProductAlternative, ProductCategory } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
+import { hydrateIngredient } from '@/lib/dictionary/resolve';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { products, productIngredients } from '@/db/schema';
 import { MIN_SCORE_DELTA } from '@/lib/scoring/constants';
@@ -85,7 +86,8 @@ export async function GET(
     const ings = await db
       .select()
       .from(productIngredients)
-      .where(eq(productIngredients.productId, row.id));
+      .where(eq(productIngredients.productId, row.id))
+      .orderBy(asc(productIngredients.position));
 
     const delta = (row.score ?? 0) - (source.score ?? 0);
     const { label: rating } = getRating(row.score ?? 0);
@@ -100,16 +102,7 @@ export async function GET(
       image_url: resolveImageUrl(row.imageFront),
       data_completeness: 'full',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
-      ingredients: ings.map((ing) => ({
-        name: ing.name,
-        position: ing.position,
-        flag: (ing.flag ?? 'neutral') as Product['ingredients'][number]['flag'],
-        reason: ing.reason ?? '',
-        fertility_relevant: false,
-        testosterone_relevant: false,
-        // DB records pre-date the assessed field; derive from reason presence.
-        assessed: Boolean(ing.reason),
-      })),
+      ingredients: ings.map((ing) => hydrateIngredient(ing, row.category as ProductCategory)),
       created_at: row.createdAt.toISOString(),
       updated_at: row.lastSyncedAt.toISOString(),
     };

@@ -41,11 +41,12 @@ try {
   }
 } catch {}
 
-import { and, eq, isNull, inArray } from 'drizzle-orm';
+import { and, asc, eq, isNull, inArray } from 'drizzle-orm';
 import { closeDb, getDb } from '../db/client';
 import { productIngredients, products } from '../db/schema';
+import { hydrateIngredient } from '../lib/dictionary/resolve';
 import { scoreProduct } from '../lib/scoring';
-import type { Product } from '../types/guardscan';
+import type { Product, ProductCategory } from '../types/guardscan';
 
 type ProductRow = typeof products.$inferSelect;
 type IngredientRow = typeof productIngredients.$inferSelect;
@@ -72,17 +73,7 @@ function reconstructProduct(row: ProductRow, ings: IngredientRow[]): Product {
     ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
     ingredients: ings
       .sort((a, b) => a.position - b.position)
-      .map((ing) => ({
-        name: ing.name,
-        position: ing.position,
-        flag: (ing.flag ?? 'neutral') as Product['ingredients'][number]['flag'],
-        reason: ing.reason ?? '',
-        // Life-stage multipliers are only applied when `lifeStage` is passed
-        // to scoreProduct. We never pass one here, so these flags are inert.
-        fertility_relevant: false,
-        testosterone_relevant: false,
-        assessed: Boolean(ing.reason),
-      })),
+      .map((ing) => hydrateIngredient(ing, row.category as ProductCategory)),
     created_at: row.createdAt.toISOString(),
     updated_at: row.lastSyncedAt.toISOString(),
   };
@@ -123,7 +114,8 @@ async function main() {
     const rows = await db
       .select()
       .from(productIngredients)
-      .where(inArray(productIngredients.productId, chunk));
+      .where(inArray(productIngredients.productId, chunk))
+      .orderBy(asc(productIngredients.position));
     for (const r of rows) {
       const list = ingsByProduct.get(r.productId) ?? [];
       list.push(r);

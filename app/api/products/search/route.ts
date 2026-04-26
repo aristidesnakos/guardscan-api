@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { and, asc, eq, gte, ilike, inArray, isNotNull, or, sql } from 'drizzle-orm';
 
-import type { PaginatedResponse, Product, SearchResultItem } from '@/types/guardscan';
+import type { PaginatedResponse, Product, ProductCategory, SearchResultItem } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
 import { getRating } from '@/lib/scoring/constants';
 import { resolveImageUrl } from '@/lib/storage/supabase';
+import { hydrateIngredient } from '@/lib/dictionary/resolve';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { productIngredients, products } from '@/db/schema';
 import { log } from '@/lib/logger';
@@ -134,6 +135,7 @@ export async function POST(request: Request) {
           .select()
           .from(productIngredients)
           .where(inArray(productIngredients.productId, productIds))
+          .orderBy(asc(productIngredients.position))
       : [];
 
   // Group by product ID
@@ -156,15 +158,7 @@ export async function POST(request: Request) {
       image_url: resolveImageUrl(row.imageFront),
       data_completeness: 'full',
       ingredient_source: row.source === 'dsld' ? 'verified' : 'open_food_facts',
-      ingredients: ings.map((ing) => ({
-        name: ing.name,
-        position: ing.position,
-        flag: (ing.flag ?? 'neutral') as Product['ingredients'][number]['flag'],
-        reason: ing.reason ?? '',
-        fertility_relevant: false,
-        testosterone_relevant: false,
-        assessed: Boolean(ing.reason),
-      })),
+      ingredients: ings.map((ing) => hydrateIngredient(ing, row.category as ProductCategory)),
       created_at: row.createdAt.toISOString(),
       updated_at: row.lastSyncedAt.toISOString(),
     };

@@ -6,6 +6,7 @@ import { getDb } from '@/db/client';
 import { userSubmissions, products } from '@/db/schema';
 import { resolveImageUrl } from '@/lib/storage/supabase';
 import { lookupIngredient } from '@/lib/dictionary/lookup';
+import { normalizeIngredientName } from '@/lib/dictionary/resolve';
 
 type PhotoEntry = { role: string; path: string };
 
@@ -68,7 +69,7 @@ export async function GET(
       : extracted?.ingredients ?? [];
 
     const ingredientPreview = ingredientsForPreview.map((name, i) => {
-      const entry = lookupIngredient(name.toLowerCase().trim());
+      const entry = lookupIngredient(normalizeIngredientName(name));
       return {
         name,
         position: i + 1,

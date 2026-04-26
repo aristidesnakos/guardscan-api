@@ -83,6 +83,7 @@ export async function GET(request: Request) {
 
     let totalUpserted = 0;
     let totalErrors = 0;
+    let filesProcessed = 0;
     let lastFile = lastProcessedKey;
 
     // 3. Process each delta file
@@ -127,6 +128,7 @@ export async function GET(request: Request) {
           }
         }
 
+        filesProcessed++;
         lastFile = filename;
       } catch (err) {
         log.warn('obf_delta_file_failed', {
@@ -153,6 +155,8 @@ export async function GET(request: Request) {
     });
 
     log.info('obf_delta_done', {
+      files_available: newFiles.length,
+      files_processed: filesProcessed,
       upserted: totalUpserted,
       errors: totalErrors,
       duration_ms: Date.now() - startedAt,

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -20,6 +20,7 @@
     "db:seed:supplements": "tsx scripts/seed-supplements.ts",
     "db:seed:all": "tsx scripts/seed-dictionary.ts && tsx scripts/seed-top-products.ts && tsx scripts/seed-grooming.ts && tsx scripts/seed-supplements.ts",
     "smoke": "tsx scripts/smoke.ts",
+    "parity": "tsx scripts/parity-check.ts",
     "admin:submissions": "dotenv tsx scripts/admin-submissions.ts",
     "enrich:pubchem": "tsx scripts/enrich-pubchem.ts",
     "enrich:apply-cids": "tsx scripts/apply-cids.ts"
