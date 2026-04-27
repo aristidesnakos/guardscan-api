@@ -205,6 +205,94 @@ export type PaginatedResponse<T> = {
   offset: number;
 };
 
+// ── Shelf (M4) ──────────────────────────────────────────────────────────────
+//
+// Manual, user-curated product collection. See
+// cucumberdude/docs/product/FEATURES/SHELF.md and
+// guardscan-api/docs/milestones/m4-shelf.md for full semantics.
+//
+// Denormalized snapshot fields (product_name/brand/category, current_score)
+// are refreshed on rescore — see backend milestone doc.
+
+export type ShelfItem = {
+  id: string;
+  product_id: string;
+  product_name: string;
+  product_brand: string;
+  product_category: ProductCategory;
+  current_score: number | null;
+  product_image_url: string | null;
+  added_date: string;
+  scan_date: string;
+  swapped_from_id: string | null;
+  /** Resolved name of the swapped-from product for the meta line. Null if no swap or product missing. */
+  swapped_from_name: string | null;
+};
+
+export type ShelfStats = {
+  total_count: number;
+  /** Numeric mean of items with non-null score. Null when scored_item_count < 3. */
+  average_score: number | null;
+  /** Count of shelf items where item.score IS NOT NULL AND ∃ alt in same subcategory with strictly higher non-null score. */
+  upgrades_available: number;
+  /** Product IDs of shelf items that contributed to upgrades_available — used by FE to filter the list when the user taps the upgrade row. */
+  upgrade_product_ids: string[];
+  /** Count of shelf items with non-null score. FE hides average_score + upgrades_available rows when < 3. */
+  scored_item_count: number;
+};
+
+export type ShelfResponse = {
+  items: ShelfItem[];
+  stats: ShelfStats;
+};
+
+export type SwapCandidate = {
+  shelf_item_id: string;
+  product_id: string;
+  product_name: string;
+  product_brand: string;
+  current_score: number | null;
+};
+
+export type AddToShelfRequest = {
+  product_ids: string[];
+};
+
+export type AddToShelfResponse = {
+  /** Product IDs successfully added (excludes duplicates and unknown products). */
+  added: string[];
+  /** Product IDs already on the user's shelf. */
+  duplicates: string[];
+  /** Product IDs that failed (e.g. unknown product, db error). */
+  errors: string[];
+  /**
+   * Lower-scored shelf items in the same subcategory as the added product.
+   * Only populated when product_ids.length === 1 (single-add path).
+   * Map keyed by added product_id. Empty/omitted when no candidates exist.
+   */
+  swap_candidates?: Record<string, SwapCandidate[]>;
+};
+
+export type UpdateShelfRequest = {
+  // Reserved for future fields. scan_date is intentionally NOT updatable here.
+  product_category?: ProductCategory;
+};
+
+export type DeleteShelfRequest = {
+  /**
+   * If present, atomically:
+   *   1) sets swapped_from_id on the shelf row matching this product_id
+   *      to the product_id of the row being deleted
+   *   2) deletes this row
+   */
+  swap_link_to_product_id?: string;
+};
+
+export type DeleteShelfResponse = {
+  deleted: boolean;
+  linked: boolean;
+};
+
 // ── User submissions (M3.0 / M3.1) ──────────────────────────────────────────
 //
 // Response shape from POST /api/products/submit. Three terminal outcomes:

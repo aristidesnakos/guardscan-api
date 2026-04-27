@@ -8,6 +8,7 @@ import {
   jsonb,
   timestamp,
   primaryKey,
+  unique,
   index,
 } from 'drizzle-orm/pg-core';
 
@@ -168,9 +169,65 @@ export const scanEvents = pgTable(
   }),
 );
 
+// ── shelf_items ─────────────────────────────────────────────────────────────
+// Manual, user-curated product collection. See db/migrations/0006_shelf_items.sql
+// and cucumberdude/docs/product/FEATURES/SHELF.md for full semantics.
+
+export const shelfItems = pgTable(
+  'shelf_items',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: text('user_id').notNull(),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+
+    addedDate: timestamp('added_date', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    scanDate: timestamp('scan_date', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    // ON DELETE SET NULL — keep the swap label even if the swapped-out product
+    // later disappears from the catalog.
+    swappedFromId: uuid('swapped_from_id').references(() => products.id, {
+      onDelete: 'set null',
+    }),
+
+    // Denormalized snapshot — refresh on rescore / product update.
+    productName: text('product_name').notNull(),
+    productBrand: text('product_brand'),
+    productCategory: text('product_category').notNull(),
+    currentScore: smallint('current_score'),
+
+    createdAt: timestamp('created_at', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => ({
+    userProductUnique: unique('shelf_items_user_product_unique').on(
+      table.userId,
+      table.productId,
+    ),
+    userScanDateIdx: index('shelf_items_user_scan_date_idx').on(
+      table.userId,
+      table.scanDate,
+    ),
+    userCategoryIdx: index('shelf_items_user_category_idx').on(
+      table.userId,
+      table.productCategory,
+    ),
+  }),
+);
+
 // ── Type helpers ────────────────────────────────────────────────────────────
 
 export type ProductRow = typeof products.$inferSelect;
 export type NewProductRow = typeof products.$inferInsert;
 export type ProductIngredientRow = typeof productIngredients.$inferSelect;
 export type NewProductIngredientRow = typeof productIngredients.$inferInsert;
+export type ShelfItemRow = typeof shelfItems.$inferSelect;
+export type NewShelfItemRow = typeof shelfItems.$inferInsert;

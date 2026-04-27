@@ -13,7 +13,7 @@
  */
 
 import { NextResponse, after } from 'next/server';
-import { eq, and, ne, gte, isNotNull, desc, asc } from 'drizzle-orm';
+import { eq, and, ne, gte, isNotNull, desc, asc, sql } from 'drizzle-orm';
 
 import type { LifeStage, Product, ProductAlternative, ProductCategory, ScanResult, ScoreBreakdown } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
@@ -186,7 +186,10 @@ export async function GET(
               alternatives,
             };
 
-            // Record scan event in background
+            // Record scan event + bump shelf scan_date in background.
+            // Both side effects are non-blocking (M4 shelf hook — see
+            // docs/milestones/m4-shelf.md). The shelf UPDATE is a no-op when
+            // the user doesn't have this product on their shelf.
             if (auth.userId) {
               after(async () => {
                 try {
@@ -196,6 +199,18 @@ export async function GET(
                   });
                 } catch (err) {
                   log.warn('scan_event_write_failed', { barcode, error: String(err) });
+                }
+                try {
+                  await db.execute(sql`
+                    UPDATE shelf_items
+                    SET scan_date = now(), updated_at = now()
+                    WHERE user_id = ${auth.userId!} AND product_id = ${row.id}
+                  `);
+                } catch (err) {
+                  log.warn('shelf_scan_date_update_failed', {
+                    barcode,
+                    error: String(err),
+                  });
                 }
               });
             }
@@ -423,6 +438,20 @@ export async function GET(
             userId: auth.userId,
             productId: row.id,
           });
+
+          // Shelf scan_date bump — no-op if product not on user's shelf (M4).
+          try {
+            await db.execute(sql`
+              UPDATE shelf_items
+              SET scan_date = now(), updated_at = now()
+              WHERE user_id = ${auth.userId} AND product_id = ${row.id}
+            `);
+          } catch (err) {
+            log.warn('shelf_scan_date_update_failed', {
+              barcode,
+              error: String(err),
+            });
+          }
         }
 
         log.info('product_cache_write', { barcode, source });
