@@ -176,6 +176,7 @@ async function main() {
         .set({
           score: breakdown.overall_score,
           scoreBreakdown: breakdown,
+          outcomeFlags: breakdown.outcome_flags,
         })
         .where(and(eq(products.id, row.id), isNull(products.score)));
     }

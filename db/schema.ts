@@ -37,6 +37,12 @@ export const products = pgTable(
     sourceId: text('source_id'),
     score: smallint('score'),
     scoreBreakdown: jsonb('score_breakdown'),
+    // M5.1 — outcome rubric denorm. Mirrors `outcome_flags` inside scoreBreakdown
+    // but exposed as a top-level column so the M5.3 shelf endpoint can join
+    // per-axis severity without parsing the jsonb. Shape:
+    //   { hormone_hijack: 'clear'|'flagged'|'severe', t_suppressor: 'clear'|'flagged'|'severe' }
+    // Populated on every rescore — see lib/scoring/outcomes.ts.
+    outcomeFlags: jsonb('outcome_flags'),
     lastSyncedAt: timestamp('last_synced_at', { withTimezone: true })
       .notNull()
       .defaultNow(),

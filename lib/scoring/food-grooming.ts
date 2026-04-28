@@ -31,6 +31,7 @@ import {
   getRating,
   nutriscoreToGuardScan,
 } from './constants';
+import { computeOutcomes } from './outcomes';
 
 export type ScoreFoodGroomingInput = {
   ingredients: Ingredient[];
@@ -132,6 +133,8 @@ export function scoreFoodGrooming({
     percentage: total === 0 ? 0 : Math.round((assessedCount / total) * 100),
   };
 
+  const { outcome_flags, outcome_lines } = computeOutcomes({ ingredients });
+
   return {
     overall_score: overallScore,
     rating: label,
@@ -141,6 +144,8 @@ export function scoreFoodGrooming({
     dimensions,
     flagged_ingredients: flagged,
     assessment_coverage,
+    outcome_flags,
+    outcome_lines,
   };
 }
 

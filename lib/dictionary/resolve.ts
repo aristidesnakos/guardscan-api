@@ -45,6 +45,7 @@ export function hydrateIngredient(
     reason: row.reason ?? entry?.reason ?? '',
     fertility_relevant: entry?.fertility_relevant ?? false,
     testosterone_relevant: entry?.testosterone_relevant ?? false,
+    health_risk_tags: entry?.health_risk_tags ?? [],
     assessed: entry !== null,
   };
 }
@@ -133,6 +134,7 @@ export function resolveIngredient(
     reason: entry?.reason ?? '',
     fertility_relevant: entry?.fertility_relevant ?? false,
     testosterone_relevant: entry?.testosterone_relevant ?? false,
+    health_risk_tags: entry?.health_risk_tags ?? [],
     assessed: entry !== null,
   };
 }

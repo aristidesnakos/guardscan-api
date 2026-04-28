@@ -14,6 +14,7 @@ import { eq, asc } from 'drizzle-orm';
 import type { Product, ProductCategory, ScoreBreakdown } from '@/types/guardscan';
 import { requireUser } from '@/lib/auth';
 import { hydrateIngredient, withAssessmentCoverage } from '@/lib/dictionary/resolve';
+import { withOutcomes } from '@/lib/scoring/outcomes';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { products, productIngredients } from '@/db/schema';
 import { log } from '@/lib/logger';
@@ -101,7 +102,10 @@ export async function GET(
     };
 
     const score = row.scoreBreakdown
-      ? withAssessmentCoverage(row.scoreBreakdown as ScoreBreakdown, product.ingredients)
+      ? withOutcomes(
+          withAssessmentCoverage(row.scoreBreakdown as ScoreBreakdown, product.ingredients),
+          product.ingredients,
+        )
       : null;
 
     log.info('product_by_id', { id, product_id: row.id, barcode: row.barcode });

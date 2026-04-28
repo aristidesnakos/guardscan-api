@@ -74,6 +74,23 @@ CREATE TABLE public.scan_events (
   CONSTRAINT scan_events_pkey PRIMARY KEY (id),
   CONSTRAINT scan_events_product_id_products_id_fk FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
+CREATE TABLE public.shelf_items (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id text NOT NULL,
+  product_id uuid NOT NULL,
+  added_date timestamp with time zone NOT NULL DEFAULT now(),
+  scan_date timestamp with time zone NOT NULL DEFAULT now(),
+  swapped_from_id uuid,
+  product_name text NOT NULL,
+  product_brand text,
+  product_category text NOT NULL,
+  current_score smallint,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT shelf_items_pkey PRIMARY KEY (id),
+  CONSTRAINT shelf_items_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
+  CONSTRAINT shelf_items_swapped_from_id_fkey FOREIGN KEY (swapped_from_id) REFERENCES public.products(id)
+);
 CREATE TABLE public.user_submissions (
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   user_id text NOT NULL,

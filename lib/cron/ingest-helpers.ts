@@ -51,6 +51,7 @@ export async function upsertProduct(
           sourceId: sourceId ?? product.id,
           score: score?.overall_score ?? null,
           scoreBreakdown: score ?? null,
+          outcomeFlags: score?.outcome_flags ?? null,
         })
         .onConflictDoUpdate({
           target: products.barcode,
@@ -64,6 +65,7 @@ export async function upsertProduct(
             source,
             score: score?.overall_score ?? null,
             scoreBreakdown: score ?? null,
+            outcomeFlags: score?.outcome_flags ?? null,
             lastSyncedAt: new Date(),
           },
         })

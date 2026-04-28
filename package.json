@@ -13,6 +13,7 @@
     "db:coverage": "tsx scripts/db-coverage.ts",
     "db:rescore": "tsx scripts/rescore-products.ts",
     "db:backfill:subcategory": "tsx scripts/backfill-subcategories.ts",
+    "db:cleanup:null-ages": "dotenv tsx scripts/cleanup-null-ages.ts",
     "test:classifier": "tsx scripts/test-classifier.ts",
     "db:seed:dictionary": "tsx scripts/seed-dictionary.ts",
     "db:seed:top": "tsx scripts/seed-top-products.ts",

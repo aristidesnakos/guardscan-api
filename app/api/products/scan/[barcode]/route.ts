@@ -22,6 +22,7 @@ import { fetchOffProduct, OffFetchError } from '@/lib/sources/openfoodfacts';
 import { fetchObfProduct, ObfFetchError } from '@/lib/sources/openbeautyfacts';
 import { normalizeOffProduct, normalizeObfProduct } from '@/lib/normalize';
 import { scoreProduct } from '@/lib/scoring';
+import { withOutcomes } from '@/lib/scoring/outcomes';
 import { MIN_SCORE_DELTA, getRating } from '@/lib/scoring/constants';
 import { hydrateIngredient, normalizeIngredientName, withAssessmentCoverage } from '@/lib/dictionary/resolve';
 import { inferSubcategory } from '@/lib/subcategory';
@@ -169,10 +170,14 @@ export async function GET(
             };
 
             // Re-score with personalization if life_stage provided; synthesize
-            // assessment_coverage for pre-b06ff6d blobs that lack the field.
+            // assessment_coverage + outcome_flags/outcome_lines for legacy blobs
+            // missing those fields (pre-b06ff6d / pre-M5.1 caches).
             const score = lifeStage
               ? scoreProduct({ product, lifeStage })
-              : withAssessmentCoverage(row.scoreBreakdown as ScoreBreakdown, product.ingredients);
+              : withOutcomes(
+                  withAssessmentCoverage(row.scoreBreakdown as ScoreBreakdown, product.ingredients),
+                  product.ingredients,
+                );
 
             // Inline alternatives (top 3 in same subcategory)
             const alternatives = await fetchInlineAlternatives(
@@ -396,6 +401,7 @@ export async function GET(
             sourceId: barcode,
             score: score?.overall_score ?? null,
             scoreBreakdown: score ?? null,
+            outcomeFlags: score?.outcome_flags ?? null,
           })
           .onConflictDoUpdate({
             target: products.barcode,
@@ -409,6 +415,7 @@ export async function GET(
               source,
               score: score?.overall_score ?? null,
               scoreBreakdown: score ?? null,
+              outcomeFlags: score?.outcome_flags ?? null,
               lastSyncedAt: new Date(),
             },
           })

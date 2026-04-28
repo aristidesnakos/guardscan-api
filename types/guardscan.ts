@@ -22,6 +22,12 @@ export type Ingredient = {
   reason: string;
   fertility_relevant: boolean;
   testosterone_relevant: boolean;
+  /**
+   * Hazard tags from the dictionary (e.g. 'endocrine_disruptor', 'reproductive_toxin',
+   * 'carcinogen', 'irritant'). Empty array for unknowns. Used by M5.1 outcome rubric
+   * to compute hormone_hijack / t_suppressor severity per product.
+   */
+  health_risk_tags: string[];
   /** true iff the ingredient was found in the dictionary; false = no data. */
   assessed: boolean;
 };
@@ -64,6 +70,47 @@ export type AssessmentCoverage = {
   percentage: number; // 0 when total === 0 (no NaN)
 };
 
+// ── M5.1 outcome scoring ────────────────────────────────────────────────────
+//
+// Outcome rubric runs alongside the numeric score. Two axes ship at first
+// launch (hormone_hijack, t_suppressor); recall + counterfeit_risk are
+// reserved for M5.3 / M5.4 lifecycle-driven entries (not computed in this
+// scoring pass — added by upstream pipelines).
+//
+// `outcome_flags` is the denormalized per-axis severity. `outcome_lines` is
+// the rendered list with reason text + contributing ingredients consumed by
+// FE OutcomeLines / shelf chips.
+
+export type OutcomeAxis =
+  | 'hormone_hijack'
+  | 't_suppressor'
+  | 'counterfeit_risk'
+  | 'recall';
+
+export type OutcomeSeverity = 'clear' | 'flagged' | 'severe';
+
+export type OutcomeFlags = {
+  hormone_hijack: OutcomeSeverity;
+  t_suppressor: OutcomeSeverity;
+};
+
+export type OutcomeLine = {
+  category: OutcomeAxis;
+  severity: OutcomeSeverity;
+  /** One-sentence — drives FE chip + drawer copy. */
+  reason: string;
+  /**
+   * Positions (1-indexed) of ingredients that contributed to this severity,
+   * in ascending order. Position is the per-product primary key for ingredients
+   * — set at ingest, never changes — so it survives dictionary renames /
+   * normalization shifts that would break a name-based join. FE drawer
+   * resolves these by `ingredients.find(i => i.position === pos)`.
+   */
+  contributing_ingredient_positions?: number[];
+  /** Mandatory at `severe`; omitted at `flagged`/`clear`. */
+  study_link?: string;
+};
+
 export type ScoreBreakdown = {
   overall_score: number;
   rating: RatingLabel;
@@ -73,6 +120,10 @@ export type ScoreBreakdown = {
   dimensions: ScoreDimension[];
   flagged_ingredients: FlaggedIngredient[];
   assessment_coverage: AssessmentCoverage;
+  /** M5.1 — denorm of axis severities. */
+  outcome_flags: OutcomeFlags;
+  /** M5.1 — full rendered outcome lines (ordered: severe → flagged → clear). */
+  outcome_lines: OutcomeLine[];
 };
 
 export type ScanResult = {
