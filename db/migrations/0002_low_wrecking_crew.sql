@@ -1,0 +1,12 @@
+-- M5.1 — outcome rubric denorm column.
+-- Mirrors `score_breakdown.outcome_flags` so the M5.3 shelf endpoint can
+-- join per-axis severity without parsing the jsonb blob. Populated by every
+-- rescore via lib/scoring/outcomes.ts.
+--
+-- Note: drizzle's auto-generated migration also surfaced unrelated drift
+-- (CREATE TABLE for profiles/shelf_items, ALTER user_submissions.user_id,
+-- re-adds for ingredient_group/health_risk_tags/reviewed_by). All of those
+-- are already present in the live schema; the auto-generated statements
+-- failed against an RLS-policy-protected column. This file is reduced to
+-- the single column add that actually needs to land.
+ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "outcome_flags" jsonb;
