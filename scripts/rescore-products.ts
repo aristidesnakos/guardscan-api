@@ -1,26 +1,25 @@
 /**
- * Task 2 Phase A — Local rescore of products that already have ingredients.
+ * Local rescore for catalog backfill.
  *
- * Selects all products where `score IS NULL` and at least one row exists in
- * `product_ingredients`, reconstructs the canonical `Product` shape from DB,
- * calls the pure `scoreProduct` function (no network), and writes back
- * `score` + `score_breakdown`.
+ * Two modes:
+ *   - default — score products where `score IS NULL` (Phase A backfill).
+ *     Idempotent: never overwrites an existing score.
+ *   - --missing-outcomes — rescore products where `score IS NOT NULL` but
+ *     `outcome_flags IS NULL` (M5.1 outcome backfill). Idempotent: only
+ *     writes rows that still have NULL outcome_flags.
  *
- * Idempotent:
- *   - Only touches rows where `score IS NULL` (guarded in both the SELECT and
- *     the UPDATE WHERE clause).
- *   - Never overwrites an existing score.
+ * Both modes reconstruct the canonical `Product` shape from DB, call the
+ * pure `scoreProduct` function (no network), and write back the relevant
+ * columns.
  *
- * Supplement note (sprint plan rev 3, Option A):
- *   `scoreProduct` returns `null` for `category === 'supplement'` until M2
- *   supplement scoring lands. This script counts supplements as "skipped"
- *   and reports them separately in the summary. They will remain `score NULL`
- *   until a dedicated supplement scorer ships.
+ * Supplements are skipped in both modes — `scoreProduct` returns null for
+ * `category === 'supplement'` until M6 supplement scoring lands.
  *
  * Usage:
- *   npx tsx scripts/rescore-products.ts            # apply
- *   npx tsx scripts/rescore-products.ts --dry      # preview only
- *   npx tsx scripts/rescore-products.ts --limit 50 # cap rows touched
+ *   npx tsx scripts/rescore-products.ts                      # default — score NULL-score
+ *   npx tsx scripts/rescore-products.ts --missing-outcomes   # M5.1 backfill
+ *   npx tsx scripts/rescore-products.ts --dry                # preview only
+ *   npx tsx scripts/rescore-products.ts --limit 50           # cap rows touched
  */
 
 import { readFileSync } from 'fs';
@@ -41,7 +40,7 @@ try {
   }
 } catch {}
 
-import { and, asc, eq, isNull, inArray } from 'drizzle-orm';
+import { and, asc, eq, isNotNull, isNull, inArray } from 'drizzle-orm';
 import { closeDb, getDb } from '../db/client';
 import { productIngredients, products } from '../db/schema';
 import { hydrateIngredient } from '../lib/dictionary/resolve';
@@ -81,24 +80,30 @@ function reconstructProduct(row: ProductRow, ings: IngredientRow[]): Product {
 
 async function main() {
   const dryRun = process.argv.includes('--dry');
+  const missingOutcomes = process.argv.includes('--missing-outcomes');
   const limitFlag = process.argv.indexOf('--limit');
   const limit = limitFlag >= 0 ? parseInt(process.argv[limitFlag + 1] ?? '0', 10) : 0;
 
+  const mode = missingOutcomes ? 'MISSING-OUTCOMES (M5.1)' : 'NULL-SCORE';
   console.log(
-    `Rescore products (${dryRun ? 'DRY RUN' : 'APPLY'}${limit ? `, limit=${limit}` : ''})`,
+    `Rescore products — ${mode} (${dryRun ? 'DRY RUN' : 'APPLY'}${limit ? `, limit=${limit}` : ''})`,
   );
 
   const db = getDb();
 
-  // 1. Select candidate products (score IS NULL). We filter to "has ingredients"
-  //    after the fetch because a NOT EXISTS subquery would add a second round trip
-  //    for a 1,000-row dataset; simpler to pull and filter in memory.
-  const candidates = await db
-    .select()
-    .from(products)
-    .where(isNull(products.score));
+  // 1. Select candidates. NULL-score mode targets unscored products; missing-
+  //    outcomes mode targets scored products with no outcome_flags yet (M5.1
+  //    backfill). We filter to "has ingredients" after fetch because a NOT
+  //    EXISTS subquery costs a round-trip for a 1k-row dataset.
+  const whereClause = missingOutcomes
+    ? and(isNotNull(products.score), isNull(products.outcomeFlags))
+    : isNull(products.score);
 
-  console.log(`\nFound ${candidates.length} products with NULL score.`);
+  const candidates = await db.select().from(products).where(whereClause);
+
+  console.log(
+    `\nFound ${candidates.length} products with ${missingOutcomes ? 'score but NULL outcome_flags' : 'NULL score'}.`,
+  );
 
   if (candidates.length === 0) {
     console.log('Nothing to rescore.');
@@ -170,7 +175,12 @@ async function main() {
     }
 
     if (!dryRun) {
-      // Idempotent guard: only write if score is still NULL.
+      // Idempotent guard tied to the active mode:
+      //   - NULL-score mode: only write if score is still NULL.
+      //   - missing-outcomes mode: only write if outcome_flags is still NULL.
+      const guardClause = missingOutcomes
+        ? and(eq(products.id, row.id), isNull(products.outcomeFlags))
+        : and(eq(products.id, row.id), isNull(products.score));
       await db
         .update(products)
         .set({
@@ -178,7 +188,7 @@ async function main() {
           scoreBreakdown: breakdown,
           outcomeFlags: breakdown.outcome_flags,
         })
-        .where(and(eq(products.id, row.id), isNull(products.score)));
+        .where(guardClause);
     }
 
     if ((i + 1) % LOG_EVERY === 0) {
@@ -189,11 +199,14 @@ async function main() {
   }
 
   // 5. Summary.
+  const candidateLabel = missingOutcomes
+    ? 'candidates (score+ NULL outcomes)'
+    : 'candidates (score NULL)         ';
   console.log('\n═══ Summary ═══');
-  console.log(`  candidates (score NULL):      ${candidates.length}`);
+  console.log(`  ${candidateLabel}: ${candidates.length}`);
   console.log(`    of those, with ingredients: ${workable.length}`);
   console.log(`    processed this run:         ${rows.length}`);
-  console.log(`  scored:                       ${outcomes.scored}`);
+  console.log(`  ${missingOutcomes ? 'rescored                    ' : 'scored                      '}: ${outcomes.scored}`);
   console.log(`  skipped (supplement):         ${outcomes.skipped_supplement}`);
   console.log(`  skipped (scorer returned null): ${outcomes.skipped_null_score}`);
 
