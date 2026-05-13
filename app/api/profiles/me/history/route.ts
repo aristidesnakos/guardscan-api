@@ -7,12 +7,22 @@ import { getRating } from '@/lib/scoring/constants';
 import { resolveImageUrl } from '@/lib/storage/supabase';
 import type { ScanHistoryItem, Product } from '@/types/guardscan';
 
+// Per-user response — let the client cache for a short window with SWR so
+// repeat focus-events on the History tab don't always block on a roundtrip.
+// `private` keeps shared CDN/proxy caches out; `stale-while-revalidate`
+// lets the client render the previous payload instantly while it refreshes.
+const HISTORY_CACHE_CONTROL =
+  'private, max-age=15, stale-while-revalidate=300';
+
 export async function GET(request: Request) {
   const auth = await requireUser(request);
   if (auth instanceof NextResponse) return auth;
 
   if (!auth.userId || !isDatabaseConfigured()) {
-    return NextResponse.json({ data: [], total: 0, limit: 20, offset: 0 });
+    return NextResponse.json(
+      { data: [], total: 0, limit: 20, offset: 0 },
+      { headers: { 'Cache-Control': HISTORY_CACHE_CONTROL } },
+    );
   }
 
   const url = new URL(request.url);
@@ -93,5 +103,8 @@ export async function GET(request: Request) {
     };
   });
 
-  return NextResponse.json({ data, total, limit, offset });
+  return NextResponse.json(
+    { data, total, limit, offset },
+    { headers: { 'Cache-Control': HISTORY_CACHE_CONTROL } },
+  );
 }
