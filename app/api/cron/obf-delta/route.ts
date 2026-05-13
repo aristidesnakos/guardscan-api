@@ -105,14 +105,17 @@ export async function GET(request: Request) {
             if (!barcode || !/^\d{6,14}$/.test(barcode)) continue;
 
             const product = normalizeObfProduct(raw, barcode);
-            // Require a fully-normalised product: a name AND a non-empty
-            // ingredient list. `partial` (name but no ingredients) would
-            // score as null and land invisible in search/autocomplete
-            // because both endpoints filter `score IS NOT NULL`. See
-            // issue #1.
-            if (product.data_completeness !== 'full') continue;
+            // Need at least a name to be useful. Rows with ingredients score;
+            // rows without ingredients still persist their image_url and
+            // metadata so scan-by-barcode can serve a real product photo.
+            // Search + autocomplete already filter `score IS NOT NULL`
+            // themselves, so unscored rows can't leak into those surfaces.
+            if (product.data_completeness === 'barcode_only') continue;
 
-            const score = scoreProduct({ product });
+            const score =
+              product.data_completeness === 'full'
+                ? scoreProduct({ product })
+                : null;
             const subcategory = inferSubcategory(
               product.name,
               product.category,
