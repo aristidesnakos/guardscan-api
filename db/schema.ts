@@ -107,9 +107,9 @@ export const profiles = pgTable('profiles', {
   userId: text('user_id').primaryKey(),
   age: smallint('age'),
   lifeStage: text('life_stage').notNull().default('general_wellness'),
-  tryingToConceive: boolean('trying_to_conceive').notNull().default(false),
-  allergens: text('allergens').array().notNull().default([]),
-  dietaryApproach: text('dietary_approach').notNull().default('standard'),
+  // Captured at onboarding. Gates supplements scanner UX (M6) and serves as a
+  // demographic signal. See db/migrations/0007_profiles_trim.sql.
+  takesSupplements: boolean('takes_supplements').notNull().default(false),
   subscriptionTier: text('subscription_tier').notNull().default('free'),
   revenuecatCustomerId: text('revenuecat_customer_id'),
   scanCount: integer('scan_count').notNull().default(0),
