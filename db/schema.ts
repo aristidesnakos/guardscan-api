@@ -43,6 +43,16 @@ export const products = pgTable(
     //   { hormone_hijack: 'clear'|'flagged'|'severe', t_suppressor: 'clear'|'flagged'|'severe' }
     // Populated on every rescore — see lib/scoring/outcomes.ts.
     outcomeFlags: jsonb('outcome_flags'),
+    // Translation backfill (0008) — `name` is US English by contract. When
+    // upstream emits a foreign name (FR/IT/DE/NL/PT), upsertProduct translates
+    // and stores the original here. translation_status claims the row so the
+    // daily OBF cron preserves our English value instead of clobbering it.
+    // See db/migrations/0008_translation_columns.sql.
+    originalName: text('original_name'),
+    sourceLanguage: text('source_language'),
+    translationStatus: text('translation_status', {
+      enum: ['auto', 'manual', 'pending', 'failed', 'disputed'],
+    }),
     lastSyncedAt: timestamp('last_synced_at', { withTimezone: true })
       .notNull()
       .defaultNow(),
@@ -58,6 +68,9 @@ export const products = pgTable(
     subcategoryScoreIdx: index('products_subcategory_score_idx').on(
       table.subcategory,
       table.score,
+    ),
+    translationStatusIdx: index('products_translation_status_idx').on(
+      table.translationStatus,
     ),
   }),
 );
