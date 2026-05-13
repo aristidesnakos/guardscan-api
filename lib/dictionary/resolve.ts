@@ -47,6 +47,7 @@ export function hydrateIngredient(
     testosterone_relevant: entry?.testosterone_relevant ?? false,
     health_risk_tags: entry?.health_risk_tags ?? [],
     assessed: entry !== null,
+    pubchem_cid: entry?.pubchem_cid,
   };
 }
 
@@ -136,5 +137,6 @@ export function resolveIngredient(
     testosterone_relevant: entry?.testosterone_relevant ?? false,
     health_risk_tags: entry?.health_risk_tags ?? [],
     assessed: entry !== null,
+    pubchem_cid: entry?.pubchem_cid,
   };
 }

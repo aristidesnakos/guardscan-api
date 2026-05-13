@@ -30,6 +30,13 @@ export type Ingredient = {
   health_risk_tags: string[];
   /** true iff the ingredient was found in the dictionary; false = no data. */
   assessed: boolean;
+  /**
+   * PubChem Compound ID for the ingredient, sourced from the dictionary entry.
+   * Optional — populated for ~70% of dictionary entries. Clients use it to
+   * deep-link to `pubchem.ncbi.nlm.nih.gov/compound/<CID>` from ingredient and
+   * outcome drilldown surfaces; absent value falls back to a name search.
+   */
+  pubchem_cid?: number;
 };
 
 export type Product = {
