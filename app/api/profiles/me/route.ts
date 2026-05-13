@@ -5,7 +5,7 @@ import { createClient } from '@supabase/supabase-js';
 import { requireUser } from '@/lib/auth';
 import { getDb } from '@/db/client';
 import { profiles, scanEvents, userSubmissions } from '@/db/schema';
-import type { UserProfile, DietaryApproach, LifeStage, SubscriptionTier } from '@/types/guardscan';
+import type { UserProfile, LifeStage, SubscriptionTier } from '@/types/guardscan';
 
 function rowToProfile(row: typeof profiles.$inferSelect): UserProfile {
   return {
@@ -13,9 +13,7 @@ function rowToProfile(row: typeof profiles.$inferSelect): UserProfile {
     user_id: row.userId,
     age: row.age ?? null,
     life_stage: row.lifeStage as LifeStage,
-    trying_to_conceive: row.tryingToConceive,
-    allergens: row.allergens ?? [],
-    dietary_approach: row.dietaryApproach as DietaryApproach,
+    takes_supplements: row.takesSupplements,
     subscription_tier: row.subscriptionTier as SubscriptionTier,
   };
 }
@@ -109,7 +107,7 @@ export async function DELETE(request: Request) {
  * PUT /api/profiles/me
  *
  * Updates mutable health profile fields.
- * Body (all optional): { age, life_stage, trying_to_conceive, allergens, dietary_approach }
+ * Body (all optional): { age, life_stage, takes_supplements }
  */
 export async function PUT(request: Request) {
   const auth = await requireUser(request);
@@ -123,9 +121,7 @@ export async function PUT(request: Request) {
   let body: Partial<{
     age: number | null;
     life_stage: string;
-    trying_to_conceive: boolean;
-    allergens: string[];
-    dietary_approach: string;
+    takes_supplements: boolean;
   }> = {};
 
   try {
@@ -138,9 +134,7 @@ export async function PUT(request: Request) {
   const updates: Record<string, unknown> = { updatedAt: sql`now()` };
   if (body.age !== undefined) updates.age = body.age;
   if (body.life_stage !== undefined) updates.lifeStage = body.life_stage;
-  if (body.trying_to_conceive !== undefined) updates.tryingToConceive = body.trying_to_conceive;
-  if (body.allergens !== undefined) updates.allergens = body.allergens;
-  if (body.dietary_approach !== undefined) updates.dietaryApproach = body.dietary_approach;
+  if (body.takes_supplements !== undefined) updates.takesSupplements = body.takes_supplements;
 
   try {
     const db = getDb();

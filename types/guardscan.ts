@@ -169,15 +169,6 @@ export type LifeStage =
   | 'athletic_performance'
   | 'longevity_focus';
 
-export type DietaryApproach =
-  | 'standard'
-  | 'keto'
-  | 'carnivore'
-  | 'mediterranean'
-  | 'paleo'
-  | 'vegetarian'
-  | 'vegan';
-
 export type SubscriptionTier = 'free' | 'pro';
 
 export type UserProfile = {
@@ -185,9 +176,11 @@ export type UserProfile = {
   user_id: string;
   age: number | null;
   life_stage: LifeStage;
-  trying_to_conceive: boolean;
-  allergens: string[];
-  dietary_approach: DietaryApproach;
+  /**
+   * Captured at onboarding. Gates supplements scanner UX (M6) and serves as a
+   * demographic signal for the supplements milestone.
+   */
+  takes_supplements: boolean;
   subscription_tier: SubscriptionTier;
 };
 
