@@ -25,7 +25,7 @@ export const products = pgTable(
       enum: ['food', 'grooming', 'supplement'],
     }).notNull(),
     // Populated by subcategory inference in M2.5 (Recommendations backing API).
-    // Used to cluster products for alternative ranking (e.g. 'sunscreen', 'shave').
+    // Used to cluster products for alternative ranking (e.g. 'sunscreen', 'shave_prep').
     subcategory: text('subcategory'),
     imageFront: text('image_front'),
     imageIngredients: text('image_ingredients'),

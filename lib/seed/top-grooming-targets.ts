@@ -138,14 +138,14 @@ export const TOP_GROOMING_TARGETS: GroomingTarget[] = [
     name: 'Sensitive Post Shave Balm',
     query: 'nivea men sensitive post shave balm',
     mustMatchKeywords: ['nivea', 'men', 'sensitive'],
-    subcategoryHint: 'shave',
+    subcategoryHint: 'aftershave',
   },
   {
     brand: 'Nivea Men',
     name: 'Sensitive Shaving Gel',
     query: 'nivea men sensitive shaving gel',
     mustMatchKeywords: ['nivea', 'men', 'shaving'],
-    subcategoryHint: 'shave',
+    subcategoryHint: 'shave_prep',
   },
   {
     brand: 'Nivea Men',
@@ -221,7 +221,7 @@ export const TOP_GROOMING_TARGETS: GroomingTarget[] = [
     name: 'Shave Gel',
     query: 'harrys shave gel',
     mustMatchKeywords: ['harry', 'shave'],
-    subcategoryHint: 'shave',
+    subcategoryHint: 'shave_prep',
   },
   {
     brand: "Harry's",
@@ -304,7 +304,7 @@ export const TOP_GROOMING_TARGETS: GroomingTarget[] = [
     name: 'Beard Lube Conditioning Shave',
     query: 'jack black beard lube shave',
     mustMatchKeywords: ['jack black', 'beard lube'],
-    subcategoryHint: 'shave',
+    subcategoryHint: 'shave_prep',
   },
 
   // ── Cremo ──────────────────────────────────────────────────────────────
@@ -313,7 +313,7 @@ export const TOP_GROOMING_TARGETS: GroomingTarget[] = [
     name: 'Original Shave Cream',
     query: 'cremo original shave cream',
     mustMatchKeywords: ['cremo', 'shave cream'],
-    subcategoryHint: 'shave',
+    subcategoryHint: 'shave_prep',
   },
   {
     brand: 'Cremo',
@@ -384,14 +384,14 @@ export const TOP_GROOMING_TARGETS: GroomingTarget[] = [
     name: 'Fusion Hydra Gel Shave',
     query: 'gillette fusion hydra gel shave',
     mustMatchKeywords: ['gillette', 'fusion'],
-    subcategoryHint: 'shave',
+    subcategoryHint: 'shave_prep',
   },
   {
     brand: 'Gillette',
     name: 'Sensitive Skin Shave Gel',
     query: 'gillette sensitive shave gel',
     mustMatchKeywords: ['gillette', 'sensitive'],
-    subcategoryHint: 'shave',
+    subcategoryHint: 'shave_prep',
   },
   {
     brand: 'Gillette',

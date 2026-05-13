@@ -14,6 +14,7 @@ import { products, productIngredients, cronState } from '@/db/schema';
 import { log } from '@/lib/logger';
 import { inferSubcategoryHybrid } from '@/lib/llm/classifier';
 import { normalizeIngredientName } from '@/lib/dictionary/resolve';
+import { isHardware } from '@/lib/hardware-filter';
 
 // ── Product upsert ──────────────────────────────────────────────────────────
 
@@ -26,6 +27,17 @@ export async function upsertProduct(
   sourceId?: string,
 ): Promise<string | null> {
   try {
+    // Hardware exclusion: physical accessories (razors, combs, brushes,
+    // trimmers, …) have no ingredients to score and pollute alternatives.
+    // Drop them before we touch the DB.
+    if (isHardware(product.name || '')) {
+      log.info('upsert_skip_hardware', {
+        barcode: product.barcode,
+        name: product.name,
+      });
+      return null;
+    }
+
     // LLM fallback: if the caller couldn't determine a subcategory via
     // keyword matching, try the hybrid classifier before we write. No-op
     // when OPENROUTER_API_KEY is unset (returns the original null).

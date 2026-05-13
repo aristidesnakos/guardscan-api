@@ -51,7 +51,7 @@ const FIXTURES: Fixture[] = [
   { name: 'Old Spice High Endurance Deodorant', category: 'grooming', expect: 'deodorant' },
   { name: 'Dove Men+Care Body Wash', category: 'grooming', expect: 'body_wash' },
   { name: 'Dr. Squatch Bar Soap', category: 'grooming', expect: 'soap' },
-  { name: 'Cremo Shave Cream', category: 'grooming', expect: 'shave' },
+  { name: 'Cremo Shave Cream', category: 'grooming', expect: 'shave_prep' },
   { name: 'Jack Black Beard Oil', category: 'grooming', expect: 'beard' },
   { name: 'Neutrogena Sunscreen SPF 50', category: 'grooming', expect: 'sunscreen' },
   { name: 'Optimum Nutrition Gold Standard Whey', category: 'supplement', expect: 'protein' },
@@ -67,7 +67,7 @@ const FIXTURES: Fixture[] = [
   // Keyword-null cases — these should exercise the LLM fallback.
   { name: 'Duke Cannon Big Ass Brick of Soap', category: 'grooming', expect: 'soap' },
   { name: 'Every Man Jack Citrus Scrub', category: 'grooming', expect: 'cleanser' },
-  { name: 'Harrys Foaming Shave Gel', category: 'grooming', expect: 'shave' },
+  { name: 'Harrys Foaming Shave Gel', category: 'grooming', expect: 'shave_prep' },
   { name: 'Thorne Basic Nutrients 2/Day', category: 'supplement', expect: 'multivitamin' },
   { name: 'Ghost Legend Pre-Workout', category: 'supplement', expect: 'pre_workout' },
 

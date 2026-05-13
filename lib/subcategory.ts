@@ -22,7 +22,9 @@ import type { ProductCategory } from '@/types/guardscan';
 export const SUBCATEGORY_HINTS: { key: string; keywords: string[] }[] = [
   // ── Grooming ──────────────────────────────────────────────────────────────
   { key: 'sunscreen', keywords: ['sunscreen', 'spf', 'sun stick', 'sun protection', 'sun block'] },
-  { key: 'shave', keywords: ['shave', 'shaving', 'razor', 'aftershave', 'pre-shave'] },
+  // Aftershave first so "aftershave" beats the looser `shave` token.
+  { key: 'aftershave', keywords: ['aftershave', 'after-shave', 'after shave'] },
+  { key: 'shave_prep', keywords: ['shave foam', 'shaving foam', 'shave cream', 'shaving cream', 'shave gel', 'shaving gel', 'pre-shave', 'pre shave'] },
   { key: 'shampoo', keywords: ['shampoo'] },
   { key: 'conditioner', keywords: ['conditioner'] },
   { key: 'cleanser', keywords: ['cleanser', 'face wash', 'facial wash', 'facial cleanser', 'face scrub'] },
