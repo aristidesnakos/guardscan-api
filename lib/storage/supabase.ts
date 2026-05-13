@@ -44,8 +44,13 @@ export async function uploadSubmissionPhoto(
  */
 export function resolveImageUrl(imageFront: string | null): string | null {
   if (!imageFront) return null;
-  if (imageFront.startsWith('http')) return imageFront;
-  const supabaseUrl = process.env.SUPABASE_URL;
+  // Trim defensively: an env var or DB value with a stray newline silently
+  // breaks every image URL when concatenated, and React Native's <Image>
+  // fails opaquely on whitespace in the source.
+  const trimmed = imageFront.trim();
+  if (!trimmed) return null;
+  if (trimmed.startsWith('http')) return trimmed;
+  const supabaseUrl = process.env.SUPABASE_URL?.trim();
   if (!supabaseUrl) return null;
-  return `${supabaseUrl}/storage/v1/object/public/submissions/${imageFront}`;
+  return `${supabaseUrl}/storage/v1/object/public/submissions/${trimmed}`;
 }
