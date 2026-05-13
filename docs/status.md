@@ -1,6 +1,6 @@
 # GuardScan API — Status
 
-**Last updated:** 2026-04-17
+**Last updated:** 2026-05-13
 **Production:** https://guardscan-api.vercel.app (Vercel, region `iad1`)
 
 ---
@@ -9,21 +9,31 @@
 
 | Signal | Value |
 |---|---|
-| Total products | 1,227 |
-| Scored | 532 (43%) |
-| With ingredients | 1,218 (99%) |
-| Missing subcategory | 105 |
+| Total products | 2,356 |
+| Scored | 1,224 (52%) |
+| With ingredients | 2,350 (99.7%) — 46,492 ingredient rows, avg 19.8/product |
+| Missing subcategory | 410 |
 | Dictionary entries | 147 (all enriched with groups + risk tags) |
-| Pending user submissions | 34 |
-| Published user submissions | 23 |
+| Pending user submissions | 20 |
+| Published user submissions | 41 |
+| Foreign-named rows (pre-backfill) | ~223 (9.5%) — Phase 3 of translation backfill clears these |
 
 ### By Category
 
-| Category | Products | Scored | Notes |
-|---|---|---|---|
-| Grooming | 532 | 526 | Primary category. 6 unscored have no ingredients. |
-| Supplement | 688 | 0 | By design — scoring deferred to post-MVP. |
-| Food | 7 | 6 | Minimal; not a focus until catalog grows. |
+| Category | Products | Notes |
+|---|---|---|
+| Grooming | 1,216 | Primary MVP focus. OBF + user submissions drive coverage. |
+| Supplement | 1,128 | DSLD-sourced; scoring deferred — see Known Limitations. |
+| Food | 12 | Minimal; not a focus. |
+
+### By Source
+
+| Source | Products |
+|---|---|
+| OBF | 1,178 |
+| DSLD | 1,127 |
+| User submissions | 41 |
+| OFF | 10 |
 
 ---
 
@@ -79,6 +89,32 @@
 - Web UI at `/api/admin/submissions` for reviewing pending submissions
 - Individual submission detail, publish, and reject routes
 - Replaces CLI-only workflow for routine triage
+
+### M4 — Shelf
+
+- `shelf_items` table — manual user-curated product collection with swap tracking
+- Denormalized product snapshot (name, brand, category, score) refreshed on rescore
+- Scan-date bump on every scan if product is on user's shelf
+
+### Translation Backfill — Phases 1 + 2 (2026-05-13)
+
+- **Phase 1 (commit `ea9c2a5`):** migration `0008_translation_columns` adds
+  `original_name`, `source_language`, `translation_status` to `products`.
+  Schema columns claim a row for the translation pipeline so the daily OBF
+  cron stops clobbering English names with upstream foreign re-emits.
+- **Phase 2 (commit `d1fa784`):** synchronous LLM translation at intake.
+  `lib/translation.ts` provides `looksForeign()` (heuristic with English-
+  loanword allowlist: maté, naïve, açaí, kombucha, kefir, yerba, café) and
+  `translateProductName()` (OpenRouter, 5s timeout, never throws).
+  `lib/cron/ingest-helpers.ts:resolveClaim` decision tree:
+  - `manual` → never touch claim fields
+  - `auto|pending|failed|disputed` → preserve our name, refresh original
+  - no claim + foreign → translate sync, status=`auto` or `failed`
+  - no claim + foreign + no API key → status=`pending` (outbox-eligible)
+  Scan route refactored to call `upsertProduct` so it can't bypass the claim.
+  Round-trip test: `npm run test:translation` (30/30 passing).
+- **Phase 3 (pending):** one-shot backfill of the existing 223 foreign rows.
+  Plan documented in [proposals/translation-backfill.md](./proposals/translation-backfill.md).
 
 ### Scoring v1.2.0 — Subtract-Only
 
@@ -153,21 +189,32 @@
 ## Database Schema
 
 ```
-products              — Main product catalog (1,227 rows)
-product_ingredients   — Ingredient lists per product
+products              — Main product catalog (2,356 rows; translation columns
+                        added in 0008 — original_name, source_language,
+                        translation_status)
+product_ingredients   — Ingredient lists per product (46,492 rows)
 ingredient_dictionary — 147 curated entries with flags, groups, risk tags
 user_submissions      — User-submitted photos + OCR text
-cronState             — Cron ingest progress tracking
-scanEvents            — User scan history for recommendations
+cron_state            — Cron ingest progress tracking
+scan_events           — User scan history for recommendations
+shelf_items           — User-curated product collection (M4)
+profiles              — User profile (life_stage, age, takes_supplements,
+                        onboarding state)
 ```
 
-**Migrations:** `0000_initial_tables` → `0001_cron_scan_events` → `0002_policies` → `0003_m3_tweaks` → `0004_ingredient_enrichment`
+**Migrations:** `0000_initial_tables` → `0001_cron_scan_events` →
+`0002_policies` → `0003_m3_tweaks` → `0004_ingredient_enrichment` →
+`0005_profiles` → `0006_shelf_items` → `0007_profiles_trim` →
+`0008_translation_columns` (2026-05-13)
 
 **Indexes:**
 - `products_category_score_idx` — score filtering by category
 - `products_subcategory_score_idx` — alternatives lookup
+- `products_translation_status_idx` — partial, drives translation outbox
+  scans and disputed-row reviews (only rows with non-NULL status indexed)
 - `scan_events_user_product_idx` — recommendations query
 - `scan_events_user_scanned_at_idx` — history (most recent first)
+- `shelf_items_user_scan_date_idx`, `shelf_items_user_category_idx`
 
 ---
 
@@ -193,6 +240,9 @@ AUTO_PUBLISH_ENABLED        — "false" to disable auto-publish (default: enable
 ALLOW_DEV_AUTH              — "true" to accept X-Dev-User-Id header (local dev only)
 ADMIN_USER_IDS              — Comma-separated Supabase user IDs with admin access
 LOG_LEVEL                   — debug|info|warn|error (default: info)
+OPENROUTER_TRANSLATOR_MODEL — Translation model override (defaults to
+                              OPENROUTER_MODEL or google/gemma-4-26b-a4b-it)
+OPENROUTER_CLASSIFIER_MODEL — Subcategory classifier model override
 ```
 
 ---
@@ -210,11 +260,18 @@ LOG_LEVEL                   — debug|info|warn|error (default: info)
 
 ## Known Limitations
 
-1. **Supplements are cataloged but unscored.** 688 supplements exist (via DSLD sync) but return `score: null`. The Expo client shows "Score coming soon."
+1. **Supplements are cataloged but unscored.** 1,128 supplements exist (via DSLD sync) but return `score: null`. The Expo client shows "Score coming soon."
 2. **DSLD has no barcode endpoint.** Supplements only resolve from DB cache. Unknown supplement barcodes go through the user-submission flow.
 3. **Grooming coverage depends on OBF + submissions.** OBF daily sync + user submissions fill gaps organically.
-4. **Alternatives accuracy depends on subcategory.** 105 products still missing subcategory.
+4. **Alternatives accuracy depends on subcategory.** 410 products still missing subcategory.
 5. **Search excludes null-scored products.** Supplements don't appear in search results. Scan still returns them.
+6. **~223 foreign-named rows pending backfill.** Translation Phase 1+2 are
+   live, so new ingest is handled. Existing rows still display foreign names
+   until Phase 3 backfill runs — see
+   [proposals/translation-backfill.md](./proposals/translation-backfill.md).
+7. **DSLD sync is partial.** Last successful run 2026-05-10; subsequent
+   attempts marked `partial`. Worth investigating before next supplement
+   coverage milestone.
 
 ---
 
@@ -227,3 +284,5 @@ LOG_LEVEL                   — debug|info|warn|error (default: info)
 - [api/endpoints.md](./api/endpoints.md) — detailed endpoint reference
 - [testing/submission-flow-production.md](./testing/submission-flow-production.md) — submission e2e runbook
 - [ocr-confidence-tuning.md](./ocr-confidence-tuning.md) — OCR threshold analysis
+- [proposals/translation-backfill.md](./proposals/translation-backfill.md) — living proposal for foreign-name backfill (Phase 3 pending)
+- [proposals/translation-callers-audit.md](./proposals/translation-callers-audit.md) — Phase 1 caller audit for translation
