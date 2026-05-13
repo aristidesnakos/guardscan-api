@@ -49,21 +49,23 @@ CREATE TABLE public.products (
   score_breakdown jsonb,
   last_synced_at timestamp with time zone NOT NULL DEFAULT now(),
   created_at timestamp with time zone NOT NULL DEFAULT now(),
+  outcome_flags jsonb,
+  original_name text,
+  source_language text,
+  translation_status text CHECK (translation_status IS NULL OR (translation_status = ANY (ARRAY['auto'::text, 'manual'::text, 'pending'::text, 'failed'::text, 'disputed'::text]))),
   CONSTRAINT products_pkey PRIMARY KEY (id)
 );
 CREATE TABLE public.profiles (
   user_id text NOT NULL,
   age smallint,
   life_stage text NOT NULL DEFAULT 'general_wellness'::text,
-  trying_to_conceive boolean NOT NULL DEFAULT false,
-  allergens ARRAY NOT NULL DEFAULT '{}'::text[],
-  dietary_approach text NOT NULL DEFAULT 'standard'::text,
   subscription_tier text NOT NULL DEFAULT 'free'::text,
   revenuecat_customer_id text,
   scan_count integer NOT NULL DEFAULT 0,
   onboarding_complete boolean NOT NULL DEFAULT false,
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  takes_supplements boolean NOT NULL DEFAULT false,
   CONSTRAINT profiles_pkey PRIMARY KEY (user_id)
 );
 CREATE TABLE public.scan_events (

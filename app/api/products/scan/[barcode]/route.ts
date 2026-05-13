@@ -24,11 +24,12 @@ import { normalizeOffProduct, normalizeObfProduct } from '@/lib/normalize';
 import { scoreProduct } from '@/lib/scoring';
 import { withOutcomes } from '@/lib/scoring/outcomes';
 import { MIN_SCORE_DELTA, getRating } from '@/lib/scoring/constants';
-import { hydrateIngredient, normalizeIngredientName, withAssessmentCoverage } from '@/lib/dictionary/resolve';
+import { hydrateIngredient, withAssessmentCoverage } from '@/lib/dictionary/resolve';
 import { inferSubcategory } from '@/lib/subcategory';
 import { resolveImageUrl } from '@/lib/storage/supabase';
 import { getDb, isDatabaseConfigured } from '@/db/client';
 import { products, productIngredients, scanEvents } from '@/db/schema';
+import { upsertProduct } from '@/lib/cron/ingest-helpers';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -381,69 +382,31 @@ export async function GET(
   });
 
   // ── 4. Background cache write (non-blocking) ───────────────────────────
+  //
+  // Delegates product + ingredients upsert to the shared helper so the
+  // translation claim (db/migrations/0008) is respected here too. Without
+  // this delegation the scan route would clobber translations every time
+  // a user scanned a foreign-named row — see
+  // docs/proposals/translation-callers-audit.md.
   if (isDatabaseConfigured()) {
     after(async () => {
       try {
         const db = getDb();
 
-        // Upsert product row
-        const [row] = await db
-          .insert(products)
-          .values({
-            barcode: product.barcode,
-            name: product.name || '(unknown)',
-            brand: product.brand || null,
-            category: product.category,
-            subcategory: product.subcategory,
-            imageFront: product.image_url,
-            rawIngredients: product.ingredients.map((i) => i.name).join(', '),
-            source,
-            sourceId: barcode,
-            score: score?.overall_score ?? null,
-            scoreBreakdown: score ?? null,
-            outcomeFlags: score?.outcome_flags ?? null,
-          })
-          .onConflictDoUpdate({
-            target: products.barcode,
-            set: {
-              name: product.name || '(unknown)',
-              brand: product.brand || null,
-              category: product.category,
-              subcategory: product.subcategory,
-              imageFront: product.image_url,
-              rawIngredients: product.ingredients.map((i) => i.name).join(', '),
-              source,
-              score: score?.overall_score ?? null,
-              scoreBreakdown: score ?? null,
-              outcomeFlags: score?.outcome_flags ?? null,
-              lastSyncedAt: new Date(),
-            },
-          })
-          .returning({ id: products.id });
-
-        // Persist ingredients for cache reconstruction
-        if (row && product.ingredients.length > 0) {
-          await db
-            .delete(productIngredients)
-            .where(eq(productIngredients.productId, row.id));
-
-          await db.insert(productIngredients).values(
-            product.ingredients.map((ing) => ({
-              productId: row.id,
-              position: ing.position,
-              name: ing.name,
-              normalized: normalizeIngredientName(ing.name),
-              flag: ing.flag,
-              reason: ing.reason || null,
-            })),
-          );
-        }
+        const productId = await upsertProduct(
+          db,
+          product,
+          source,
+          score,
+          product.subcategory, // already inferred above; skips classifier LLM
+          barcode,
+        );
 
         // Record scan event for recommendations
-        if (row && auth.userId) {
+        if (productId && auth.userId) {
           await db.insert(scanEvents).values({
             userId: auth.userId,
-            productId: row.id,
+            productId,
           });
 
           // Shelf scan_date bump — no-op if product not on user's shelf (M4).
@@ -451,7 +414,7 @@ export async function GET(
             await db.execute(sql`
               UPDATE shelf_items
               SET scan_date = now(), updated_at = now()
-              WHERE user_id = ${auth.userId} AND product_id = ${row.id}
+              WHERE user_id = ${auth.userId} AND product_id = ${productId}
             `);
           } catch (err) {
             log.warn('shelf_scan_date_update_failed', {
