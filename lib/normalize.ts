@@ -22,6 +22,7 @@ import {
   resolveIngredient,
   type IngredientResolveSource,
 } from './dictionary/resolve';
+import { log } from './logger';
 
 // Re-export so existing callers (tests, scripts) keep working.
 export { normalizeIngredientName } from './dictionary/resolve';
@@ -76,6 +77,57 @@ function isHeaderNoise(name: string): boolean {
   return HEADER_NOISE.has(name.toLowerCase().trim());
 }
 
+// Verbs / nouns from product-usage instructions, packaging copy, certifications,
+// and call-centre boilerplate that OBF accepts into the ingredient field.
+// Match-anywhere — these never appear inside real INCI names.
+const INSTRUCTION_RE =
+  /\b(apply|avoid|keep|discontinue|store|caution|warning|consult|patch|massage|recommended|external\s+use|do\s+not|read\s+the|fabriqu[eé]|engagement|emballage|recycl[eé]|conseils?|appel|surtax[eé]|distribu[eé]|biologique|agriculture|ingr[eé]dients?|composition|laboratoire|impact|environnement|fabriqu[eé]e?\s+en)\b/i;
+
+// Scripts our English dictionary cannot resolve. We drop these rather than
+// emit doomed lookups. French / Spanish / German accented Latin remains valid.
+const NON_LATIN_RE =
+  /[Ͱ-ϿЀ-ӿ֐-׿؀-ۿ一-鿿぀-ヿ]/;
+
+// Domain-name shaped tokens (cosmos.ecocert.com, magasins-u.com).
+const URL_LIKE_RE = /\.[a-z]{2,}\b/i;
+
+/**
+ * True if `name` is plausibly a single INCI / food-additive ingredient.
+ *
+ * Heuristics, in order of cost:
+ *   - length 2–80 chars (single letters and paragraphs are never ingredients)
+ *   - ≤6 whitespace tokens (real INCI maxes out around 5; 6 gives us slack)
+ *   - contains at least one ASCII letter (drops pure-numeric tokens)
+ *   - no instruction-text verb (apply, keep, fabriqué, conseils, …)
+ *   - no non-Latin script (Greek, Cyrillic, CJK, Arabic, Hebrew)
+ *   - no URL-shaped token
+ *
+ * Each rule has been validated against today's OBF delta — see
+ * scripts/backtest-ingredient-filter.ts.
+ */
+export function isPlausibleIngredient(name: string): boolean {
+  const t = name.trim();
+  if (t.length < 2 || t.length > 80) return false;
+  if (t.split(/\s+/).length > 6) return false;
+  if (!/[a-zA-Z]/.test(t)) return false;
+  if (INSTRUCTION_RE.test(t)) return false;
+  if (NON_LATIN_RE.test(t)) return false;
+  if (URL_LIKE_RE.test(t)) return false;
+  return true;
+}
+
+/**
+ * Filter wrapper that emits a sampled `ingredient_filtered_out` log line so
+ * we can spot over-rejection in production without flooding the log.
+ */
+function passesIngredientFilter(name: string): boolean {
+  if (isPlausibleIngredient(name)) return true;
+  if (Math.random() < 0.01) {
+    log.info('ingredient_filtered_out', { name });
+  }
+  return false;
+}
+
 /**
  * Parse ingredients from the OFF/OBF structured array or fall back to text.
  * Both APIs use the same representation.
@@ -90,7 +142,12 @@ function parseOpenIngredients(
         lookupHint: offIdToLookupKey(ing.id) ?? undefined,
         position: ing.rank && ing.rank > 0 ? ing.rank : idx + 1,
       }))
-      .filter((ing) => ing.name.length > 0 && !isHeaderNoise(ing.name));
+      .filter(
+        (ing) =>
+          ing.name.length > 0 &&
+          !isHeaderNoise(ing.name) &&
+          passesIngredientFilter(ing.name),
+      );
   }
 
   const text = product.ingredients_text_en ?? product.ingredients_text ?? '';
@@ -100,7 +157,9 @@ function parseOpenIngredients(
     .replace(/\([^)]*\)/g, '')
     .split(/[,;]+/)
     .map((s) => s.trim())
-    .filter((s) => s.length > 0 && !isHeaderNoise(s))
+    .filter(
+      (s) => s.length > 0 && !isHeaderNoise(s) && passesIngredientFilter(s),
+    )
     .map((name, idx) => ({ name, position: idx + 1 }));
 }
 
